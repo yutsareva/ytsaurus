@@ -7,6 +7,7 @@
 
 
 add_subdirectory(unittests)
+add_subdirectory(fuzztests)
 
 add_executable(ytserver-all)
 target_compile_options(ytserver-all PRIVATE
