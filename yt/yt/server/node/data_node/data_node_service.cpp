@@ -83,6 +83,11 @@
 
 #include <cmath>
 #include <optional>
+#include <fstream>
+#include <string_view>
+#include <chrono>
+#include <sstream>
+#include <thread>
 
 namespace NYT::NDataNode {
 
@@ -275,8 +280,36 @@ private:
         context->SetAllocationTags({{SessionIdAllocationTag, sessionId}});
     }
 
+    std::string GenerateUniqueFilename(std::string_view dirPath) {
+        std::ostringstream filename;
+        auto now = std::chrono::system_clock::now().time_since_epoch();
+        auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(now).count();
+
+        filename << dirPath << "/"
+                << std::this_thread::get_id() << "_"
+                << microseconds << ".bin";
+
+        return filename.str();
+    }
+
+    void DumpProtoMessageToFile(const google::protobuf::Message& message, std::string_view dirPath) {
+        std::filesystem::create_directories(dirPath);
+        std::string filename = GenerateUniqueFilename(dirPath);
+        std::ofstream file(filename, std::ios::out | std::ios::binary);
+        if (!file) {
+            std::cerr << "Failed to open file: " << filename << std::endl;
+            return;
+        }
+
+        if (!message.SerializeToOstream(&file)) {
+            std::cerr << "Failed to serialize message to file: " << filename << std::endl;
+            return;
+        }
+    }
+
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, StartChunk)
     {
+        DumpProtoMessageToFile(*request, "/tmp/datanode_start_chunk_dump");
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("StartChunk"), ToString(sessionId));
 
