@@ -196,6 +196,7 @@ ISessionPtr TSessionManager::CreateSession(
     switch (chunkType) {
         case EObjectType::Chunk:
         case EObjectType::ErasureChunk:
+            std::cerr << "GOOD chunk type\n";
             return New<TBlobSession>(
                 Config_,
                 Bootstrap_,
@@ -208,6 +209,7 @@ ISessionPtr TSessionManager::CreateSession(
 
         case EObjectType::JournalChunk:
         case EObjectType::ErasureJournalChunk:
+            std::cerr << "GOOD chunk type\n";
             return New<TJournalSession>(
                 Config_,
                 Bootstrap_,
