@@ -83,6 +83,7 @@
 
 #include <cmath>
 #include <optional>
+#include <stdio.h>
 
 namespace NYT::NDataNode {
 
@@ -277,6 +278,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, StartChunk)
     {
+        fprintf(stderr, "StartChunk %s\n", request->ShortDebugString().c_str());
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("StartChunk"), ToString(sessionId));
 
@@ -304,6 +306,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, FinishChunk)
     {
+        fprintf(stderr, "FinishChunk %s\n", request->ShortDebugString().c_str());
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("FinishChunk"), ToString(sessionId));
 
@@ -355,6 +358,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, CancelChunk)
     {
+        fprintf(stderr, "CancelChunk %s\n", request->ShortDebugString().c_str());
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("CancelChunk"), ToString(sessionId));
 
@@ -381,6 +385,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, PingSession)
     {
+        fprintf(stderr, "PingSession %s\n", request->ShortDebugString().c_str());
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("PingSession"), ToString(sessionId));
 
@@ -400,6 +405,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, PutBlocks)
     {
+        fprintf(stderr, "PutBlocks %s\n", request->ShortDebugString().c_str());
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("PutBlocks"), ToString(sessionId));
 
@@ -479,6 +485,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, SendBlocks)
     {
+        fprintf(stderr, "SendBlocks %s\n", request->ShortDebugString().c_str());
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("SendBlocks"), ToString(sessionId));
 
@@ -514,6 +521,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, FlushBlocks)
     {
+        fprintf(stderr, "FlushBlocks %s\n", request->ShortDebugString().c_str());
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("FlushBlocks"), ToString(sessionId));
 
@@ -549,6 +557,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, UpdateP2PBlocks)
     {
+        fprintf(stderr, "UpdateP2PBlocks %s\n", request->ShortDebugString().c_str());
         auto sessionId = FromProto<TGuid>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("UpdateP2PBlocks"), ToString(sessionId));
 
@@ -666,6 +675,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, ProbeChunkSet)
     {
+        fprintf(stderr, "ProbeChunkSet %s\n", request->ShortDebugString().c_str());
         auto workloadDescriptor = GetRequestWorkloadDescriptor(context);
 
         auto chunkCount = request->chunk_ids_size();
@@ -741,6 +751,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, ProbeBlockSet)
     {
+        fprintf(stderr, "ProbeBlockSet %s\n", request->ShortDebugString().c_str());
         auto chunkId = FromProto<TChunkId>(request->chunk_id());
         auto blockIndexes = FromProto<std::vector<int>>(request->block_indexes());
         auto workloadDescriptor = GetRequestWorkloadDescriptor(context);
@@ -798,6 +809,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetBlockSet)
     {
+        fprintf(stderr, "GetBlockSet %s\n", request->ShortDebugString().c_str());
         auto chunkId = FromProto<TChunkId>(request->chunk_id());
         auto blockIndexes = FromProto<std::vector<int>>(request->block_indexes());
         bool populateCache = request->populate_cache();
@@ -952,6 +964,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetBlockRange)
     {
+        fprintf(stderr, "GetBlockRange %s\n", request->ShortDebugString().c_str());
         auto chunkId = FromProto<TChunkId>(request->chunk_id());
         auto readSessionId = request->has_read_session_id()
             ? FromProto<TReadSessionId>(request->read_session_id())
@@ -1064,6 +1077,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetChunkFragmentSet)
     {
+        fprintf(stderr, "GetChunkFragmentSet %s\n", request->ShortDebugString().c_str());
         auto readSessionId = FromProto<TReadSessionId>(request->read_session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("GetChunkFragmentSet"), ToString(readSessionId));
 
@@ -1310,6 +1324,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, LookupRows)
     {
+        fprintf(stderr, "LookupRows %s\n", request->ShortDebugString().c_str());
         auto chunkId = FromProto<TChunkId>(request->chunk_id());
         auto readSessionId = FromProto<TReadSessionId>(request->read_session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("LookupRows"), ToString(readSessionId));
@@ -1424,6 +1439,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetChunkMeta)
     {
+        fprintf(stderr, "GetChunkMeta %s\n", request->ShortDebugString().c_str());
         auto chunkId = FromProto<TChunkId>(request->chunk_id());
         auto partitionTag = request->has_partition_tag()
             ? std::make_optional(request->partition_tag())
@@ -1522,6 +1538,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetChunkSliceDataWeights)
     {
+        fprintf(stderr, "GetChunkSliceDataWeights %s\n", request->ShortDebugString().c_str());
         auto requestCount = request->chunk_requests_size();
         auto workloadDescriptor = GetRequestWorkloadDescriptor(context);
 
@@ -1597,6 +1614,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetChunkSlices)
     {
+        fprintf(stderr, "GetChunkSlices %s\n", request->ShortDebugString().c_str());
         auto requestCount = request->slice_requests_size();
         auto workloadDescriptor = GetRequestWorkloadDescriptor(context);
 
@@ -1682,6 +1700,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetTableSamples)
     {
+        fprintf(stderr, "GetTableSamples %s\n", request->ShortDebugString().c_str());
         auto samplingPolicy = ESamplingPolicy(request->sampling_policy());
         auto keyColumns = FromProto<TKeyColumns>(request->key_columns());
         auto requestCount = request->sample_requests_size();
@@ -1948,6 +1967,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetColumnarStatistics)
     {
+        fprintf(stderr, "GetColumnarStatistics %s\n", request->ShortDebugString().c_str());
         auto workloadDescriptor = GetRequestWorkloadDescriptor(context);
 
         std::optional<TDuration> earlyFinishTimeout;
@@ -2041,6 +2061,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, DisableChunkLocations)
     {
+        fprintf(stderr, "DisableChunkLocations %s\n", request->ShortDebugString().c_str());
         auto locationManager = Bootstrap_->GetLocationManager();
         auto locationUuids = FromProto<std::vector<TGuid>>(request->location_uuids());
 
@@ -2056,6 +2077,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, DestroyChunkLocations)
     {
+        fprintf(stderr, "DestroyChunkLocations %s\n", request->ShortDebugString().c_str());
         auto locationManager = Bootstrap_->GetLocationManager();
         auto locationUuids = FromProto<std::vector<TGuid>>(request->location_uuids());
 
@@ -2071,6 +2093,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, ResurrectChunkLocations)
     {
+        fprintf(stderr, "ResurrectChunkLocations %s\n", request->ShortDebugString().c_str());
         auto locationManager = Bootstrap_->GetLocationManager();
         auto locationUuids = FromProto<std::vector<TGuid>>(request->location_uuids());
 
@@ -2197,6 +2220,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, AnnounceChunkReplicas)
     {
+        fprintf(stderr, "AnnounceChunkReplicas %s\n", request->ShortDebugString().c_str());
         context->SetRequestInfo("SubrequestCount: %v, SourceNodeId: %v",
             request->announcements_size(),
             request->source_node_id());
