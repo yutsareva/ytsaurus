@@ -45,9 +45,24 @@ extern "C" int LLVMFuzzerInitialize(int *, const char ***) {
     return 0;
 }
 
+static protobuf_mutator::libfuzzer::PostProcessorRegistration<NYT::NChunkClient::NProto::TSessionId> NonNullSessionId = {
+    [](NYT::NChunkClient::NProto::TSessionId* message, unsigned int seed) {
+        if (message->chunk_id().first() != 0 && message->chunk_id().second() != 0) {
+            return;
+        }
+
+        std::mt19937_64 rng(seed);
+        std::uniform_int_distribution<uint64_t> dist64(1, UINT64_MAX);
+
+        NYT::NProto::TGuid randomChunkId;
+        randomChunkId.set_first(dist64(rng));
+        randomChunkId.set_second(dist64(rng));
+        message->mutable_chunk_id()->CopyFrom(randomChunkId);
+    }};
+
 DEFINE_PROTO_FUZZER(const NYT::NChunkClient::NProto::TReqStartChunk &protoReq)
 {
-    std::cerr << "req=" << protoReq.DebugString() << std::endl;
+    // std::cerr << "req=" << protoReq.DebugString() << std::endl;
     server = DataNode->WaitRpcServer();
 
     auto ch = NYT::NRpc::CreateLocalChannel(server);
@@ -57,6 +72,6 @@ DEFINE_PROTO_FUZZER(const NYT::NChunkClient::NProto::TReqStartChunk &protoReq)
     req->CopyFrom(protoReq);
 
     auto rspOrError = NYT::NConcurrency::WaitFor(req->Invoke());
-    std::cerr << "rspOrError IsOK() = " << rspOrError.IsOK() << std::endl;
+    // std::cerr << "rspOrError IsOK() = " << rspOrError.IsOK() << std::endl;
     std::cerr << "rspOrError GetMessage = " << rspOrError.GetMessage() << std::endl;
 }
