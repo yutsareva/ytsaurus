@@ -47,6 +47,9 @@ extern "C" int LLVMFuzzerInitialize(int *, const char ***) {
 
 static protobuf_mutator::libfuzzer::PostProcessorRegistration<NYT::NChunkClient::NProto::TSessionId> NonNullSessionId = {
     [](NYT::NChunkClient::NProto::TSessionId* message, unsigned int seed) {
+        // Fixes 'No write location is available'
+        message->set_medium_index(0);
+
         if (message->chunk_id().first() != 0 && message->chunk_id().second() != 0) {
             return;
         }
