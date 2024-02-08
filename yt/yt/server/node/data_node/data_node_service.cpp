@@ -81,8 +81,16 @@
 
 #include <yt/yt/core/rpc/service_detail.h>
 
+#include <google/protobuf/text_format.h>
+
 #include <cmath>
 #include <optional>
+
+#include <fstream>
+#include <string_view>
+#include <chrono>
+#include <sstream>
+#include <thread>
 
 namespace NYT::NDataNode {
 
@@ -152,6 +160,93 @@ THashMap<TString, TString> MakeReadIOTags(
     }
     return result;
 }
+
+
+#ifdef ENABLE_DUMP_PROTO_MESSAGE
+    std::string GenerateUniqueFilename(std::string_view dirPath) {
+        std::ostringstream filename;
+        auto now = std::chrono::system_clock::now().time_since_epoch();
+        auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(now).count();
+
+        filename << dirPath << "/"
+                << std::this_thread::get_id() << "_"
+                << microseconds << ".bin";
+
+        return filename.str();
+    }
+
+    constexpr char* kDumpDirectory = "/tmp/datanode_dump_bin";
+
+    template<typename T>
+    void DumpProtoMessageToFile(const T& request) {
+        TFuzzerInput fuzzerInput;
+
+        if constexpr (std::is_same_v<T, TReqStartChunk>) {
+            *fuzzerInput.mutable_start_chunk() = request;
+        } else if constexpr (std::is_same_v<T, TReqFinishChunk>) {
+            *fuzzerInput.mutable_finish_chunk() = request;
+        } else if constexpr (std::is_same_v<T, TReqCancelChunk>) {
+            *fuzzerInput.mutable_cancel_chunk() = request;
+        } else if constexpr (std::is_same_v<T, TReqPutBlocks>) {
+            *fuzzerInput.mutable_put_blocks() = request;
+        } else if constexpr (std::is_same_v<T, TReqSendBlocks>) {
+            *fuzzerInput.mutable_send_blocks() = request;
+        } else if constexpr (std::is_same_v<T, TReqFlushBlocks>) {
+            *fuzzerInput.mutable_flush_blocks() = request;
+        } else if constexpr (std::is_same_v<T, TReqUpdateP2PBlocks>) {
+            *fuzzerInput.mutable_update_p2p_blocks() = request;
+        } else if constexpr (std::is_same_v<T, TReqProbeChunkSet>) {
+            *fuzzerInput.mutable_probe_chunk_set() = request;
+        } else if constexpr (std::is_same_v<T, TReqProbeBlockSet>) {
+            *fuzzerInput.mutable_probe_block_set() = request;
+        } else if constexpr (std::is_same_v<T, TReqGetBlockSet>) {
+            *fuzzerInput.mutable_get_block_set() = request;
+        } else if constexpr (std::is_same_v<T, TReqGetBlockRange>) {
+            *fuzzerInput.mutable_get_block_range() = request;
+        } else if constexpr (std::is_same_v<T, TReqGetChunkFragmentSet>) {
+            *fuzzerInput.mutable_get_chunk_fragment_set() = request;
+        } else if constexpr (std::is_same_v<T, NYT::NTableClient::NProto::TReqLookupRows>) {
+            *fuzzerInput.mutable_lookup_rows() = request;
+        } else if constexpr (std::is_same_v<T, TReqPingSession>) {
+            *fuzzerInput.mutable_ping_session() = request;
+        } else if constexpr (std::is_same_v<T, TReqGetChunkMeta>) {
+            *fuzzerInput.mutable_get_chunk_meta() = request;
+        } else if constexpr (std::is_same_v<T, TReqGetChunkSliceDataWeights>) {
+            *fuzzerInput.mutable_get_chunk_slice_data_weights() = request;
+        } else if constexpr (std::is_same_v<T, TReqUpdatePeer>) {
+            *fuzzerInput.mutable_update_peer() = request;
+        } else if constexpr (std::is_same_v<T, TReqGetTableSamples>) {
+            *fuzzerInput.mutable_get_table_samples() = request;
+        } else if constexpr (std::is_same_v<T, TReqGetChunkSlices>) {
+            *fuzzerInput.mutable_get_chunk_slices() = request;
+        } else if constexpr (std::is_same_v<T, TReqGetColumnarStatistics>) {
+            *fuzzerInput.mutable_get_columnar_statistics() = request;
+        } else if constexpr (std::is_same_v<T, TReqDisableChunkLocations>) {
+            *fuzzerInput.mutable_disable_chunk_locations() = request;
+        } else if constexpr (std::is_same_v<T, TReqDestroyChunkLocations>) {
+            *fuzzerInput.mutable_destroy_chunk_locations() = request;
+        } else if constexpr (std::is_same_v<T, TReqResurrectChunkLocations>) {
+            *fuzzerInput.mutable_resurrect_chunk_locations() = request;
+        } else if constexpr (std::is_same_v<T, TReqAnnounceChunkReplicas>) {
+            *fuzzerInput.mutable_announce_chunk_replicas() = request;
+        }
+
+        std::filesystem::create_directories(kDumpDirectory);
+        std::string filename = GenerateUniqueFilename(kDumpDirectory);
+        std::ofstream file(filename, std::ios::out | std::ios::binary);
+        if (!file) {
+            return;
+        }
+
+        if (!fuzzerInput.SerializeToOstream(&file)) {
+            return;
+        }
+    }
+
+    #define DUMP_PROTO_MESSAGE(request) DumpProtoMessageToFile(request)
+#else
+    #define DUMP_PROTO_MESSAGE(request) // Do nothing
+#endif
 
 } // namespace
 
@@ -277,6 +372,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, StartChunk)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("StartChunk"), ToString(sessionId));
 
@@ -304,6 +400,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, FinishChunk)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("FinishChunk"), ToString(sessionId));
 
@@ -355,6 +452,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, CancelChunk)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("CancelChunk"), ToString(sessionId));
 
@@ -381,6 +479,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, PingSession)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("PingSession"), ToString(sessionId));
 
@@ -400,6 +499,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, PutBlocks)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("PutBlocks"), ToString(sessionId));
 
@@ -479,6 +579,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, SendBlocks)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("SendBlocks"), ToString(sessionId));
 
@@ -514,6 +615,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, FlushBlocks)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("FlushBlocks"), ToString(sessionId));
 
@@ -549,6 +651,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, UpdateP2PBlocks)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto sessionId = FromProto<TGuid>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("UpdateP2PBlocks"), ToString(sessionId));
 
@@ -666,6 +769,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, ProbeChunkSet)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto workloadDescriptor = GetRequestWorkloadDescriptor(context);
 
         auto chunkCount = request->chunk_ids_size();
@@ -741,6 +845,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, ProbeBlockSet)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto chunkId = FromProto<TChunkId>(request->chunk_id());
         auto blockIndexes = FromProto<std::vector<int>>(request->block_indexes());
         auto workloadDescriptor = GetRequestWorkloadDescriptor(context);
@@ -798,6 +903,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetBlockSet)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto chunkId = FromProto<TChunkId>(request->chunk_id());
         auto blockIndexes = FromProto<std::vector<int>>(request->block_indexes());
         bool populateCache = request->populate_cache();
@@ -952,6 +1058,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetBlockRange)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto chunkId = FromProto<TChunkId>(request->chunk_id());
         auto readSessionId = request->has_read_session_id()
             ? FromProto<TReadSessionId>(request->read_session_id())
@@ -1064,6 +1171,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetChunkFragmentSet)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto readSessionId = FromProto<TReadSessionId>(request->read_session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("GetChunkFragmentSet"), ToString(readSessionId));
 
@@ -1310,6 +1418,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, LookupRows)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto chunkId = FromProto<TChunkId>(request->chunk_id());
         auto readSessionId = FromProto<TReadSessionId>(request->read_session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("LookupRows"), ToString(readSessionId));
@@ -1424,6 +1533,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetChunkMeta)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto chunkId = FromProto<TChunkId>(request->chunk_id());
         auto partitionTag = request->has_partition_tag()
             ? std::make_optional(request->partition_tag())
@@ -1522,6 +1632,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetChunkSliceDataWeights)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto requestCount = request->chunk_requests_size();
         auto workloadDescriptor = GetRequestWorkloadDescriptor(context);
 
@@ -1597,6 +1708,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetChunkSlices)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto requestCount = request->slice_requests_size();
         auto workloadDescriptor = GetRequestWorkloadDescriptor(context);
 
@@ -1682,6 +1794,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetTableSamples)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto samplingPolicy = ESamplingPolicy(request->sampling_policy());
         auto keyColumns = FromProto<TKeyColumns>(request->key_columns());
         auto requestCount = request->sample_requests_size();
@@ -1948,6 +2061,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetColumnarStatistics)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto workloadDescriptor = GetRequestWorkloadDescriptor(context);
 
         std::optional<TDuration> earlyFinishTimeout;
@@ -2041,6 +2155,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, DisableChunkLocations)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto locationManager = Bootstrap_->GetLocationManager();
         auto locationUuids = FromProto<std::vector<TGuid>>(request->location_uuids());
 
@@ -2056,6 +2171,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, DestroyChunkLocations)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto locationManager = Bootstrap_->GetLocationManager();
         auto locationUuids = FromProto<std::vector<TGuid>>(request->location_uuids());
 
@@ -2071,6 +2187,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, ResurrectChunkLocations)
     {
+        DUMP_PROTO_MESSAGE(*request);
         auto locationManager = Bootstrap_->GetLocationManager();
         auto locationUuids = FromProto<std::vector<TGuid>>(request->location_uuids());
 
@@ -2197,6 +2314,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, AnnounceChunkReplicas)
     {
+        DUMP_PROTO_MESSAGE(*request);
         context->SetRequestInfo("SubrequestCount: %v, SourceNodeId: %v",
             request->announcements_size(),
             request->source_node_id());
