@@ -3,8 +3,8 @@
 // #include <yt/yt/server/master/cell_master/program.h>
 
 #include <yt/yt/core/rpc/local_channel.h>
-
 #include <yt/yt/library/program/program.h>
+#include <yt/yt/ytlib/chunk_client/session_id.h>
 
 #include <library/cpp/getopt/small/last_getopt_parse_result.h>
 #include <yt/yt/ytlib/chunk_client/proto/data_node_service.pb.h>
@@ -45,22 +45,39 @@ extern "C" int LLVMFuzzerInitialize(int *, const char ***) {
     return 0;
 }
 
+bool IsValidChunkType(const NYT::NChunkClient::NProto::TSessionId& protoSessionId) {
+    auto sessionId = NYT::FromProto<NYT::NChunkClient::TSessionId>(protoSessionId);
+
+    auto chunkType = NYT::NObjectClient::TypeFromId(NYT::NChunkClient::DecodeChunkId(sessionId.ChunkId).Id);
+    switch (chunkType) {
+        case NYT::NObjectClient::EObjectType::Chunk:
+        case NYT::NObjectClient::EObjectType::ErasureChunk:
+        case NYT::NObjectClient::EObjectType::JournalChunk:
+        case NYT::NObjectClient::EObjectType::ErasureJournalChunk:
+            return true;
+        default:
+            return false;
+    }
+}
+
 static protobuf_mutator::libfuzzer::PostProcessorRegistration<NYT::NChunkClient::NProto::TSessionId> NonNullSessionId = {
     [](NYT::NChunkClient::NProto::TSessionId* message, unsigned int seed) {
         // Fixes 'No write location is available'
         message->set_medium_index(0);
 
-        if (message->chunk_id().first() != 0 && message->chunk_id().second() != 0) {
-            return;
-        }
-
+        // Fixes 'Invalid session chunk type'
         std::mt19937_64 rng(seed);
         std::uniform_int_distribution<uint64_t> dist64(1, UINT64_MAX);
 
-        NYT::NProto::TGuid randomChunkId;
-        randomChunkId.set_first(dist64(rng));
-        randomChunkId.set_second(dist64(rng));
-        message->mutable_chunk_id()->CopyFrom(randomChunkId);
+        bool isValidChunkType = IsValidChunkType(*message);
+        while (!isValidChunkType) {
+            NYT::NProto::TGuid randomChunkId;
+            randomChunkId.set_first(dist64(rng));
+            randomChunkId.set_second(dist64(rng));
+            message->mutable_chunk_id()->CopyFrom(randomChunkId);
+
+            isValidChunkType = IsValidChunkType(*message);
+        };
     }};
 
 // serialize corpus with protobuf::TextFormat::PrintToString to use text format
