@@ -81,8 +81,16 @@
 
 #include <yt/yt/core/rpc/service_detail.h>
 
+#include <google/protobuf/text_format.h>
+
 #include <cmath>
 #include <optional>
+
+#include <fstream>
+#include <string_view>
+#include <chrono>
+#include <sstream>
+#include <thread>
 
 namespace NYT::NDataNode {
 
@@ -275,8 +283,43 @@ private:
         context->SetAllocationTags({{SessionIdAllocationTag, sessionId}});
     }
 
+        std::string GenerateUniqueFilename(std::string_view dirPath) {
+        std::ostringstream filename;
+        auto now = std::chrono::system_clock::now().time_since_epoch();
+        auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(now).count();
+
+        filename << dirPath << "/"
+                << std::this_thread::get_id() << "_"
+                << microseconds << ".txt";
+
+        return filename.str();
+    }
+
+    void DumpProtoMessageToFile(
+            std::string_view name,
+            const google::protobuf::Message& message,
+            std::string_view dirPath) {
+        std::filesystem::create_directories(dirPath);
+        std::string filename = GenerateUniqueFilename(dirPath);
+        std::ofstream file(filename, std::ios::out | std::ios::binary);
+        if (!file) {
+            std::cerr << "Failed to open file: " << filename << std::endl;
+            return;
+        }
+
+        file << name << "\n";
+
+        TString tmp;
+        if (!google::protobuf::TextFormat::PrintToString(message, &tmp)) {
+            std::cerr << "Failed to PrintToString: " << message.ShortDebugString() << std::endl;
+            return;
+        }
+        file << tmp;
+    }
+
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, StartChunk)
     {
+        DumpProtoMessageToFile("StartChunk", *request, "/tmp/datanode_dump_txt");
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("StartChunk"), ToString(sessionId));
 
@@ -304,6 +347,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, FinishChunk)
     {
+        DumpProtoMessageToFile("FinishChunk", *request, "/tmp/datanode_dump_txt");
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("FinishChunk"), ToString(sessionId));
 
@@ -355,6 +399,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, CancelChunk)
     {
+        DumpProtoMessageToFile("CancelChunk", *request, "/tmp/datanode_dump_txt");
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("CancelChunk"), ToString(sessionId));
 
@@ -381,6 +426,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, PingSession)
     {
+        DumpProtoMessageToFile("PingSession", *request, "/tmp/datanode_dump_txt");
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("PingSession"), ToString(sessionId));
 
@@ -400,6 +446,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, PutBlocks)
     {
+        DumpProtoMessageToFile("PutBlocks", *request, "/tmp/datanode_dump_txt");
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("PutBlocks"), ToString(sessionId));
 
@@ -479,6 +526,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, SendBlocks)
     {
+        DumpProtoMessageToFile("SendBlocks", *request, "/tmp/datanode_dump_txt");
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("SendBlocks"), ToString(sessionId));
 
@@ -514,6 +562,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, FlushBlocks)
     {
+        DumpProtoMessageToFile("FlushBlocks", *request, "/tmp/datanode_dump_txt");
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("FlushBlocks"), ToString(sessionId));
 
@@ -549,6 +598,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, UpdateP2PBlocks)
     {
+        DumpProtoMessageToFile("UpdateP2PBlocks", *request, "/tmp/datanode_dump_txt");
         auto sessionId = FromProto<TGuid>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("UpdateP2PBlocks"), ToString(sessionId));
 
@@ -666,6 +716,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, ProbeChunkSet)
     {
+        DumpProtoMessageToFile("ProbeChunkSet", *request, "/tmp/datanode_dump_txt");
         auto workloadDescriptor = GetRequestWorkloadDescriptor(context);
 
         auto chunkCount = request->chunk_ids_size();
@@ -741,6 +792,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, ProbeBlockSet)
     {
+        DumpProtoMessageToFile("ProbeBlockSet", *request, "/tmp/datanode_dump_txt");
         auto chunkId = FromProto<TChunkId>(request->chunk_id());
         auto blockIndexes = FromProto<std::vector<int>>(request->block_indexes());
         auto workloadDescriptor = GetRequestWorkloadDescriptor(context);
@@ -798,6 +850,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetBlockSet)
     {
+        DumpProtoMessageToFile("GetBlockSet", *request, "/tmp/datanode_dump_txt");
         auto chunkId = FromProto<TChunkId>(request->chunk_id());
         auto blockIndexes = FromProto<std::vector<int>>(request->block_indexes());
         bool populateCache = request->populate_cache();
@@ -952,6 +1005,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetBlockRange)
     {
+        DumpProtoMessageToFile("GetBlockRange", *request, "/tmp/datanode_dump_txt");
         auto chunkId = FromProto<TChunkId>(request->chunk_id());
         auto readSessionId = request->has_read_session_id()
             ? FromProto<TReadSessionId>(request->read_session_id())
@@ -1064,6 +1118,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetChunkFragmentSet)
     {
+        DumpProtoMessageToFile("GetChunkFragmentSet", *request, "/tmp/datanode_dump_txt");
         auto readSessionId = FromProto<TReadSessionId>(request->read_session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("GetChunkFragmentSet"), ToString(readSessionId));
 
@@ -1310,6 +1365,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, LookupRows)
     {
+        DumpProtoMessageToFile("LookupRows", *request, "/tmp/datanode_dump_txt");
         auto chunkId = FromProto<TChunkId>(request->chunk_id());
         auto readSessionId = FromProto<TReadSessionId>(request->read_session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("LookupRows"), ToString(readSessionId));
@@ -1424,6 +1480,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetChunkMeta)
     {
+        DumpProtoMessageToFile("GetChunkMeta", *request, "/tmp/datanode_dump_txt");
         auto chunkId = FromProto<TChunkId>(request->chunk_id());
         auto partitionTag = request->has_partition_tag()
             ? std::make_optional(request->partition_tag())
@@ -1522,6 +1579,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetChunkSliceDataWeights)
     {
+        DumpProtoMessageToFile("GetChunkSliceDataWeights", *request, "/tmp/datanode_dump_txt");
         auto requestCount = request->chunk_requests_size();
         auto workloadDescriptor = GetRequestWorkloadDescriptor(context);
 
@@ -1597,6 +1655,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetChunkSlices)
     {
+        DumpProtoMessageToFile("GetChunkSlices", *request, "/tmp/datanode_dump_txt");
         auto requestCount = request->slice_requests_size();
         auto workloadDescriptor = GetRequestWorkloadDescriptor(context);
 
@@ -1682,6 +1741,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetTableSamples)
     {
+        DumpProtoMessageToFile("GetTableSamples", *request, "/tmp/datanode_dump_txt");
         auto samplingPolicy = ESamplingPolicy(request->sampling_policy());
         auto keyColumns = FromProto<TKeyColumns>(request->key_columns());
         auto requestCount = request->sample_requests_size();
@@ -1948,6 +2008,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetColumnarStatistics)
     {
+        DumpProtoMessageToFile("GetColumnarStatistics", *request, "/tmp/datanode_dump_txt");
         auto workloadDescriptor = GetRequestWorkloadDescriptor(context);
 
         std::optional<TDuration> earlyFinishTimeout;
@@ -2041,6 +2102,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, DisableChunkLocations)
     {
+        DumpProtoMessageToFile("DisableChunkLocations", *request, "/tmp/datanode_dump_txt");
         auto locationManager = Bootstrap_->GetLocationManager();
         auto locationUuids = FromProto<std::vector<TGuid>>(request->location_uuids());
 
@@ -2056,6 +2118,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, DestroyChunkLocations)
     {
+        DumpProtoMessageToFile("DestroyChunkLocations", *request, "/tmp/datanode_dump_txt");
         auto locationManager = Bootstrap_->GetLocationManager();
         auto locationUuids = FromProto<std::vector<TGuid>>(request->location_uuids());
 
@@ -2071,6 +2134,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, ResurrectChunkLocations)
     {
+        DumpProtoMessageToFile("ResurrectChunkLocations", *request, "/tmp/datanode_dump_txt");
         auto locationManager = Bootstrap_->GetLocationManager();
         auto locationUuids = FromProto<std::vector<TGuid>>(request->location_uuids());
 
@@ -2197,6 +2261,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, AnnounceChunkReplicas)
     {
+        DumpProtoMessageToFile("AnnounceChunkReplicas", *request, "/tmp/datanode_dump_txt");
         context->SetRequestInfo("SubrequestCount: %v, SourceNodeId: %v",
             request->announcements_size(),
             request->source_node_id());
