@@ -60,7 +60,9 @@ static protobuf_mutator::libfuzzer::PostProcessorRegistration<NYT::NChunkClient:
         message->mutable_chunk_id()->CopyFrom(randomChunkId);
     }};
 
-DEFINE_PROTO_FUZZER(const NYT::NChunkClient::NProto::TReqStartChunk &protoReq)
+// serialize corpus with protobuf::TextFormat::PrintToString to use text format
+// DEFINE_PROTO_FUZZER(const NYT::NChunkClient::NProto::TReqStartChunk &protoReq)
+DEFINE_BINARY_PROTO_FUZZER(const NYT::NChunkClient::NProto::TReqStartChunk &protoReq)
 {
     // std::cerr << "req=" << protoReq.DebugString() << std::endl;
     server = DataNode->WaitRpcServer();
