@@ -158,7 +158,10 @@ template <class TMap, class TKey>
 auto GetIteratorOrCrash(TMap&& map, const TKey& key)
 {
     auto it = map.find(key);
-    YT_VERIFY(it != map.end());
+    YT_VERIFY(map.size() > 0);
+    if (it == map.end()) {
+        return map.begin();
+    }
     return it;
 }
 
