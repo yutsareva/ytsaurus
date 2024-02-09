@@ -9,4 +9,6 @@ build_dir $ ./yt/yt/server/all/fuzztests/datanode/fuzztests-datanode-multi-req /
 
 ## Fuzz test description
 
-The Datanode is launched once before any tests are launched. The state of the Datanode is not reset between individual tests
+The Datanode is launched once before any tests are launched. The state of the Datanode is not reset between individual tests.
+
+The test supports all datanode RPCs.
