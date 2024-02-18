@@ -1,2 +1,1 @@
 add_subdirectory(datanode)
-add_subdirectory(datanode_multi_req)
