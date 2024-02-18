@@ -1,6 +1,5 @@
 #include <yt/yt/server/node/cluster_node/program.h>
 #include <yt/yt/ytlib/chunk_client/data_node_service_proxy.h>
-// #include <yt/yt/server/master/cell_master/program.h>
 
 #include <yt/yt/core/rpc/local_channel.h>
 #include <yt/yt/library/program/program.h>
@@ -18,13 +17,6 @@
 
 
 NYT::NRpc::IServerPtr server;
-
-// void runMasterServer() {
-//     int argc = 3;
-//     const char* argv[] = {"master",  "--config", "/home/yutsareva/yt/ytsaurus/yt/yt/server/all/fuzztests/datanode/master.yson", nullptr};
-
-//     NYT::NCellMaster::TCellMasterProgram().Run(argc, argv);
-// }
 
 std::unique_ptr<NYT::NClusterNode::TClusterNodeProgram> DataNode;
 
@@ -179,132 +171,83 @@ extern "C" size_t LLVMFuzzerCustomMutator(uint8_t *Data, size_t Size, size_t Max
   }
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t* Data, size_t Size) {
-    std::string input(reinterpret_cast<const char*>(Data), Size);
-    std::stringstream ss(input);
-
-    std::string requestName;
-    std::getline(ss, requestName);
-    std::string serializedData;
-    if (ss.tellg() < input.size()) {
-        serializedData = input.substr(ss.tellg());
+    NYT::NChunkClient::NProto::TFuzzerInput fuzzerInput;
+    if (!protobuf_mutator::libfuzzer::LoadProtoInput(false, Data, Size, &fuzzerInput)) {
+        return 0;
     }
 
-    if (requestName == "StartChunk") {
-        NYT::NChunkClient::NProto::TReqStartChunk protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::StartChunk);
-        }
-    } else if (requestName == "FinishChunk") {
-        NYT::NChunkClient::NProto::TReqFinishChunk protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::FinishChunk);
-        }
-    } else if (requestName == "CancelChunk") {
-        NYT::NChunkClient::NProto::TReqCancelChunk protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::CancelChunk);
-        }
-    } else if (requestName == "PingSession") {
-        NYT::NChunkClient::NProto::TReqPingSession protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::PingSession);
-        }
-    } else if (requestName == "PutBlocks") {
-        NYT::NChunkClient::NProto::TReqPutBlocks protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::PutBlocks);
-        }
-    } else if (requestName == "SendBlocks") {
-        NYT::NChunkClient::NProto::TReqSendBlocks protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::SendBlocks);
-        }
-    } else if (requestName == "FlushBlocks") {
-        NYT::NChunkClient::NProto::TReqFlushBlocks protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::FlushBlocks);
-        }
-    } else if (requestName == "UpdateP2PBlocks") {
-        NYT::NChunkClient::NProto::TReqUpdateP2PBlocks protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::UpdateP2PBlocks);
-        }
-    } else if (requestName == "ProbeChunkSet") {
-        NYT::NChunkClient::NProto::TReqProbeChunkSet protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::ProbeChunkSet);
-        }
-    } else if (requestName == "ProbeBlockSet") {
-        NYT::NChunkClient::NProto::TReqProbeBlockSet protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::ProbeBlockSet);
-        }
-    } else if (requestName == "GetBlockSet") {
-        NYT::NChunkClient::NProto::TReqGetBlockSet protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::GetBlockSet);
-        }
-    } else if (requestName == "GetBlockRange") {
-        NYT::NChunkClient::NProto::TReqGetBlockRange protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::GetBlockRange);
-        }
-    } else if (requestName == "GetChunkFragmentSet") {
-        NYT::NChunkClient::NProto::TReqGetChunkFragmentSet protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkFragmentSet);
-        }
-    } else if (requestName == "LookupRows") {
-        NYT::NChunkClient::NProto::TReqLookupRows protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::LookupRows);
-        }
-    } else if (requestName == "GetChunkMeta") {
-        NYT::NChunkClient::NProto::TReqGetChunkMeta protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkMeta);
-        }
-    } else if (requestName == "GetChunkSliceDataWeights") {
-        NYT::NChunkClient::NProto::TReqGetChunkSliceDataWeights protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkSliceDataWeights);
-        }
-    } else if (requestName == "GetChunkSlices") {
-        NYT::NChunkClient::NProto::TReqGetChunkSlices protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkSlices);
-        }
-    } else if (requestName == "GetTableSamples") {
-        NYT::NChunkClient::NProto::TReqGetTableSamples protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::GetTableSamples);
-        }
-    } else if (requestName == "GetColumnarStatistics") {
-        NYT::NChunkClient::NProto::TReqGetColumnarStatistics protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::GetColumnarStatistics);
-        }
-    } else if (requestName == "DisableChunkLocations") {
-        NYT::NChunkClient::NProto::TReqDisableChunkLocations protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::DisableChunkLocations);
-        }
-    } else if (requestName == "DestroyChunkLocations") {
-        NYT::NChunkClient::NProto::TReqDestroyChunkLocations protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::DestroyChunkLocations);
-        }
-    } else if (requestName == "ResurrectChunkLocations") {
-        NYT::NChunkClient::NProto::TReqResurrectChunkLocations protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::ResurrectChunkLocations);
-        }
-    } else if (requestName == "AnnounceChunkReplicas") {
-        NYT::NChunkClient::NProto::TReqAnnounceChunkReplicas protoReq;
-        if (protobuf_mutator::libfuzzer::LoadProtoInput(false, reinterpret_cast<const uint8_t*>(serializedData.data()), serializedData.size(), &protoReq)) {
-            SendRequest(requestName, protoReq, &NYT::NChunkClient::TDataNodeServiceProxy::AnnounceChunkReplicas);
-        }
+    switch (fuzzerInput.request_case()) {
+        case NYT::NChunkClient::NProto::TFuzzerInput::kStartChunk:
+            SendRequest("StartChunk", fuzzerInput.start_chunk(), &NYT::NChunkClient::TDataNodeServiceProxy::StartChunk);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kFinishChunk:
+            SendRequest("FinishChunk", fuzzerInput.finish_chunk(), &NYT::NChunkClient::TDataNodeServiceProxy::FinishChunk);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kCancelChunk:
+            SendRequest("CancelChunk", fuzzerInput.cancel_chunk(), &NYT::NChunkClient::TDataNodeServiceProxy::CancelChunk);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kPingSession:
+            SendRequest("PingSession", fuzzerInput.ping_session(), &NYT::NChunkClient::TDataNodeServiceProxy::PingSession);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kPutBlocks:
+            SendRequest("PutBlocks", fuzzerInput.put_blocks(), &NYT::NChunkClient::TDataNodeServiceProxy::PutBlocks);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kSendBlocks:
+            SendRequest("SendBlocks", fuzzerInput.send_blocks(), &NYT::NChunkClient::TDataNodeServiceProxy::SendBlocks);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kFlushBlocks:
+            SendRequest("FlushBlocks", fuzzerInput.flush_blocks(), &NYT::NChunkClient::TDataNodeServiceProxy::FlushBlocks);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kUpdateP2PBlocks:
+            SendRequest("UpdateP2PBlocks", fuzzerInput.update_p2p_blocks(), &NYT::NChunkClient::TDataNodeServiceProxy::UpdateP2PBlocks);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kProbeChunkSet:
+            SendRequest("ProbeChunkSet", fuzzerInput.probe_chunk_set(), &NYT::NChunkClient::TDataNodeServiceProxy::ProbeChunkSet);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kProbeBlockSet:
+            SendRequest("ProbeBlockSet", fuzzerInput.probe_block_set(), &NYT::NChunkClient::TDataNodeServiceProxy::ProbeBlockSet);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kGetBlockSet:
+            SendRequest("GetBlockSet", fuzzerInput.get_block_set(), &NYT::NChunkClient::TDataNodeServiceProxy::GetBlockSet);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kGetBlockRange:
+            SendRequest("GetBlockRange", fuzzerInput.get_block_range(), &NYT::NChunkClient::TDataNodeServiceProxy::GetBlockRange);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kGetChunkFragmentSet:
+            SendRequest("GetChunkFragmentSet", fuzzerInput.get_chunk_fragment_set(), &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkFragmentSet);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kLookupRows:
+            SendRequest("LookupRows", fuzzerInput.lookup_rows(), &NYT::NChunkClient::TDataNodeServiceProxy::LookupRows);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kGetChunkMeta:
+            SendRequest("GetChunkMeta", fuzzerInput.get_chunk_meta(), &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkMeta);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kGetChunkSliceDataWeights:
+            SendRequest("GetChunkSliceDataWeights", fuzzerInput.get_chunk_slice_data_weights(), &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkSliceDataWeights);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kGetChunkSlices:
+            SendRequest("GetChunkSlices", fuzzerInput.get_chunk_slices(), &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkSlices);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kGetTableSamples:
+            SendRequest("GetTableSamples", fuzzerInput.get_table_samples(), &NYT::NChunkClient::TDataNodeServiceProxy::GetTableSamples);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kGetColumnarStatistics:
+            SendRequest("GetColumnarStatistics", fuzzerInput.get_columnar_statistics(), &NYT::NChunkClient::TDataNodeServiceProxy::GetColumnarStatistics);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kDisableChunkLocations:
+            SendRequest("DisableChunkLocations", fuzzerInput.disable_chunk_locations(), &NYT::NChunkClient::TDataNodeServiceProxy::DisableChunkLocations);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kDestroyChunkLocations:
+            SendRequest("DestroyChunkLocations", fuzzerInput.destroy_chunk_locations(), &NYT::NChunkClient::TDataNodeServiceProxy::DestroyChunkLocations);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kResurrectChunkLocations:
+            SendRequest("ResurrectChunkLocations", fuzzerInput.resurrect_chunk_locations(), &NYT::NChunkClient::TDataNodeServiceProxy::ResurrectChunkLocations);
+            break;
+        case NYT::NChunkClient::NProto::TFuzzerInput::kAnnounceChunkReplicas:
+            SendRequest("AnnounceChunkReplicas", fuzzerInput.announce_chunk_replicas(), &NYT::NChunkClient::TDataNodeServiceProxy::AnnounceChunkReplicas);
+            break;
+        default:
+            break;
     }
-
     return 0;
 }
