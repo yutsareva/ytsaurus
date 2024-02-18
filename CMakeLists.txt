@@ -57,3 +57,96 @@ endif()
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" AND NOT HAVE_CUDA)
   include(CMakeLists.linux-x86_64.txt)
 endif()
+
+
+function(get_subdirectories SUBDIRS DIR)
+	get_directory_property(NEW_SUBDIRS DIRECTORY "${DIR}" SUBDIRECTORIES)
+
+	foreach(CURRENT_SUBDIR IN LISTS NEW_SUBDIRS)
+		get_subdirectories(REC_SUBDIRS "${CURRENT_SUBDIR}")
+		list(APPEND SUBDIRS ${REC_SUBDIRS})
+	endforeach()
+
+	list(APPEND SUBDIRS ${NEW_SUBDIRS})
+
+	set(${SUBDIRS} PARENT_SCOPE)
+endfunction()
+
+
+function(get_lib_targets DEFINED_TARGETS DIR)
+	get_subdirectories(SUBDIRS "${DIR}")
+
+	if(EXISTS "${DIR}/CMakeLists.txt")
+		list(APPEND SUBDIRS "${DIR}")
+	endif()
+
+	foreach(CURRENT_SUBDIR IN LISTS SUBDIRS)
+		get_directory_property(NEW_TARGETS DIRECTORY "${CURRENT_SUBDIR}" BUILDSYSTEM_TARGETS)
+
+		foreach(CURRENT_TARGET IN LISTS NEW_TARGETS)
+			get_target_property(TARGET_TYPE "${CURRENT_TARGET}" TYPE)
+
+			if("${TARGET_TYPE}" MATCHES "STATIC_LIBRARY|MODULE_LIBRARY|SHARED_LIBRARY")
+				list(APPEND DEFINED_TARGETS ${CURRENT_TARGET})
+			endif()
+		endforeach()
+	endforeach()
+
+	set(${DEFINED_TARGETS} PARENT_SCOPE)
+endfunction()
+
+function(target_starts_with PREFIXES TARGET RESULT)
+    set(${RESULT} FALSE PARENT_SCOPE)
+    foreach(PREFIX IN LISTS PREFIXES)
+        string(FIND ${TARGET} ${PREFIX} POSITION)
+        if(POSITION EQUAL 0)
+            set(${RESULT} TRUE PARENT_SCOPE)
+            break()
+        endif()
+    endforeach()
+endfunction()
+
+if(ENABLE_FUZZER)
+    # Exclude lib targets that are used by EXECUTABLE targets (e.g. protoc, enum_parser, etc) needed to build fuzz-tests
+    set(EXCLUDED_TARGETS "yutil" "library-cpp-cpuid_check.global" "cpp-getopt-small" "tools-enum_parser-parse_enum"
+        "llvm16-lib-Demangle" "llvm16-lib-Support" "llvm16-lib-TableGen" "utils-TableGen-GlobalISel"
+        "cpp-sanitizer-include" "libs-flatbuffers-flatc" "util-charset" "libs-cxxsupp-libcxx" "libs-tcmalloc-no_percpu_cache"
+        "src-compiler-grpc_plugin_support" "blockcodecs-codecs-zstd.global" "cpp-blockcodecs-core" "library-cpp-cppparser"
+        "library-cpp-colorizer" "library-cpp-resource")
+
+    set(TARGET_PREFIXES "contrib-libs" "libs-" "abseil-")
+
+    get_lib_targets(DEFINED_TARGETS "${CMAKE_CURRENT_SOURCE_DIR}")
+
+    foreach(target IN LISTS DEFINED_TARGETS)
+        target_starts_with("${TARGET_PREFIXES}" ${target} STARTS_WITH_PREFIX)
+        list(FIND EXCLUDED_TARGETS ${target} EXCLUDED_TARGET_POS)
+
+        if(STARTS_WITH_PREFIX OR NOT EXCLUDED_TARGET_POS EQUAL -1)
+            message(STATUS "Skipping -fsanitize=fuzzer for target: ${target}")
+        else()
+            target_compile_options(${target} PRIVATE -fsanitize=fuzzer)
+            target_link_options(${target} PRIVATE -fsanitize=fuzzer)
+            message(STATUS "Adding -fsanitize=fuzzer to target: ${target}")
+        endif()
+    endforeach()
+endif()
+
+# if(ENABLE_FUZZER)
+#     set(INCLUDED_PREFIXES "cpp-mapreduce-" "library-query-" "server-lib-" "yt-server-" 
+#         "yt-library-" "yt-yt-" "yt-client-" "yt-core-" "mapreduce-")
+
+#     get_lib_targets(DEFINED_TARGETS "${CMAKE_CURRENT_SOURCE_DIR}")
+
+#     foreach(target IN LISTS DEFINED_TARGETS)
+#         target_starts_with("${INCLUDED_PREFIXES}" ${target} INCLUDE_TARGET)
+
+#         if(INCLUDE_TARGET)
+#             target_compile_options(${target} PRIVATE -fsanitize=fuzzer)
+#             target_link_options(${target} PRIVATE -fsanitize=fuzzer)
+#             message(STATUS "Adding -fsanitize=fuzzer to target: ${target}")
+#         else()
+#             message(STATUS "Skipping -fsanitize=fuzzer for target: ${target}")
+#         endif()
+#     endforeach()
+# endif()
