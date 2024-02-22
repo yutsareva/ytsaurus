@@ -178,7 +178,7 @@ THashMap<TString, TString> MakeReadIOTags(
     constexpr char* kDumpDirectory = "/tmp/datanode_dump_bin";
 
     template<typename T>
-    void DumpProtoMessageToFile(const T& request) {
+    void DumpProtoMessageToFile(const TTypedServiceRequest<T>& request) {
         TFuzzerInput fuzzerInput;
 
         if constexpr (std::is_same_v<T, TReqStartChunk>) {

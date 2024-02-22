@@ -5,7 +5,7 @@
 
     a. Build ytserver-all. Important: set ENABLE_DUMP_PROTO_MESSAGE cmake flag
     ```
-    build_dir $ cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=$YT_REPO_PATH/ytsaurus/clang.toolchain -DENABLE_DUMP_PROTO_MESSAGE=1 $YT_REPO_PATH/ytsaurus 
+    build_dir $ cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=$YT_REPO_PATH/clang.toolchain -DENABLE_DUMP_PROTO_MESSAGE=1 $YT_REPO_PATH 
     build_dir $ ninja ytserver-all
      ```
 
@@ -16,7 +16,7 @@ ytserver-master --config $YT_REPO_PATH/yt/yt/server/all/fuzztests/datanode/maste
 ```
 4. Build fuzz test. Important: set ENABLE_FUZZER cmake flag
 ```bash
-build_fuzz $ cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../ytsaurus/clang.toolchain -DENABLE_FUZZER=ON ../ytsaurus
+build_fuzz $ cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=../ytsaurus/clang.toolchain -DENABLE_FUZZER=ON ../ytsaurus
 build_fuzz $ ninja fuzztests-datanode
 ```
 5. Run fuzz test
