@@ -15,12 +15,12 @@
 #include <sstream>
 #include <string>
 
-
 NYT::NRpc::IServerPtr server;
 
 std::unique_ptr<NYT::NClusterNode::TClusterNodeProgram> DataNode;
 
-extern "C" int LLVMFuzzerInitialize(int *, const char ***) {
+// extern "C" int LLVMFuzzerInitialize(int *, const char ***) {
+bool Init() {
     DataNode = std::make_unique<NYT::NClusterNode::TClusterNodeProgram>();
 
     const char* envYtRepoPath = std::getenv("YT_REPO_PATH");
@@ -38,7 +38,8 @@ extern "C" int LLVMFuzzerInitialize(int *, const char ***) {
         DataNode->Run(argc, argv);
     });
     serverThread.detach();
-    return 0;
+    std::this_thread::sleep_for(std::chrono::seconds(10));
+    return true;
 }
 
 bool IsValidChunkType(const NYT::NChunkClient::NProto::TSessionId& protoSessionId) {
@@ -91,6 +92,8 @@ void SendRequest(const std::string& methodName, const TRequest& request, TProxyM
 }
 
 DEFINE_BINARY_PROTO_FUZZER(const NYT::NChunkClient::NProto::TFuzzerInput& fuzzerInput) {
+    static bool initialized = Init();
+    assert(initialized);
     switch (fuzzerInput.request_case()) {
         case NYT::NChunkClient::NProto::TFuzzerInput::kStartChunk:
             SendRequest("StartChunk", fuzzerInput.start_chunk(), &NYT::NChunkClient::TDataNodeServiceProxy::StartChunk);
