@@ -8,6 +8,9 @@
 
 
 add_library(yt-library-program)
+if(ENABLE_FUZZER)
+  target_compile_definitions(yt-library-program PRIVATE ENABLE_FUZZER=1)
+endif()
 target_compile_options(yt-library-program PRIVATE
   -Wdeprecated-this-capture
 )
