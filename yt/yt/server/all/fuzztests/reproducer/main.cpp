@@ -40,7 +40,7 @@ void Init() {
         DataNode->Run(argc, argv);
     });
     serverThread.detach();
-    std::this_thread::sleep_for(std::chrono::seconds(20));
+    std::this_thread::sleep_for(std::chrono::seconds(10));
 }
 
 template<typename TRequest, typename TProxyMethod>
@@ -87,7 +87,6 @@ int main(int argc, char* argv[]) {
     }
 
     std::cout << text_message << std::endl;
-    // Initialize your fuzzer or environment here if necessary
     Init();
 
     switch (bin_message.request_case()) {
