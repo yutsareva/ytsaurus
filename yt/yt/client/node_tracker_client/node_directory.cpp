@@ -287,7 +287,10 @@ void FromProto(NNodeTrackerClient::TAddressMap* addresses, const NNodeTrackerCli
     addresses->clear();
     addresses->reserve(protoAddresses.entries_size());
     for (const auto& entry : protoAddresses.entries()) {
-        YT_VERIFY(addresses->emplace(entry.network(), entry.address()).second);
+        auto inserted = addresses->emplace(entry.network(), entry.address()).second;
+        if (!inserted) {
+            THROW_ERROR_EXCEPTION("Duplicate address: ", entry.address());
+        }
     }
 }
 

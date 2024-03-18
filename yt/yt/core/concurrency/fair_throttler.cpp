@@ -380,7 +380,9 @@ public:
 
     bool TryAcquire(i64 amount) override
     {
-        YT_VERIFY(amount >= 0);
+        if (amount < 0) {
+            THROW_ERROR_EXCEPTION("Throttler TryAcquire failed: amount = ", amount, " < 0");
+        }
 
         auto available = Quota_.Value->load();
         auto globalAvailable = IsLimited()
@@ -403,7 +405,9 @@ public:
 
     i64 TryAcquireAvailable(i64 amount) override
     {
-        YT_VERIFY(amount >= 0);
+        if (amount < 0) {
+            THROW_ERROR_EXCEPTION("Throttler TryAcquireAvailable failed: amount = ", amount, " < 0");
+        }
 
         auto available = Quota_.Value->load();
         auto globalAvailable = IsLimited()
@@ -424,7 +428,9 @@ public:
 
     void Acquire(i64 amount) override
     {
-        YT_VERIFY(amount >= 0);
+        if (amount < 0) {
+            THROW_ERROR_EXCEPTION("Throttler Acquire failed: amount = ", amount, " < 0");
+        }
 
         auto available = Quota_.Value->load();
         // NB: Shared bucket limit can get below zero because resource acquisition is racy.
@@ -442,7 +448,9 @@ public:
 
     void Release(i64 amount) override
     {
-        YT_VERIFY(amount >= 0);
+        if (amount < 0) {
+            THROW_ERROR_EXCEPTION("Throttler Release failed: amount = ", amount, " < 0");
+        }
 
         if (amount == 0) {
             return;

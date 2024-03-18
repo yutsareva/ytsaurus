@@ -779,9 +779,13 @@ private:
 
         ValidateOnline();
 
-        YT_VERIFY(
-            request->ally_replicas_revisions_size() == 0 ||
-            request->ally_replicas_revisions_size() == request->chunk_ids_size());
+        if (request->ally_replicas_revisions_size() != 0 && request->ally_replicas_revisions_size() != request->chunk_ids_size()) {
+            THROW_ERROR_EXCEPTION(
+                "Invalid ally_replicas_revisions_size = ",
+                request->ally_replicas_revisions_size(),
+                ", chunk_ids_size=",
+                request->chunk_ids_size());
+        }
 
         const auto& chunkRegistry = Bootstrap_->GetChunkRegistry();
 
