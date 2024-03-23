@@ -415,7 +415,7 @@ TString ToString(const TErrorOr<T>& valueOrError);
 ////////////////////////////////////////////////////////////////////////////////
 
 template <class F, class... As>
-auto RunNoExcept(F&& functor, As&&... args) noexcept -> decltype(functor(std::forward<As>(args)...))
+auto RunNoExcept(F&& functor, As&&... args) -> decltype(functor(std::forward<As>(args)...))
 {
     return functor(std::forward<As>(args)...);
 }
