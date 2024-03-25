@@ -1023,13 +1023,13 @@ void TChunkLocation::InitializeUuid()
     auto uuidPath = NFS::CombinePaths(GetPath(), ChunkLocationUuidFileName);
 
     auto uuidResetPath = NFS::CombinePaths(GetPath(), ChunkLocationUuidResetFileName);
-    if (StaticConfig_->ResetUuid && !NFS::Exists(uuidResetPath)) {
+    // if (StaticConfig_->ResetUuid && !NFS::Exists(uuidResetPath)) {
         TFile file(uuidResetPath, CreateAlways | WrOnly | Seq | CloseOnExec);
 
         if (NFS::Exists(uuidPath)) {
             NFS::Remove(uuidPath);
         }
-    }
+    // }
 
     if (NFS::Exists(uuidPath)) {
         TUnbufferedFileInput file(uuidPath);
