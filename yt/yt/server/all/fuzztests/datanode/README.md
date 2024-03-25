@@ -10,6 +10,9 @@
      ```
 
     b. Run integration tests. Corpus will be written to `/tmp/datanode_dump_bin`
+    ```
+    bash yt/yt/scripts/run_integration_tests.sh --ytsaurus-source-path $(pwd) --ytsaurus-build-path $BULD_DIR_PATH
+    ```
 3. Start master process (compile without fuzzer instrumentation; do not set ENABLE_DUMP_PROTO_MESSAGE)
 ```bash
 ytserver-master --config $YT_REPO_PATH/yt/yt/server/all/fuzztests/datanode/master.yson
