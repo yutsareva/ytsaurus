@@ -77,6 +77,17 @@ static protobuf_mutator::libfuzzer::PostProcessorRegistration<NYT::NChunkClient:
         };
     }};
 
+
+static protobuf_mutator::libfuzzer::PostProcessorRegistration<NYT::NChunkClient::NProto::TReqUpdateP2PBlocks> NonNegativeChunkBlockCount = {
+    [](NYT::NChunkClient::NProto::TReqUpdateP2PBlocks* message, unsigned int seed) {
+        for (int i = 0; i < message->chunk_block_count_size(); ++i) {
+            int32_t count = message->chunk_block_count(i);
+            if (count < 0) {
+                message->set_chunk_block_count(i, 0);
+            }
+        }
+    }};
+
 template<typename TRequest, typename TProxyMethod>
 void SendRequest(const std::string& methodName, const TRequest& request, TProxyMethod proxyMethod) {
     // std::cerr << "req=" << request.DebugString() << std::endl;
