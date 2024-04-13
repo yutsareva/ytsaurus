@@ -312,7 +312,7 @@
                 ];
             };
             {
-                "min_level" = "debug";
+                "min_level" = "info";
                 "family" = "plain_text";
                 "exclude_categories" = [
                     "Bus";

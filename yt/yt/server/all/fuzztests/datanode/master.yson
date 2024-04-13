@@ -123,7 +123,7 @@
             {
                 "min_level" = "error";
                 "writers" = [
-                    "stderr";
+                    "info";
                 ];
             };
             {
@@ -140,13 +140,16 @@
         ];
         "writers" = {
             "info" = {
-                "type" = "stderr";
-            };
-            "stderr" = {
-                "type" = "stderr";
+                "type" = "file";
+                "file_name" = "/tmp/logs/fuzz-test-datanode/master-0.info.log";
             };
             "debug" = {
-                "type" = "stderr";
+                "type" = "file";
+                "file_name" = "/tmp/logs/fuzz-test-datanode/master-0.debug.log";
+            };
+            "stderr" = {
+                "type" = "file";
+                "file_name" = "/tmp/logs/fuzz-test-datanode/master-0.err.log";
             };
         };
     };
