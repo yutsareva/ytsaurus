@@ -21,6 +21,21 @@ NYT::NRpc::IServerPtr server;
 
 std::unique_ptr<NYT::NClusterNode::TClusterNodeProgram> DataNode;
 
+class Timer {
+public:
+    Timer() : start_(std::chrono::high_resolution_clock::now()) {}
+
+    int64_t Reset() {
+        auto now = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - start_).count();
+        start_ = now;
+        return elapsed;
+    }
+
+private:
+    std::chrono::time_point<std::chrono::high_resolution_clock> start_;
+};
+
 void Init() {
     DataNode = std::make_unique<NYT::NClusterNode::TClusterNodeProgram>();
 
@@ -45,6 +60,7 @@ void Init() {
 
 template<typename TRequest, typename TProxyMethod>
 void SendRequest(const std::string& methodName, const TRequest& request, TProxyMethod proxyMethod) {
+    Timer t;
     // std::cerr << "req=" << request.DebugString() << std::endl;
     server = DataNode->WaitRpcServer();
     auto channel = NYT::NRpc::CreateLocalChannel(server);
@@ -54,7 +70,7 @@ void SendRequest(const std::string& methodName, const TRequest& request, TProxyM
     req->CopyFrom(request);
 
     auto rspOrError = NYT::NConcurrency::WaitFor(req->Invoke());
-    std::cerr << methodName << " response message: " << rspOrError.GetMessage() << std::endl << std::endl;
+    std::cerr << methodName << " took " << t.Reset() << " ms, response message: " << rspOrError.GetMessage() << std::endl << std::endl;
 }
 
 int main(int argc, char* argv[]) {

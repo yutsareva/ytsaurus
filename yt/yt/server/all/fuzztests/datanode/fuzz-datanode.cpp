@@ -10,14 +10,31 @@
 #include <contrib/libs/protobuf-mutator/src/libfuzzer/libfuzzer_macro.h>
 
 #include <library/cpp/resource/resource.h>
+#include <library/cpp/yt/logging/logger.h>
 
 #include <google/protobuf/text_format.h>
 #include <sstream>
 #include <string>
+#include <chrono>
 
 NYT::NRpc::IServerPtr server;
 
 std::unique_ptr<NYT::NClusterNode::TClusterNodeProgram> DataNode;
+
+class Timer {
+public:
+    Timer() : start_(std::chrono::high_resolution_clock::now()) {}
+
+    int64_t Reset() {
+        auto now = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - start_).count();
+        start_ = now;
+        return elapsed;
+    }
+
+private:
+    std::chrono::time_point<std::chrono::high_resolution_clock> start_;
+};
 
 // extern "C" int LLVMFuzzerInitialize(int *, const char ***) {
 bool Init() {
@@ -88,9 +105,11 @@ static protobuf_mutator::libfuzzer::PostProcessorRegistration<NYT::NChunkClient:
         }
     }};
 
+static const auto& Logger = NYT::NClusterNode::ClusterNodeLogger;
+
 template<typename TRequest, typename TProxyMethod>
 void SendRequest(const std::string& methodName, const TRequest& request, TProxyMethod proxyMethod) {
-    // std::cerr << "req=" << request.DebugString() << std::endl;
+    Timer t;
     server = DataNode->WaitRpcServer();
     auto channel = NYT::NRpc::CreateLocalChannel(server);
     NYT::NChunkClient::TDataNodeServiceProxy proxy(channel);
@@ -99,7 +118,7 @@ void SendRequest(const std::string& methodName, const TRequest& request, TProxyM
     req->CopyFrom(request);
 
     auto rspOrError = NYT::NConcurrency::WaitFor(req->Invoke());
-    std::cerr << methodName << " response message: " << rspOrError.GetMessage() << std::endl << std::endl;
+    YT_LOG_INFO("%v took %v ms, response: %v", methodName, t.Reset(), rspOrError.GetMessage());
 }
 
 DEFINE_BINARY_PROTO_FUZZER(const NYT::NChunkClient::NProto::TFuzzerInput& fuzzerInput) {
