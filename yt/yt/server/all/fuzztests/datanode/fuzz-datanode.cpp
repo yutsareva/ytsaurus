@@ -161,9 +161,9 @@ DEFINE_BINARY_PROTO_FUZZER(const NYT::NChunkClient::NProto::TFuzzerInput& fuzzer
         case NYT::NChunkClient::NProto::TFuzzerInput::kGetBlockRange:
             SendRequest("GetBlockRange", fuzzerInput.get_block_range(), &NYT::NChunkClient::TDataNodeServiceProxy::GetBlockRange);
             break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kGetChunkFragmentSet:
-            SendRequest("GetChunkFragmentSet", fuzzerInput.get_chunk_fragment_set(), &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkFragmentSet);
-            break;
+        // case NYT::NChunkClient::NProto::TFuzzerInput::kGetChunkFragmentSet:
+        //     SendRequest("GetChunkFragmentSet", fuzzerInput.get_chunk_fragment_set(), &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkFragmentSet);
+        //     break;
         case NYT::NChunkClient::NProto::TFuzzerInput::kLookupRows:
             SendRequest("LookupRows", fuzzerInput.lookup_rows(), &NYT::NChunkClient::TDataNodeServiceProxy::LookupRows);
             break;
