@@ -21,6 +21,8 @@ NYT::NRpc::IServerPtr server;
 
 std::unique_ptr<NYT::NClusterNode::TClusterNodeProgram> DataNode;
 
+static const auto& Logger = NYT::NClusterNode::ClusterNodeLogger;
+
 class Timer {
 public:
     Timer() : start_(std::chrono::high_resolution_clock::now()) {}
@@ -76,6 +78,7 @@ bool IsValidChunkType(const NYT::NChunkClient::NProto::TSessionId& protoSessionI
 
 static protobuf_mutator::libfuzzer::PostProcessorRegistration<NYT::NChunkClient::NProto::TSessionId> NonNullSessionId = {
     [](NYT::NChunkClient::NProto::TSessionId* message, unsigned int seed) {
+        Timer t;
         // Fixes 'No write location is available'
         message->set_medium_index(0);
 
@@ -92,6 +95,7 @@ static protobuf_mutator::libfuzzer::PostProcessorRegistration<NYT::NChunkClient:
 
             isValidChunkType = IsValidChunkType(*message);
         };
+        YT_LOG_INFO("PostProcessor TSessionId took %v ms", t.Reset());
     }};
 
 
@@ -105,7 +109,6 @@ static protobuf_mutator::libfuzzer::PostProcessorRegistration<NYT::NChunkClient:
         }
     }};
 
-static const auto& Logger = NYT::NClusterNode::ClusterNodeLogger;
 
 template<typename TRequest, typename TProxyMethod>
 void SendRequest(const std::string& methodName, const TRequest& request, TProxyMethod proxyMethod) {
@@ -121,80 +124,83 @@ void SendRequest(const std::string& methodName, const TRequest& request, TProxyM
     YT_LOG_INFO("%v took %v ms, response: %v", methodName, t.Reset(), rspOrError.GetMessage());
 }
 
-DEFINE_BINARY_PROTO_FUZZER(const NYT::NChunkClient::NProto::TFuzzerInput& fuzzerInput) {
+DEFINE_BINARY_PROTO_FUZZER(const NYT::NChunkClient::NProto::TFuzzerInput& fuzzer_input) {
     static bool initialized = Init();
     assert(initialized);
-    switch (fuzzerInput.request_case()) {
-        case NYT::NChunkClient::NProto::TFuzzerInput::kStartChunk:
-            SendRequest("StartChunk", fuzzerInput.start_chunk(), &NYT::NChunkClient::TDataNodeServiceProxy::StartChunk);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kFinishChunk:
-            SendRequest("FinishChunk", fuzzerInput.finish_chunk(), &NYT::NChunkClient::TDataNodeServiceProxy::FinishChunk);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kCancelChunk:
-            SendRequest("CancelChunk", fuzzerInput.cancel_chunk(), &NYT::NChunkClient::TDataNodeServiceProxy::CancelChunk);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kPingSession:
-            SendRequest("PingSession", fuzzerInput.ping_session(), &NYT::NChunkClient::TDataNodeServiceProxy::PingSession);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kPutBlocks:
-            SendRequest("PutBlocks", fuzzerInput.put_blocks(), &NYT::NChunkClient::TDataNodeServiceProxy::PutBlocks);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kSendBlocks:
-            SendRequest("SendBlocks", fuzzerInput.send_blocks(), &NYT::NChunkClient::TDataNodeServiceProxy::SendBlocks);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kFlushBlocks:
-            SendRequest("FlushBlocks", fuzzerInput.flush_blocks(), &NYT::NChunkClient::TDataNodeServiceProxy::FlushBlocks);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kUpdateP2PBlocks:
-            SendRequest("UpdateP2PBlocks", fuzzerInput.update_p2p_blocks(), &NYT::NChunkClient::TDataNodeServiceProxy::UpdateP2PBlocks);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kProbeChunkSet:
-            SendRequest("ProbeChunkSet", fuzzerInput.probe_chunk_set(), &NYT::NChunkClient::TDataNodeServiceProxy::ProbeChunkSet);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kProbeBlockSet:
-            SendRequest("ProbeBlockSet", fuzzerInput.probe_block_set(), &NYT::NChunkClient::TDataNodeServiceProxy::ProbeBlockSet);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kGetBlockSet:
-            SendRequest("GetBlockSet", fuzzerInput.get_block_set(), &NYT::NChunkClient::TDataNodeServiceProxy::GetBlockSet);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kGetBlockRange:
-            SendRequest("GetBlockRange", fuzzerInput.get_block_range(), &NYT::NChunkClient::TDataNodeServiceProxy::GetBlockRange);
-            break;
-        // case NYT::NChunkClient::NProto::TFuzzerInput::kGetChunkFragmentSet:
-        //     SendRequest("GetChunkFragmentSet", fuzzerInput.get_chunk_fragment_set(), &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkFragmentSet);
-        //     break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kLookupRows:
-            SendRequest("LookupRows", fuzzerInput.lookup_rows(), &NYT::NChunkClient::TDataNodeServiceProxy::LookupRows);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kGetChunkMeta:
-            SendRequest("GetChunkMeta", fuzzerInput.get_chunk_meta(), &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkMeta);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kGetChunkSliceDataWeights:
-            SendRequest("GetChunkSliceDataWeights", fuzzerInput.get_chunk_slice_data_weights(), &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkSliceDataWeights);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kGetChunkSlices:
-            SendRequest("GetChunkSlices", fuzzerInput.get_chunk_slices(), &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkSlices);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kGetTableSamples:
-            SendRequest("GetTableSamples", fuzzerInput.get_table_samples(), &NYT::NChunkClient::TDataNodeServiceProxy::GetTableSamples);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kGetColumnarStatistics:
-            SendRequest("GetColumnarStatistics", fuzzerInput.get_columnar_statistics(), &NYT::NChunkClient::TDataNodeServiceProxy::GetColumnarStatistics);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kDisableChunkLocations:
-            SendRequest("DisableChunkLocations", fuzzerInput.disable_chunk_locations(), &NYT::NChunkClient::TDataNodeServiceProxy::DisableChunkLocations);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kDestroyChunkLocations:
-            SendRequest("DestroyChunkLocations", fuzzerInput.destroy_chunk_locations(), &NYT::NChunkClient::TDataNodeServiceProxy::DestroyChunkLocations);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kResurrectChunkLocations:
-            SendRequest("ResurrectChunkLocations", fuzzerInput.resurrect_chunk_locations(), &NYT::NChunkClient::TDataNodeServiceProxy::ResurrectChunkLocations);
-            break;
-        case NYT::NChunkClient::NProto::TFuzzerInput::kAnnounceChunkReplicas:
-            SendRequest("AnnounceChunkReplicas", fuzzerInput.announce_chunk_replicas(), &NYT::NChunkClient::TDataNodeServiceProxy::AnnounceChunkReplicas);
-            break;
-        default:
-            break;
+
+    for (const auto& request : fuzzer_input.requests()) {
+        switch (request.request_case()) {
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kStartChunk:
+                SendRequest("StartChunk", request.start_chunk(), &NYT::NChunkClient::TDataNodeServiceProxy::StartChunk);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kFinishChunk:
+                SendRequest("FinishChunk", request.finish_chunk(), &NYT::NChunkClient::TDataNodeServiceProxy::FinishChunk);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kCancelChunk:
+                SendRequest("CancelChunk", request.cancel_chunk(), &NYT::NChunkClient::TDataNodeServiceProxy::CancelChunk);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kPingSession:
+                SendRequest("PingSession", request.ping_session(), &NYT::NChunkClient::TDataNodeServiceProxy::PingSession);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kPutBlocks:
+                SendRequest("PutBlocks", request.put_blocks(), &NYT::NChunkClient::TDataNodeServiceProxy::PutBlocks);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kSendBlocks:
+                SendRequest("SendBlocks", request.send_blocks(), &NYT::NChunkClient::TDataNodeServiceProxy::SendBlocks);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kFlushBlocks:
+                SendRequest("FlushBlocks", request.flush_blocks(), &NYT::NChunkClient::TDataNodeServiceProxy::FlushBlocks);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kUpdateP2PBlocks:
+                SendRequest("UpdateP2PBlocks", request.update_p2p_blocks(), &NYT::NChunkClient::TDataNodeServiceProxy::UpdateP2PBlocks);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kProbeChunkSet:
+                SendRequest("ProbeChunkSet", request.probe_chunk_set(), &NYT::NChunkClient::TDataNodeServiceProxy::ProbeChunkSet);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kProbeBlockSet:
+                SendRequest("ProbeBlockSet", request.probe_block_set(), &NYT::NChunkClient::TDataNodeServiceProxy::ProbeBlockSet);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kGetBlockSet:
+                SendRequest("GetBlockSet", request.get_block_set(), &NYT::NChunkClient::TDataNodeServiceProxy::GetBlockSet);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kGetBlockRange:
+                SendRequest("GetBlockRange", request.get_block_range(), &NYT::NChunkClient::TDataNodeServiceProxy::GetBlockRange);
+                break;
+            // case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kGetChunkFragmentSet:
+            //     SendRequest("GetChunkFragmentSet", request.get_chunk_fragment_set(), &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkFragmentSet);
+            //     break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kLookupRows:
+                SendRequest("LookupRows", request.lookup_rows(), &NYT::NChunkClient::TDataNodeServiceProxy::LookupRows);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kGetChunkMeta:
+                SendRequest("GetChunkMeta", request.get_chunk_meta(), &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkMeta);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kGetChunkSliceDataWeights:
+                SendRequest("GetChunkSliceDataWeights", request.get_chunk_slice_data_weights(), &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkSliceDataWeights);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kGetChunkSlices:
+                SendRequest("GetChunkSlices", request.get_chunk_slices(), &NYT::NChunkClient::TDataNodeServiceProxy::GetChunkSlices);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kGetTableSamples:
+                SendRequest("GetTableSamples", request.get_table_samples(), &NYT::NChunkClient::TDataNodeServiceProxy::GetTableSamples);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kGetColumnarStatistics:
+                SendRequest("GetColumnarStatistics", request.get_columnar_statistics(), &NYT::NChunkClient::TDataNodeServiceProxy::GetColumnarStatistics);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kDisableChunkLocations:
+                SendRequest("DisableChunkLocations", request.disable_chunk_locations(), &NYT::NChunkClient::TDataNodeServiceProxy::DisableChunkLocations);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kDestroyChunkLocations:
+                SendRequest("DestroyChunkLocations", request.destroy_chunk_locations(), &NYT::NChunkClient::TDataNodeServiceProxy::DestroyChunkLocations);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kResurrectChunkLocations:
+                SendRequest("ResurrectChunkLocations", request.resurrect_chunk_locations(), &NYT::NChunkClient::TDataNodeServiceProxy::ResurrectChunkLocations);
+                break;
+            case NYT::NChunkClient::NProto::TFuzzerSingleRequest::kAnnounceChunkReplicas:
+                SendRequest("AnnounceChunkReplicas", request.announce_chunk_replicas(), &NYT::NChunkClient::TDataNodeServiceProxy::AnnounceChunkReplicas);
+                break;
+            default:
+                break;
+        }
     }
 }

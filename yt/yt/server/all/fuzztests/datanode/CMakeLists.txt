@@ -5,13 +5,15 @@ get_built_tool_path(
   rescompiler
 )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=fuzzer -fprofile-instr-generate -fcoverage-mapping")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=fuzzer -fprofile-instr-generate -fcoverage-mapping")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=fuzzer")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=fuzzer")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=fuzzer -fprofile-instr-generate -fcoverage-mapping")
+# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=fuzzer -fprofile-instr-generate -fcoverage-mapping")
 
 add_executable(fuzztests-datanode)
 
 target_compile_options(fuzztests-datanode PRIVATE
-  -Wdeprecated-this-capture
+  -Wdeprecated-this-capturenin
 )
 target_link_libraries(fuzztests-datanode PUBLIC
   contrib-libs-linux-headers

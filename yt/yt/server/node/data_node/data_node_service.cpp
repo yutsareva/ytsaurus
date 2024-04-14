@@ -175,60 +175,62 @@ THashMap<TString, TString> MakeReadIOTags(
         return filename.str();
     }
 
-    constexpr char* kDumpDirectory = "/tmp/datanode_dump_bin";
+    constexpr char* kDumpDirectory = "/tmp/datanode_corpus_repeated_reqs";
 
     template<typename T>
     void DumpProtoMessageToFile(const TTypedServiceRequest<T>& request) {
         TFuzzerInput fuzzerInput;
 
+        TFuzzerSingleRequest& newRequest = *fuzzerInput.add_requests();
+
         if constexpr (std::is_same_v<T, TReqStartChunk>) {
-            *fuzzerInput.mutable_start_chunk() = request;
+            *newRequest.mutable_start_chunk() = request;
         } else if constexpr (std::is_same_v<T, TReqFinishChunk>) {
-            *fuzzerInput.mutable_finish_chunk() = request;
+            *newRequest.mutable_finish_chunk() = request;
         } else if constexpr (std::is_same_v<T, TReqCancelChunk>) {
-            *fuzzerInput.mutable_cancel_chunk() = request;
+            *newRequest.mutable_cancel_chunk() = request;
         } else if constexpr (std::is_same_v<T, TReqPutBlocks>) {
-            *fuzzerInput.mutable_put_blocks() = request;
+            *newRequest.mutable_put_blocks() = request;
         } else if constexpr (std::is_same_v<T, TReqSendBlocks>) {
-            *fuzzerInput.mutable_send_blocks() = request;
+            *newRequest.mutable_send_blocks() = request;
         } else if constexpr (std::is_same_v<T, TReqFlushBlocks>) {
-            *fuzzerInput.mutable_flush_blocks() = request;
+            *newRequest.mutable_flush_blocks() = request;
         } else if constexpr (std::is_same_v<T, TReqUpdateP2PBlocks>) {
-            *fuzzerInput.mutable_update_p2p_blocks() = request;
+            *newRequest.mutable_update_p2p_blocks() = request;
         } else if constexpr (std::is_same_v<T, TReqProbeChunkSet>) {
-            *fuzzerInput.mutable_probe_chunk_set() = request;
+            *newRequest.mutable_probe_chunk_set() = request;
         } else if constexpr (std::is_same_v<T, TReqProbeBlockSet>) {
-            *fuzzerInput.mutable_probe_block_set() = request;
+            *newRequest.mutable_probe_block_set() = request;
         } else if constexpr (std::is_same_v<T, TReqGetBlockSet>) {
-            *fuzzerInput.mutable_get_block_set() = request;
+            *newRequest.mutable_get_block_set() = request;
         } else if constexpr (std::is_same_v<T, TReqGetBlockRange>) {
-            *fuzzerInput.mutable_get_block_range() = request;
-        } else if constexpr (std::is_same_v<T, TReqGetChunkFragmentSet>) {
-            *fuzzerInput.mutable_get_chunk_fragment_set() = request;
+            *newRequest.mutable_get_block_range() = request;
+        // } else if constexpr (std::is_same_v<T, TReqGetChunkFragmentSet>) {
+        //     *newRequest.mutable_get_chunk_fragment_set() = request;
         } else if constexpr (std::is_same_v<T, NYT::NTableClient::NProto::TReqLookupRows>) {
-            *fuzzerInput.mutable_lookup_rows() = request;
+            *newRequest.mutable_lookup_rows() = request;
         } else if constexpr (std::is_same_v<T, TReqPingSession>) {
-            *fuzzerInput.mutable_ping_session() = request;
+            *newRequest.mutable_ping_session() = request;
         } else if constexpr (std::is_same_v<T, TReqGetChunkMeta>) {
-            *fuzzerInput.mutable_get_chunk_meta() = request;
+            *newRequest.mutable_get_chunk_meta() = request;
         } else if constexpr (std::is_same_v<T, TReqGetChunkSliceDataWeights>) {
-            *fuzzerInput.mutable_get_chunk_slice_data_weights() = request;
+            *newRequest.mutable_get_chunk_slice_data_weights() = request;
         } else if constexpr (std::is_same_v<T, TReqUpdatePeer>) {
-            *fuzzerInput.mutable_update_peer() = request;
+            *newRequest.mutable_update_peer() = request;
         } else if constexpr (std::is_same_v<T, TReqGetTableSamples>) {
-            *fuzzerInput.mutable_get_table_samples() = request;
+            *newRequest.mutable_get_table_samples() = request;
         } else if constexpr (std::is_same_v<T, TReqGetChunkSlices>) {
-            *fuzzerInput.mutable_get_chunk_slices() = request;
+            *newRequest.mutable_get_chunk_slices() = request;
         } else if constexpr (std::is_same_v<T, TReqGetColumnarStatistics>) {
-            *fuzzerInput.mutable_get_columnar_statistics() = request;
+            *newRequest.mutable_get_columnar_statistics() = request;
         } else if constexpr (std::is_same_v<T, TReqDisableChunkLocations>) {
-            *fuzzerInput.mutable_disable_chunk_locations() = request;
+            *newRequest.mutable_disable_chunk_locations() = request;
         } else if constexpr (std::is_same_v<T, TReqDestroyChunkLocations>) {
-            *fuzzerInput.mutable_destroy_chunk_locations() = request;
+            *newRequest.mutable_destroy_chunk_locations() = request;
         } else if constexpr (std::is_same_v<T, TReqResurrectChunkLocations>) {
-            *fuzzerInput.mutable_resurrect_chunk_locations() = request;
+            *newRequest.mutable_resurrect_chunk_locations() = request;
         } else if constexpr (std::is_same_v<T, TReqAnnounceChunkReplicas>) {
-            *fuzzerInput.mutable_announce_chunk_replicas() = request;
+            *newRequest.mutable_announce_chunk_replicas() = request;
         }
 
         std::filesystem::create_directories(kDumpDirectory);

@@ -615,7 +615,7 @@ message TRspAnnounceChunkReplicas
 
 ////////////////////////////////////////////////////////////////////////////////
 
-message TFuzzerInput {
+message TFuzzerSingleRequest {
     oneof request {
         TReqStartChunk start_chunk = 1;
         TReqFinishChunk finish_chunk = 2;
@@ -628,7 +628,7 @@ message TFuzzerInput {
         TReqProbeBlockSet probe_block_set = 9;
         TReqGetBlockSet get_block_set = 10;
         TReqGetBlockRange get_block_range = 11;
-        TReqGetChunkFragmentSet get_chunk_fragment_set = 12;
+//        TReqGetChunkFragmentSet get_chunk_fragment_set = 12;
         TReqLookupRows lookup_rows = 13;
         TReqPingSession ping_session = 14;
         TReqGetChunkMeta get_chunk_meta = 15;
@@ -642,4 +642,8 @@ message TFuzzerInput {
         TReqResurrectChunkLocations resurrect_chunk_locations = 23;
         TReqAnnounceChunkReplicas announce_chunk_replicas = 24;
     }
+}
+
+message TFuzzerInput {
+    repeated TFuzzerSingleRequest requests = 1;
 }

@@ -11,6 +11,7 @@
 
     b. Run integration tests. Corpus will be written to `/tmp/datanode_dump_bin`
     ```
+    BULD_DIR_PATH $ ninja convert_operations_to_binary_format scheduler_simulator
     bash yt/yt/scripts/run_integration_tests.sh --ytsaurus-source-path $(pwd) --ytsaurus-build-path $BULD_DIR_PATH
     ```
 3. Start master process (compile without fuzzer instrumentation; do not set ENABLE_DUMP_PROTO_MESSAGE)
