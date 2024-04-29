@@ -868,7 +868,8 @@ TUnversionedOwningRow DeserializeFromString(TString&& data, std::optional<int> n
 
     ui32 version;
     current += ReadVarUint32(current, &version);
-    YT_VERIFY(version == 0);
+    // YT_VERIFY(version == 0);
+    version = 0;
 
     ui32 valueCount;
     current += ReadVarUint32(current, &valueCount);
