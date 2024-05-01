@@ -621,14 +621,14 @@ message TFuzzerSingleRequest {
         TReqFinishChunk finish_chunk = 2;
         TReqCancelChunk cancel_chunk = 3;
         TReqPutBlocks put_blocks = 4;
-        TReqSendBlocks send_blocks = 5;
+//        TReqSendBlocks send_blocks = 5;
         TReqFlushBlocks flush_blocks = 6;
         TReqUpdateP2PBlocks update_p2p_blocks = 7;
         TReqProbeChunkSet probe_chunk_set = 8;
         TReqProbeBlockSet probe_block_set = 9;
         TReqGetBlockSet get_block_set = 10;
         TReqGetBlockRange get_block_range = 11;
-//        TReqGetChunkFragmentSet get_chunk_fragment_set = 12;
+        TReqGetChunkFragmentSet get_chunk_fragment_set = 12;
         TReqLookupRows lookup_rows = 13;
         TReqPingSession ping_session = 14;
         TReqGetChunkMeta get_chunk_meta = 15;
@@ -644,6 +644,11 @@ message TFuzzerSingleRequest {
     }
 }
 
+message TFuzzerSingleRequestWithAttachments {
+    required TFuzzerSingleRequest request = 1;
+    repeated string attachments = 2;
+}
+
 message TFuzzerInput {
-    repeated TFuzzerSingleRequest requests = 1;
+    repeated TFuzzerSingleRequestWithAttachments requests = 1;
 }
