@@ -342,11 +342,11 @@ def stop(id, remove_working_dir=False, remove_runtime_data=False, path=None, ign
 
     wait_for_removing_file_lock(os.path.join(get_root_path(path), id, "lock_file"))
 
-    if remove_working_dir:
-        delete(id, force=True, path=path)
-    elif remove_runtime_data:
-        runtime_data_path = os.path.join(sandbox_dir, "runtime_data")
-        shutil.rmtree(runtime_data_path, ignore_errors=True)
+    # if remove_working_dir:
+    #     delete(id, force=True, path=path)
+    # elif remove_runtime_data:
+    #     runtime_data_path = os.path.join(sandbox_dir, "runtime_data")
+    #     shutil.rmtree(runtime_data_path, ignore_errors=True)
 
 
 def delete(id, force=False, path=None):
