@@ -10,7 +10,8 @@ llvm-cov show -instr-profile=merged.profdata  ./yt/yt/server/all/fuzztests/datan
 
 # generate HTML report
 # llvm-cov report ./yt/yt/server/all/fuzztests/datanode/fuzztests-datanode -instr-profile=merged.profdata
-llvm-cov show ./yt/yt/server/all/fuzztests/datanode/fuzztests-datanode -instr-profile=merged.profdata -format=html -o /home/yutsareva/yt/coverage/coverage_report/
+llvm-cov show ./yt/yt/server/all/fuzztests/datanode/fuzztests-datanode \
+    -instr-profile=merged.profdata -format=html -o /home/yutsareva/yt/coverage/coverage_report/
 
 # serve coverage report on localhost:8000
 cd /home/yutsareva/yt/coverage/coverage_report/
