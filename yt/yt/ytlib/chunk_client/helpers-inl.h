@@ -36,7 +36,8 @@ template <class TRpcPtr>
 std::vector<TBlock> GetRpcAttachedBlocks(const TRpcPtr& rpc, bool validateChecksums)
 {
     if (rpc->block_checksums_size() != 0 && std::ssize(rpc->Attachments()) != rpc->block_checksums_size()) {
-        THROW_ERROR_EXCEPTION("Number of RPC attachments does not match the number of checksums")
+        THROW_ERROR_EXCEPTION("Number of RPC attachments does not match the number of checksums: Attachments="
+         + std::to_string(std::ssize(rpc->Attachments())) + ", block_checksums_size=" + std::to_string(rpc->block_checksums_size()))
             << TErrorAttribute("attachment_count", rpc->block_checksums_size())
             << TErrorAttribute("checksum_count", rpc->Attachments().size());
     }
