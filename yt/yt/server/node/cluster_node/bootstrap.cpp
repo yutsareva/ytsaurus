@@ -793,6 +793,9 @@ private:
         Config_->BusServer->Port = getFreePort();
         Config_->SkynetHttpPort = getFreePort();
     #endif
+        Config_->DataNode->StoreLocations[0]->Path = 
+            TString("/tmp/logs/fuzz-test-datanode/runtime_data/node/" + std::to_string(Config_->RpcPort) + "/chunk_store/0/");
+        YT_LOG_INFO("LOOOG Setting Config_->DataNode->StoreLocations[0]->Path = " + Config_->DataNode->StoreLocations[0]->Path);
 
         auto localRpcAddresses = GetLocalAddresses(Config_->Addresses, Config_->RpcPort);
 

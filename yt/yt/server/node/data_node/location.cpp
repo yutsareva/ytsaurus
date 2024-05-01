@@ -611,7 +611,7 @@ bool TChunkLocation::Resurrect()
                 .ThrowOnError();
             ChunkStoreHost_->ScheduleMasterHeartbeat();
         } catch (const std::exception& ex) {
-            YT_LOG_ERROR(ex, "Error during location resurrection");
+            YT_LOG_ERROR(ex, "LOOOG Error during location resurrection");
 
             ChangeState(ELocationState::Disabled, ELocationState::Enabling);
         }
@@ -2139,18 +2139,22 @@ bool TStoreLocation::IsWritable() const
     VERIFY_THREAD_AFFINITY_ANY();
 
     if (!IsEnabled()) {
+        YT_LOG_INFO("LOOOG location !IsEnabled");
         return false;
     }
 
     if (IsFull()) {
+        YT_LOG_INFO("LOOOG location IsFull");
         return false;
     }
 
     if (IsSick()) {
+        YT_LOG_INFO("LOOOG location IsSick");
         return false;
     }
 
     if (GetMaxPendingIOSize(EIODirection::Write) > GetWriteThrottlingLimit()) {
+        YT_LOG_INFO("LOOOG location GetMaxPendingIOSize(EIODirection::Write) > GetWriteThrottlingLimit");
         return false;
     }
 
@@ -2164,6 +2168,7 @@ bool TStoreLocation::IsWritable() const
         } else {
             if (pendingReadSize > *dynamicConfig->DisableLocationWritesPendingReadSizeHighLimit) {
                 WritesDisabledDueToHighPendingReadSize_.store(true);
+                YT_LOG_INFO("LOOOG location pendingReadSize > *dynamicConfig->DisableLocationWritesPendingReadSizeHighLimit");
                 return false;
             }
         }

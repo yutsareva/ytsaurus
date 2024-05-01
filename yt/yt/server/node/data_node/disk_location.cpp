@@ -55,6 +55,9 @@ bool TDiskLocation::IsEnabled() const
     VERIFY_THREAD_AFFINITY_ANY();
 
     auto value = State_.load();
+    if (value != ELocationState::Enabled) {
+        YT_LOG_INFO("LOOOG location state: " + ToString(value));
+    }
     return value == ELocationState::Enabled;
 }
 

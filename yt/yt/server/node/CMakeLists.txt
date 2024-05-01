@@ -60,6 +60,10 @@ get_built_tool_path(
 )
 
 add_library(yt-server-node)
+
+if(ENABLE_FUZZER)
+  target_compile_definitions(yt-server-node PRIVATE ENABLE_FUZZER=1)
+endif()
 if(ENABLE_DUMP_PROTO_MESSAGE)
   target_compile_definitions(yt-server-node PRIVATE ENABLE_DUMP_PROTO_MESSAGE=1)
 endif()

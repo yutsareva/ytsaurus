@@ -659,6 +659,7 @@ std::tuple<TStoreLocationPtr, TLockedChunkGuard> TChunkStore::AcquireNewChunkLoc
     for (int index = 0; index < std::ssize(Locations_); ++index) {
         const auto& location = Locations_[index];
         if (!CanStartNewSession(location, sessionId.MediumIndex)) {
+            YT_LOG_INFO("LOOOG Can not start new session");
             continue;
         }
         if (options.PlacementId) {
@@ -722,10 +723,12 @@ bool TChunkStore::CanStartNewSession(
     VERIFY_THREAD_AFFINITY_ANY();
 
     if (!location->IsWritable()) {
+        YT_LOG_INFO("LOOOG location is NOT writable");
         return false;
     }
 
     if (location->GetMediumDescriptor().Index != mediumIndex) {
+        YT_LOG_INFO("LOOOG invalid mediumIndex");
         return false;
     }
 
