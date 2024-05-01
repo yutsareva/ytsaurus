@@ -324,23 +324,24 @@ def get_gdb_path():
 
 
 def remove_runtime_data(working_directory):
-    runtime_data_paths = []
-    for root, dirs, files in os.walk(working_directory):
-        if os.path.basename(root) == "runtime_data":
-            runtime_data_paths.append(os.path.join(working_directory, root))
+    pass
+    # runtime_data_paths = []
+    # for root, dirs, files in os.walk(working_directory):
+    #     if os.path.basename(root) == "runtime_data":
+    #         runtime_data_paths.append(os.path.join(working_directory, root))
 
-    yt_logger.info("Removing runtime data (paths: {})".format(", ".join(runtime_data_paths)))
+    # yt_logger.info("Removing runtime data (paths: {})".format(", ".join(runtime_data_paths)))
 
-    for path in runtime_data_paths:
-        failed = False
-        try:
-            shutil.rmtree(path, ignore_errors=True)
-        except IOError:
-            yt_logger.exception("Failed to remove {} without sudo".format(path))
-            failed = True
+    # for path in runtime_data_paths:
+    #     failed = False
+    #     try:
+    #         shutil.rmtree(path, ignore_errors=True)
+    #     except IOError:
+    #         yt_logger.exception("Failed to remove {} without sudo".format(path))
+    #         failed = True
 
-        if failed:
-            try:
-                sudo_rmtree(path)
-            except subprocess.CalledProcessError:
-                yt_logger.exception("Failed to remove {} with sudo".format(path))
+    #     if failed:
+    #         try:
+    #             sudo_rmtree(path)
+    #         except subprocess.CalledProcessError:
+    #             yt_logger.exception("Failed to remove {} with sudo".format(path))
