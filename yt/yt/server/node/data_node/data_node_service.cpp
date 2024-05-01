@@ -117,6 +117,22 @@ using TRefCountedColumnarStatisticsSubresponsePtr = TIntrusivePtr<TRefCountedCol
 
 namespace {
 
+class Timer {
+public:
+    Timer() : start_(std::chrono::high_resolution_clock::now()) {}
+
+    int64_t Reset() {
+        auto now = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - start_).count();
+        start_ = now;
+        return elapsed;
+    }
+
+private:
+    std::chrono::time_point<std::chrono::high_resolution_clock> start_;
+};
+
+
 THashMap<TString, TString> MakeWriteIOTags(
     TString method,
     const ISessionPtr& session,
@@ -163,36 +179,65 @@ THashMap<TString, TString> MakeReadIOTags(
 
 
 #ifdef ENABLE_DUMP_PROTO_MESSAGE
-    std::string GenerateUniqueFilename(std::string_view dirPath) {
-        std::ostringstream filename;
-        auto now = std::chrono::system_clock::now().time_since_epoch();
-        auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(now).count();
 
-        filename << dirPath << "/"
-                << std::this_thread::get_id() << "_"
-                << microseconds << ".bin";
+constexpr char kDumpDirectory[] = "/tmp/datanode_corpus_merged_reqs_with_attachments";
 
-        return filename.str();
-    }
+std::string GenerateUniqueFilename(std::string_view dirPath, size_t threadId, size_t microseconds) {
+    std::ostringstream filename;
 
-    constexpr char* kDumpDirectory = "/tmp/datanode_corpus_repeated_reqs";
+    filename << dirPath << "/"
+             << threadId << "_"
+             << microseconds << ".bin";
 
+    return filename.str();
+}
+
+class TFuzzerManager {
+public:
     template<typename T>
-    void DumpProtoMessageToFile(const TTypedServiceRequest<T>& request) {
-        TFuzzerInput fuzzerInput;
+    void DumpProtoMessageToFile(const TTypedServiceRequest<T>& request, const std::vector<std::string>& attachments = {}) {
+        std::lock_guard<std::mutex> lock(mutex);
+        // size_t currentThreadId = std::this_thread::get_id();
+        size_t currentThreadId = 0;
 
-        TFuzzerSingleRequest& newRequest = *fuzzerInput.add_requests();
+        if (threadInputs.find(currentThreadId) == threadInputs.end() || threadInputs[currentThreadId].first.requests_size() == 0) {
+            auto now = std::chrono::system_clock::now().time_since_epoch();
+            auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(now).count();
+            threadInputs[currentThreadId] = {TFuzzerInput(), microseconds};
+        }
+
+        auto& newRequestWithAttach = *threadInputs[currentThreadId].first.add_requests();
+        *newRequestWithAttach.mutable_attachments() = {attachments.begin(), attachments.end()};
+        auto& newRequest = *newRequestWithAttach.mutable_request();
 
         if constexpr (std::is_same_v<T, TReqStartChunk>) {
+            // TReqStartChunkWithAttachments req;
+            // *req.mutable_start_chunk() = request;
+            // *req.mutable_attachments() = {attachments.begin(), attachments.end()};
+            // *newRequest.mutable_start_chunk() = req;
             *newRequest.mutable_start_chunk() = request;
+            // for (const auto& attachment : attachments) {
+            //     blocks.emplace_back(
+            //         NYT::TSharedRef::FromString(TString(attachment)));
+            // }
+            // // NYT::NChunkClient::SetRpcAttachedBlocks(req, blocks);
+            // std::vector<NYT::NChunkClient::TBlock> blocks;
+            // newRequest->Attachments().reserve(blocks.size());
+            // for (const auto& block : blocks) {
+            //     newRequest->Attachments().push _back(block.Data);
+            //     newRequest->add_block_checksums(block.Checksum);
+            // }
+
+            // attachments
+            // TReqStartChunkWithAttachments
         } else if constexpr (std::is_same_v<T, TReqFinishChunk>) {
             *newRequest.mutable_finish_chunk() = request;
         } else if constexpr (std::is_same_v<T, TReqCancelChunk>) {
             *newRequest.mutable_cancel_chunk() = request;
         } else if constexpr (std::is_same_v<T, TReqPutBlocks>) {
             *newRequest.mutable_put_blocks() = request;
-        } else if constexpr (std::is_same_v<T, TReqSendBlocks>) {
-            *newRequest.mutable_send_blocks() = request;
+        // } else if constexpr (std::is_same_v<T, TReqSendBlocks>) {
+        //     *newRequest.mutable_send_blocks() = request;
         } else if constexpr (std::is_same_v<T, TReqFlushBlocks>) {
             *newRequest.mutable_flush_blocks() = request;
         } else if constexpr (std::is_same_v<T, TReqUpdateP2PBlocks>) {
@@ -205,8 +250,8 @@ THashMap<TString, TString> MakeReadIOTags(
             *newRequest.mutable_get_block_set() = request;
         } else if constexpr (std::is_same_v<T, TReqGetBlockRange>) {
             *newRequest.mutable_get_block_range() = request;
-        // } else if constexpr (std::is_same_v<T, TReqGetChunkFragmentSet>) {
-        //     *newRequest.mutable_get_chunk_fragment_set() = request;
+        } else if constexpr (std::is_same_v<T, TReqGetChunkFragmentSet>) {
+            *newRequest.mutable_get_chunk_fragment_set() = request;
         } else if constexpr (std::is_same_v<T, NYT::NTableClient::NProto::TReqLookupRows>) {
             *newRequest.mutable_lookup_rows() = request;
         } else if constexpr (std::is_same_v<T, TReqPingSession>) {
@@ -232,22 +277,51 @@ THashMap<TString, TString> MakeReadIOTags(
         } else if constexpr (std::is_same_v<T, TReqAnnounceChunkReplicas>) {
             *newRequest.mutable_announce_chunk_replicas() = request;
         }
+        DumpFuzzerInputToFile(
+            threadInputs[currentThreadId].first, kDumpDirectory, currentThreadId, threadInputs[currentThreadId].second);
+    }
 
+    // void FinalizeAllInputs() {
+    //     std::lock_guard<std::mutex> lock(mutex);
+    //     std::filesystem::create_directories(kDumpDirectory);
+    //     for (auto& [threadId, fuzzerInput] : threadInputs) {
+    //         if (fuzzerInput.requests_size() > 0) {
+    //             DumpFuzzerInputToFile(fuzzerInput, kDumpDirectory, threadId);
+    //         }
+    //     }
+    //     threadInputs.clear();
+    // }
+
+private:
+    std::map<size_t, std::pair<TFuzzerInput, size_t>> threadInputs;
+    std::mutex mutex;
+
+    template<typename TFuzzerInput>
+    void DumpFuzzerInputToFile(const TFuzzerInput& fuzzerInput, const std::string& directory, size_t threadId, size_t microseconds) {
         std::filesystem::create_directories(kDumpDirectory);
-        std::string filename = GenerateUniqueFilename(kDumpDirectory);
+        std::string filename = GenerateUniqueFilename(directory, threadId, microseconds);
+
         std::ofstream file(filename, std::ios::out | std::ios::binary);
         if (!file) {
+            std::cerr << "Failed to open file: " << filename << std::endl;
             return;
         }
 
         if (!fuzzerInput.SerializeToOstream(&file)) {
+            std::cerr << "Failed to serialize TFuzzerInput to file: " << filename << std::endl;
             return;
         }
     }
+};
 
-    #define DUMP_PROTO_MESSAGE(request) DumpProtoMessageToFile(request)
+TFuzzerManager gFuzzerManager;
+
+#define DUMP_PROTO_MESSAGE(...) gFuzzerManager.DumpProtoMessageToFile(__VA_ARGS__)
+
 #else
-    #define DUMP_PROTO_MESSAGE(request) // Do nothing
+
+#define DUMP_PROTO_MESSAGE(...) // Do nothing
+
 #endif
 
 } // namespace
@@ -258,6 +332,11 @@ class TDataNodeService
     : public TServiceBase
 {
 public:
+    // #ifdef ENABLE_DUMP_PROTO_MESSAGE
+    // ~TDataNodeService() {
+    //     gFuzzerManager.FinalizeAllInputs();
+    // }
+    // #endif
     TDataNodeService(
         TDataNodeConfigPtr config,
         IBootstrap* bootstrap)
@@ -501,7 +580,11 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, PutBlocks)
     {
-        DUMP_PROTO_MESSAGE(*request);
+        std::vector<std::string> attachments;
+        for (const auto& attachment : request->Attachments()) {
+            attachments.push_back({attachment.begin(), attachment.end()});
+        }
+        DUMP_PROTO_MESSAGE(*request, attachments);
         auto sessionId = FromProto<TSessionId>(request->session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("PutBlocks"), ToString(sessionId));
 
@@ -608,8 +691,8 @@ private:
                 } else {
                     context->Reply(TError(
                         NChunkClient::EErrorCode::SendBlocksFailed,
-                        "Error putting blocks to %v",
-                        targetDescriptor.GetDefaultAddress())
+                        "Error putting blocks to %v, err: %v",
+                        targetDescriptor.GetDefaultAddress(), errorOrRsp)
                         << errorOrRsp);
                 }
             }));
@@ -1177,7 +1260,9 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetChunkFragmentSet)
     {
+        Timer t;
         DUMP_PROTO_MESSAGE(*request);
+        YT_LOG_INFO("LOOOG GetChunkFragmentSet: DUMP_PROTO_MESSAGE " + std::to_string(t.Reset()));
         auto readSessionId = FromProto<TReadSessionId>(request->read_session_id());
         SetSessionIdAllocationTag(GetOrCreateTraceContext("GetChunkFragmentSet"), ToString(readSessionId));
 
@@ -1192,6 +1277,7 @@ private:
                 totalFragmentSize += fragment.length();
             }
         }
+        YT_LOG_INFO("LOOOG GetChunkFragmentSet: context->SetRequestInfo " + std::to_string(t.Reset()));
 
         context->SetRequestInfo("ReadSessionId: %v, Workload: %v, SubrequestCount: %v, FragmentsSize: %v/%v",
             readSessionId,
@@ -1201,6 +1287,7 @@ private:
             totalFragmentCount);
 
         ValidateOnline();
+        YT_LOG_INFO("LOOOG GetChunkFragmentSet: ValidateOnline " + std::to_string(t.Reset()));
 
         THashMap<TChunkLocation*, int> locationToLocationIndex;
         std::vector<std::pair<TChunkLocation*, int>> requestedLocations;
@@ -1214,6 +1301,7 @@ private:
         chunkRequestInfos.reserve(request->subrequests_size());
 
         std::vector<TFuture<void>> prepareReaderFutures;
+        YT_LOG_INFO("LOOOG GetChunkFragmentSet: Bootstrap_->GetChunkRegistry " + std::to_string(t.Reset()));
 
         const auto& chunkRegistry = Bootstrap_->GetChunkRegistry();
         {
@@ -1237,7 +1325,9 @@ private:
 
                 bool chunkAvailable = false;
                 if (chunk) {
+                    YT_LOG_INFO("LOOOG GetChunkFragmentSet: guard " + std::to_string(t.Reset()));
                     if (auto guard = TChunkReadGuard::TryAcquire(std::move(chunk))) {
+                        YT_LOG_INFO("LOOOG GetChunkFragmentSet: guard aquired " + std::to_string(t.Reset()));
                         auto* location = guard.GetChunk()->GetLocation().Get();
                         auto [it, emplaced] = locationToLocationIndex.try_emplace(
                             location,
@@ -1273,6 +1363,7 @@ private:
                 subresponse->set_has_complete_chunk(chunkAvailable);
             }
         }
+        YT_LOG_INFO("LOOOG GetChunkFragmentSet: afterReadersPrepared " + std::to_string(t.Reset()));
 
         auto afterReadersPrepared =
             [
@@ -1420,6 +1511,7 @@ private:
                 .Subscribe(BIND(std::move(afterReadersPrepared))
                     .Via(Bootstrap_->GetStorageLookupInvoker()));
         }
+        YT_LOG_INFO("LOOOG GetChunkFragmentSet: end " + std::to_string(t.Reset()));
     }
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, LookupRows)
