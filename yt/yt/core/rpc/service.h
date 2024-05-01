@@ -328,6 +328,7 @@ struct IService
     virtual void HandleStreamingFeedback(
         TRequestId requestId,
         const TStreamingFeedback& feedback) = 0;
+    virtual ~IService() = default;
 };
 
 DEFINE_REFCOUNTED_TYPE(IService)

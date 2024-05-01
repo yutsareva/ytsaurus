@@ -489,6 +489,7 @@ class TServiceBase
     : public virtual IService
 {
 public:
+    virtual ~TServiceBase() = default;
     void Configure(
         const TServiceCommonConfigPtr& configDefaults,
         const NYTree::INodePtr& configNode) override;
