@@ -16,6 +16,7 @@ import builtins
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestRacks(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 20
@@ -359,5 +360,6 @@ class TestRacks(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestRacksMulticell(TestRacks):
     NUM_SECONDARY_MASTER_CELLS = 2

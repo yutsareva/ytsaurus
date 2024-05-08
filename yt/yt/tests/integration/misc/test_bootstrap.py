@@ -3,10 +3,12 @@ from yt_env_setup import YTEnvSetup
 from yt_commands import authors, wait, get, ls, set
 
 from time import sleep
+import pytest
 
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestClusterConnectionDynamicConfig(YTEnvSetup):
     ENABLE_HTTP_PROXY = True
 

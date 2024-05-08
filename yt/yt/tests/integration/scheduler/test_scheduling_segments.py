@@ -52,6 +52,7 @@ def get_first_job_node(op):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulingSegments(YTEnvSetup):
     NUM_TEST_PARTITIONS = 8
     NUM_MASTERS = 1
@@ -1645,6 +1646,7 @@ class BaseTestSchedulingSegmentsMultiModule(YTEnvSetup):
         wait(lambda: are_almost_equal(self._get_usage_ratio(op.id), 3.0 / 7.0))
 
 
+@pytest.mark.opensource
 class TestSchedulingSegmentsMultiDataCenter(BaseTestSchedulingSegmentsMultiModule):
     NUM_TEST_PARTITIONS = 2
 
@@ -1664,6 +1666,7 @@ class TestSchedulingSegmentsMultiDataCenter(BaseTestSchedulingSegmentsMultiModul
         return module
 
 
+@pytest.mark.opensource
 class TestSchedulingSegmentsMultiInfinibandCluster(BaseTestSchedulingSegmentsMultiModule):
     NUM_TEST_PARTITIONS = 2
 
@@ -1687,6 +1690,7 @@ class TestSchedulingSegmentsMultiInfinibandCluster(BaseTestSchedulingSegmentsMul
         set("//sys/pool_trees/default/@config/scheduling_segments/enable_infiniband_cluster_tag_validation", True)
 
 
+@pytest.mark.opensource
 class TestInfinibandClusterTagValidation(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1846,6 +1850,7 @@ class TestInfinibandClusterTagValidation(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestRunningJobStatistics(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 2

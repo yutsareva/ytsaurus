@@ -1,7 +1,8 @@
 from original_tests.yt.yt.tests.integration.controller.test_sort_operation \
     import TestSchedulerSortCommands as BaseTestSortCommands
+import pytest
 
-
+@pytest.mark.opensource
 class TestSortCommandsCompatNewCA(BaseTestSortCommands):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "node", "job-proxy", "exec", "tools"],
@@ -9,6 +10,7 @@ class TestSortCommandsCompatNewCA(BaseTestSortCommands):
     }
 
 
+@pytest.mark.opensource
 class TestSortCommandsCompatNewNodes(BaseTestSortCommands):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "scheduler", "controller-agent"],

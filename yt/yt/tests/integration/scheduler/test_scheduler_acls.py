@@ -38,6 +38,7 @@ def _abort_op(**kwargs):
     abort_op(kwargs.pop("operation_id"), **kwargs)
 
 
+@pytest.mark.opensource
 class TestSchedulerAcls(YTEnvSetup):
     NUM_TEST_PARTITIONS = 3
     USE_DYNAMIC_TABLES = True

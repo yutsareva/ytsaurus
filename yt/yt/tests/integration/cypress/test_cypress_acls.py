@@ -303,6 +303,7 @@ class CheckPermissionBase(YTEnvSetup):
             assert_items_equal(response_parameters["omitted_inaccessible_columns"], [b"a", b"b"])
 
 
+@pytest.mark.opensource
 class TestCypressAcls(CheckPermissionBase):
     NUM_TEST_PARTITIONS = 2
     NUM_SCHEDULERS = 1
@@ -1696,17 +1697,20 @@ class TestCypressAcls(CheckPermissionBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCypressAclsMulticell(TestCypressAcls):
     NUM_TEST_PARTITIONS = 3
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestCheckPermissionRpcProxy(CheckPermissionBase):
     DRIVER_BACKEND = "rpc"
     ENABLE_HTTP_PROXY = True
     ENABLE_RPC_PROXY = True
 
 
+@pytest.mark.opensource
 class TestCypressAclsPortal(TestCypressAclsMulticell):
     NUM_TEST_PARTITIONS = 3
     NUM_SECONDARY_MASTER_CELLS = 3

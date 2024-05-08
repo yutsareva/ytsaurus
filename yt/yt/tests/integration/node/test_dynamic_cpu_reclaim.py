@@ -27,6 +27,7 @@ SPEC_WITH_CPU_MONITOR = {
 }
 
 
+@pytest.mark.opensource
 class TestAggregatedCpuMetrics(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -84,6 +85,7 @@ class TestAggregatedCpuMetrics(YTEnvSetup):
         wait(lambda: preemptible_cpu_counter.get_delta() == 0)
 
 
+@pytest.mark.opensource
 class TestDynamicCpuReclaim(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -195,6 +197,7 @@ class TestDynamicCpuReclaim(YTEnvSetup):
         return result
 
 
+@pytest.mark.opensource
 class TestSchedulerAbortsJobOnLackOfCpu(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -230,6 +233,7 @@ class TestSchedulerAbortsJobOnLackOfCpu(YTEnvSetup):
         wait(lambda: len(op1.get_running_jobs()) == 1)
 
 
+@pytest.mark.opensource
 class TestNodeAbortsJobOnLackOfMemory(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1

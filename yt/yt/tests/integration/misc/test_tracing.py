@@ -5,11 +5,12 @@ from yt_commands import authors, sync_create_cells, map, create, write_table
 import yt.wrapper
 
 import time
-
+import pytest
 
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestTracing(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_SECONDARY_MASTER_CELLS = 1

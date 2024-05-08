@@ -3,8 +3,9 @@ from yt_env_setup import YTEnvSetup
 from yt_commands import authors, create, write_table, raises_yt_error
 
 from yt_type_helpers import optional_type
+import pytest
 
-
+@pytest.mark.opensource
 class TestJsonFormat(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

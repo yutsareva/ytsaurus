@@ -1,5 +1,6 @@
 from yt_env_setup import YTEnvSetup
 from yt_commands import (authors, get, create, sort, write_table, read_table)
+import pytest
 
 """
 This file contains the most basic checks that are run in all possible combinations that appear
@@ -58,6 +59,7 @@ class ClusterSetupTestBase(YTEnvSetup):
         assert get("//tmp/t_out/@sorted_by") == ["key"]
 
 
+@pytest.mark.opensource
 class TestEverythingIsOld(ClusterSetupTestBase):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "node", "job-proxy", "exec", "tools", "scheduler",
@@ -65,6 +67,7 @@ class TestEverythingIsOld(ClusterSetupTestBase):
     }
 
 
+@pytest.mark.opensource
 class TestNewUpToProxies(ClusterSetupTestBase):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "node", "job-proxy", "exec", "tools", "scheduler",
@@ -73,6 +76,7 @@ class TestNewUpToProxies(ClusterSetupTestBase):
     }
 
 
+@pytest.mark.opensource
 class TestNewUpToSchedulerAndCA(ClusterSetupTestBase):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "node", "job-proxy", "exec", "tools"],
@@ -80,6 +84,7 @@ class TestNewUpToSchedulerAndCA(ClusterSetupTestBase):
     }
 
 
+@pytest.mark.opensource
 class TestNewUpToNodes(ClusterSetupTestBase):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master"],
@@ -87,6 +92,7 @@ class TestNewUpToNodes(ClusterSetupTestBase):
     }
 
 
+@pytest.mark.opensource
 class TestNewNodesOldSchedulerAndCA(ClusterSetupTestBase):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "scheduler", "controller-agent"],

@@ -6,6 +6,7 @@ from yt_commands import authors, ls, get
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCellBalancer(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

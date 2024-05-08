@@ -34,6 +34,7 @@ class BackupKnowinglyFailedException(Exception):
 
 
 @authors("ifsmirnov")
+@pytest.mark.opensource
 class TestBackups(DynamicTablesBase):
     NUM_TEST_PARTITIONS = 3
 
@@ -790,6 +791,7 @@ class TestBackups(DynamicTablesBase):
 
 
 @authors("ifsmirnov")
+@pytest.mark.opensource
 class TestReplicatedTableBackups(TestReplicatedDynamicTablesBase):
     NUM_SCHEDULERS = 1
     ENABLE_BULK_INSERT = True
@@ -1291,11 +1293,13 @@ class TestReplicatedTableBackups(TestReplicatedDynamicTablesBase):
 
 
 @authors("ifsmirnov")
+@pytest.mark.opensource
 class TestBackupsMulticell(TestBackups):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
 @authors("ifsmirnov")
+@pytest.mark.opensource
 class TestBackupsShardedTx(TestBackups):
     NUM_SECONDARY_MASTER_CELLS = 2
     MASTER_CELL_DESCRIPTORS = {
@@ -1322,11 +1326,13 @@ class TestBackupsShardedTx(TestBackups):
 
 
 @authors("ifsmirnov")
+@pytest.mark.opensource
 class TestReplicatedTableBackupsMulticell(TestReplicatedTableBackups):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
 @authors("ifsmirnov")
+@pytest.mark.opensource
 class TestReplicatedTableBackupsShardedTx(TestReplicatedTableBackups):
     NUM_SECONDARY_MASTER_CELLS = 2
     MASTER_CELL_DESCRIPTORS = {

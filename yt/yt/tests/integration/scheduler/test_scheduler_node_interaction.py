@@ -27,6 +27,7 @@ import builtins
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestIgnoreJobFailuresAtBannedNodes(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -125,6 +126,7 @@ class TestIgnoreJobFailuresAtBannedNodes(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestReplacementCpuToVCpu(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -233,6 +235,7 @@ class TestReplacementCpuToVCpu(YTEnvSetup):
         assert resource_limits["cpu"] == 23.35
 
 
+@pytest.mark.opensource
 class TestVCpuDisableByDefault(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -272,6 +275,7 @@ class TestVCpuDisableByDefault(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestResourceLimitsOverrides(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -355,6 +359,7 @@ class TestResourceLimitsOverrides(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulingTags(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 2
@@ -549,6 +554,7 @@ class TestSchedulingTags(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestNodeDoubleRegistration(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 1
@@ -604,6 +610,7 @@ class TestNodeDoubleRegistration(YTEnvSetup):
         wait(lambda: get("//sys/scheduler/orchid/scheduler/nodes/{}/scheduler_state".format(node)) == "online")
 
 
+@pytest.mark.opensource
 class TestNodeMultipleUnregistrations(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -694,6 +701,7 @@ class TestNodeMultipleUnregistrations(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestOperationNodeBan(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 5
@@ -725,6 +733,7 @@ class TestOperationNodeBan(YTEnvSetup):
         assert len(builtins.set(job["address"] for job in jobs)) == 3
 
 
+@pytest.mark.opensource
 class TestSchedulingHeartbeatThrottling(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 7

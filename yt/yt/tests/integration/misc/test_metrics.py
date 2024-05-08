@@ -6,6 +6,7 @@ from yt_commands import (authors, wait, ls, get, set)
 
 import yt.packages.requests as requests
 import yt.yson as yson
+import pytest
 
 ##################################################################
 
@@ -56,6 +57,7 @@ class MetricsTestBase(YTEnvSetup):
         )
 
 
+@pytest.mark.opensource
 class TestPortoMetrics(MetricsTestBase):
     SUSPENDING_TABLE = "//tmp/suspending_table"
     DELAY_BEFORE_COMMAND = 10 * 1000

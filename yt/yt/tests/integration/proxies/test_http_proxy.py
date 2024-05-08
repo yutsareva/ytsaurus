@@ -92,6 +92,7 @@ class HttpProxyTestBase(YTEnvSetup):
         )
 
 
+@pytest.mark.opensource
 class TestHttpProxy(HttpProxyTestBase):
     def teardown_method(self, method):
         for proxy in ls("//sys/http_proxies"):
@@ -344,6 +345,7 @@ class HttpProxyAccessCheckerTestBase(HttpProxyTestBase):
         wait(lambda: not check_access(proxy_address, "u"))
 
 
+@pytest.mark.opensource
 class TestHttpProxyAccessChecker(HttpProxyAccessCheckerTestBase):
     def create_proxy_role_namespace(self):
         create("http_proxy_role_map", "//sys/http_proxy_roles")
@@ -355,6 +357,7 @@ class TestHttpProxyAccessChecker(HttpProxyAccessCheckerTestBase):
         set(f"//sys/http_proxy_roles/{role}/@acl", acl)
 
 
+@pytest.mark.opensource
 class TestHttpProxyAccessCheckerWithAco(HttpProxyAccessCheckerTestBase):
     @classmethod
     def setup_class(cls):
@@ -374,6 +377,7 @@ class TestHttpProxyAccessCheckerWithAco(HttpProxyAccessCheckerTestBase):
         set(f"//sys/access_control_object_namespaces/http_proxy_roles/{role}/principal/@acl", acl)
 
 
+@pytest.mark.opensource
 class TestHttpProxyRoleFromStaticConfig(HttpProxyTestBase):
     DELTA_PROXY_CONFIG = {
         "role": "ab"
@@ -397,6 +401,7 @@ class TestHttpProxyRoleFromStaticConfig(HttpProxyTestBase):
         assert get_yson(self._get_proxy_address() + "/hosts?role=ab") == [proxy]
 
 
+@pytest.mark.opensource
 class TestHttpProxyAuth(HttpProxyTestBase):
     @classmethod
     def setup_class(cls):
@@ -449,6 +454,7 @@ class TestHttpProxyAuth(HttpProxyTestBase):
         wait(lambda: check_access(proxy_address, path=node, status_code=200, token=yql_agent_token, user="test_user"))
 
 
+@pytest.mark.opensource
 class TestHttpProxyFraming(HttpProxyTestBase):
     SUSPENDING_TABLE = "//tmp/suspending_table"
     DELAY_BEFORE_COMMAND = 10 * 1000
@@ -633,6 +639,7 @@ class TestHttpProxyFraming(HttpProxyTestBase):
             self._execute_command("GET", "get_table_columnar_statistics", params, extra_headers=headers)
 
 
+@pytest.mark.opensource
 class TestHttpProxyJobShellAudit(HttpProxyTestBase):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -720,6 +727,7 @@ class TestHttpProxyJobShellAudit(HttpProxyTestBase):
         op.abort()
 
 
+@pytest.mark.opensource
 class TestHttpProxyFormatConfig(HttpProxyTestBase, _TestProxyFormatConfigBase):
     NUM_TEST_PARTITIONS = 6
 
@@ -874,6 +882,7 @@ class TestHttpProxyFormatConfig(HttpProxyTestBase, _TestProxyFormatConfigBase):
         self._test_format_defaults_operations(format, user, content, expected_content_operation)
 
 
+@pytest.mark.opensource
 class TestHttpProxyBuildSnapshotBase(HttpProxyTestBase):
     NUM_SCHEDULERS = 0
 
@@ -947,12 +956,14 @@ class TestHttpProxyBuildSnapshotBase(HttpProxyTestBase):
             wait(_check_read_only)
 
 
+@pytest.mark.opensource
 class TestHttpProxyBuildSnapshotNoReadonly(TestHttpProxyBuildSnapshotBase):
     @authors("babenko")
     def test_no_read_only(self):
         self._build_snapshot_and_check(False)
 
 
+@pytest.mark.opensource
 class TestHttpProxyBuildSnapshotReadonly(TestHttpProxyBuildSnapshotBase):
     def _check_no_read_only(self):
         monitoring = self._get_hydra_monitoring()
@@ -987,6 +998,7 @@ class TestHttpProxyBuildSnapshotReadonly(TestHttpProxyBuildSnapshotBase):
 
 
 @pytest.mark.skipif(is_asan_build(), reason="Memory allocation is not reported under ASAN")
+@pytest.mark.opensource
 class TestHttpProxyHeapUsageStatisticsBase(HttpProxyTestBase):
     NUM_HTTP_PROXIES = 1
     PATH = "//tmp/test"
@@ -1035,6 +1047,7 @@ class TestHttpProxyHeapUsageStatisticsBase(HttpProxyTestBase):
 
 
 @pytest.mark.skipif(is_asan_build(), reason="Memory allocation is not reported under ASAN")
+@pytest.mark.opensource
 class TestHttpProxyHeapUsageStatistics(TestHttpProxyHeapUsageStatisticsBase):
     DELTA_PROXY_CONFIG = {
         "heap_profiler": {
@@ -1098,6 +1111,7 @@ class TestHttpProxyHeapUsageStatistics(TestHttpProxyHeapUsageStatisticsBase):
 
 
 @pytest.mark.skipif(is_asan_build(), reason="Memory allocation is not reported under ASAN")
+@pytest.mark.opensource
 class TestHttpProxyNullApiTestingOptions(TestHttpProxyHeapUsageStatisticsBase):
     DELTA_PROXY_CONFIG = {
         "heap_profiler": {

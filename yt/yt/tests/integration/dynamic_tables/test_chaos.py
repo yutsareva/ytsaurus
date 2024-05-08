@@ -41,6 +41,7 @@ import builtins
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestChaos(ChaosTestBase):
     NUM_REMOTE_CLUSTERS = 2
     NUM_TEST_PARTITIONS = 20
@@ -3389,6 +3390,7 @@ class TestChaos(ChaosTestBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestChaosRpcProxy(TestChaos):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -3435,6 +3437,7 @@ class TestChaosRpcProxy(TestChaos):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestChaosMulticell(TestChaos):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -3442,6 +3445,7 @@ class TestChaosMulticell(TestChaos):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestChaosMetaCluster(ChaosTestBase):
     NUM_REMOTE_CLUSTERS = 3
     NUM_CHAOS_NODES = 2
@@ -3943,6 +3947,7 @@ class TestChaosMetaCluster(ChaosTestBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestChaosMetaClusterRpcProxy(TestChaosMetaCluster):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -3978,6 +3983,7 @@ class ChaosClockBase(ChaosTestBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestChaosClock(ChaosClockBase):
     @authors("savrus")
     def test_invalid_clock(self):
@@ -4037,6 +4043,7 @@ class TestChaosClock(ChaosClockBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestChaosClockRpcProxy(ChaosClockBase):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

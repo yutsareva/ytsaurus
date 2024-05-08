@@ -15,6 +15,7 @@ from time import sleep
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestStandaloneTabletBalancerBase:
     NUM_TABLET_BALANCERS = 3
     ENABLE_STANDALONE_TABLET_BALANCER = True
@@ -93,6 +94,7 @@ class TestStandaloneTabletBalancerBase:
         wait(config_updated_on_all_instances)
 
 
+@pytest.mark.opensource
 class TestStandaloneTabletBalancer(TestStandaloneTabletBalancerBase, TabletBalancerBase):
     NUM_TEST_PARTITIONS = 5
 
@@ -208,6 +210,7 @@ class TestStandaloneTabletBalancer(TestStandaloneTabletBalancerBase, TabletBalan
         wait(lambda: get("//tmp/t4/@tablet_count") == 1)
 
 
+@pytest.mark.opensource
 class TestStandaloneTabletBalancerSlow(TestStandaloneTabletBalancerBase, TabletActionsBase):
     @classmethod
     def modify_tablet_balancer_config(cls, config):
@@ -262,6 +265,7 @@ class TestStandaloneTabletBalancerSlow(TestStandaloneTabletBalancerBase, TabletA
         })
 
 
+@pytest.mark.opensource
 class TestParameterizedBalancing(TestStandaloneTabletBalancerBase, DynamicTablesBase):
     @classmethod
     def modify_tablet_balancer_config(cls, config):
@@ -448,13 +452,16 @@ class TestParameterizedBalancing(TestStandaloneTabletBalancerBase, DynamicTables
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestStandaloneTabletBalancerMulticell(TestStandaloneTabletBalancer):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestStandaloneTabletBalancerSlowMulticell(TestStandaloneTabletBalancerSlow):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestParameterizedBalancingMulticell(TestParameterizedBalancing):
     NUM_SECONDARY_MASTER_CELLS = 2

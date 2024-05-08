@@ -11,6 +11,7 @@ import pytest
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestZookeeper(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_SECONDARY_MASTER_CELLS = 3

@@ -14,6 +14,7 @@ from yt.test_helpers import assert_items_equal
 import pytest
 
 
+@pytest.mark.opensource
 class TestReplicatedTablesCollocationBase(DynamicTablesBase):
     ENABLE_STANDALONE_REPLICATED_TABLE_TRACKER = True
     NUM_REPLICATED_TABLE_TRACKERS = 2
@@ -38,6 +39,7 @@ class TestReplicatedTablesCollocationBase(DynamicTablesBase):
         return create_dynamic_table(path, **attributes)
 
 
+@pytest.mark.opensource
 class TestReplicatedTablesCollocation(TestReplicatedTablesCollocationBase):
     @authors("akozhikhov")
     def test_table_collocation_creation_errors(self):
@@ -197,6 +199,7 @@ class TestReplicatedTablesCollocation(TestReplicatedTablesCollocationBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestReplicatedTablesCollocationMulticell(TestReplicatedTablesCollocation):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -230,6 +233,7 @@ class TestReplicatedTablesCollocationMulticell(TestReplicatedTablesCollocation):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestReplicatedTablesCollocationPortal(TestReplicatedTablesCollocationBase):
     NUM_SECONDARY_MASTER_CELLS = 2
     ENABLE_TMP_PORTAL = True

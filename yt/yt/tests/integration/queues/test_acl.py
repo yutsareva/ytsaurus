@@ -1,10 +1,12 @@
 from yt_env_setup import YTEnvSetup
 
 from yt_commands import (authors, get, set, create, raises_yt_error, create_user, check_permission)
+import pytest
 
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestRegisterQueueConsumerPermission(YTEnvSetup):
     @authors("max42")
     def test_register_queue_consumer_permission(self):
@@ -42,6 +44,7 @@ class TestRegisterQueueConsumerPermission(YTEnvSetup):
         assert check_permission("u_vital", "register_queue_consumer", "//tmp/t", vital=True)["action"] == "allow"
 
 
+@pytest.mark.opensource
 class TestRegisterQueueConsumerPermissionRpcProxy(TestRegisterQueueConsumerPermission):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

@@ -167,6 +167,7 @@ def do_check_proxy_maintenance_requests(test_suite):
     assert get(f"//sys/rpc_proxies/{rpc}/@type") == "cluster_proxy_node"
 
 
+@pytest.mark.opensource
 class TestMasterSnapshotsCompatibility(ChaosTestBase, MasterSnapshotsCompatibilityBase):
     TEST_MAINTENANCE_FLAGS = True
     NUM_RPC_PROXIES = 2
@@ -202,6 +203,7 @@ class TestMasterSnapshotsCompatibility(ChaosTestBase, MasterSnapshotsCompatibili
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestTabletCellsSnapshotsCompatibility(MasterSnapshotsCompatibilityBase):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "node", "tools", "exec"],
@@ -267,6 +269,7 @@ class TestTabletCellsSnapshotsCompatibility(MasterSnapshotsCompatibilityBase):
                 commit_transaction(tx)
 
 
+@pytest.mark.opensource
 class TestBundleControllerAttribute(MasterSnapshotsCompatibilityBase):
     @authors("capone212")
     def test(self):

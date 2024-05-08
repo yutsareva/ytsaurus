@@ -68,6 +68,7 @@ ERASURE_JOURNAL_ATTRIBUTES = {
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestJournalsBase(YTEnvSetup):
     def _write_and_wait_until_sealed(self, path, *args, **kwargs):
         write_journal(path, *args, **kwargs)
@@ -154,6 +155,7 @@ class TestJournalsBase(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestJournals(TestJournalsBase):
     NUM_TEST_PARTITIONS = 10
     NUM_MASTERS = 3
@@ -691,10 +693,12 @@ class TestJournals(TestJournalsBase):
             get("//tmp/journal_without_data_weight/@data_weight")
 
 
+@pytest.mark.opensource
 class TestJournalsMulticell(TestJournals):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestJournalsPortal(TestJournalsMulticell):
     ENABLE_TMP_PORTAL = True
     NUM_SECONDARY_MASTER_CELLS = 2
@@ -715,6 +719,7 @@ class TestJournalsPortal(TestJournalsMulticell):
         assert read_journal("//portals/j") == PAYLOAD
 
 
+@pytest.mark.opensource
 class TestJournalsRpcProxy(TestJournals):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -724,6 +729,7 @@ class TestJournalsRpcProxy(TestJournals):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestJournalsChangeMedia(TestJournalsBase):
     NUM_MASTERS = 3
     NUM_NODES = 5
@@ -789,6 +795,7 @@ class TestJournalsChangeMedia(TestJournalsBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestErasureJournals(TestJournalsBase):
     NUM_TEST_PARTITIONS = 12
     NUM_MASTERS = 3
@@ -965,6 +972,7 @@ class TestErasureJournals(TestJournalsBase):
         self._check_repair_jobs("//tmp/j", rows)
 
 
+@pytest.mark.opensource
 class TestErasureJournalsRpcProxy(TestErasureJournals):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -973,6 +981,7 @@ class TestErasureJournalsRpcProxy(TestErasureJournals):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestChunkAutotomizer(TestJournalsBase):
     NUM_TEST_PARTITIONS = 3
     NUM_MASTERS = 1
@@ -1239,9 +1248,11 @@ class TestChunkAutotomizer(TestJournalsBase):
         wait(lambda: self._check_simple_journal())
 
 
+@pytest.mark.opensource
 class TestChunkAutotomizerMulticell(TestChunkAutotomizer):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestChunkAutotomizerPortal(TestChunkAutotomizerMulticell):
     ENABLE_TMP_PORTAL = True

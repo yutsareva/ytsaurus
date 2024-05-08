@@ -593,6 +593,7 @@ MASTER_SNAPSHOT_COMPATIBILITY_CHECKER_LIST.remove(check_master_memory)
 MASTER_SNAPSHOT_COMPATIBILITY_CHECKER_LIST.remove(check_chunk_locations)
 
 
+@pytest.mark.opensource
 class TestMasterSnapshots(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_NODES = 5
@@ -633,6 +634,7 @@ class TestMasterSnapshots(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestMasterSnapshotsMulticell(TestMasterSnapshots):
     NUM_SECONDARY_MASTER_CELLS = 3
 
@@ -640,6 +642,7 @@ class TestMasterSnapshotsMulticell(TestMasterSnapshots):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestMastersSnapshotsShardedTx(YTEnvSetup):
     NUM_SECONDARY_MASTER_CELLS = 4
     MASTER_CELL_DESCRIPTORS = {
@@ -700,6 +703,7 @@ class TestMastersSnapshotsShardedTx(YTEnvSetup):
         build_master_snapshots(set_read_only=True)
 
 
+@pytest.mark.opensource
 class TestMastersPersistentReadOnly(YTEnvSetup):
     @authors("danilalexeev")
     def test_read_only_after_recovery(self):
@@ -740,6 +744,7 @@ class TestMastersPersistentReadOnly(YTEnvSetup):
             wait(lambda: no_peers_in_read_only("//sys/secondary_masters/{}".format(cell_tag), addresses))
 
 
+@pytest.mark.opensource
 class TestMastersSnapshotsShardedTxCTxS(YTEnvSetup):
     NUM_SECONDARY_MASTER_CELLS = 4
     DRIVER_BACKEND = "rpc"
@@ -761,5 +766,6 @@ class TestMastersSnapshotsShardedTxCTxS(YTEnvSetup):
     }
 
 
+@pytest.mark.opensource
 class TestMastersPersistentReadOnlyMulticell(TestMastersPersistentReadOnly):
     NUM_SECONDARY_MASTER_CELLS = 2

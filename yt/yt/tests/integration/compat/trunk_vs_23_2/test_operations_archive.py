@@ -5,10 +5,11 @@ from yt_commands import (
     get_operation)
 
 import yt.environment.init_operation_archive as init_operation_archive
-
+import pytest
 
 ##################################################################
 
+@pytest.mark.opensource
 class TestOperationsArchive(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1

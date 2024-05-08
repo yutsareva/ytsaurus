@@ -17,6 +17,7 @@ from io import TextIOBase
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestFiles(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -281,14 +282,17 @@ class TestFiles(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestFilesMulticell(TestFiles):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestFilesPortal(TestFilesMulticell):
     ENABLE_TMP_PORTAL = True
 
 
+@pytest.mark.opensource
 class TestFilesRpcProxy(TestFiles):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -298,6 +302,7 @@ class TestFilesRpcProxy(TestFiles):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestFileErrorsRpcProxy(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 2
@@ -364,6 +369,7 @@ class TestFileErrorsRpcProxy(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestBigFilesRpcProxy(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -387,6 +393,7 @@ class TestBigFilesRpcProxy(YTEnvSetup):
         assert contents == data
 
 
+@pytest.mark.opensource
 class TestBigFilesWithCompressionRpcProxy(TestBigFilesRpcProxy):
     DELTA_RPC_DRIVER_CONFIG = {
         "request_codec": "lz4",

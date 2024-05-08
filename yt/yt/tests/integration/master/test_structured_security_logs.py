@@ -7,8 +7,10 @@ from yt_commands import (
 from yt_helpers import write_log_barrier, read_structured_log
 
 import time
+import pytest
 
 
+@pytest.mark.opensource
 class TestStructuredSecurityLogs(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1

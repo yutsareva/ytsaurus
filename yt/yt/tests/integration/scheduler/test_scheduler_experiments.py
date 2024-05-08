@@ -11,10 +11,12 @@ import yt.environment.init_operation_archive as init_operation_archive
 
 from flaky import flaky
 import math
+import pytest
 
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerExperiments(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -305,6 +307,7 @@ class TestSchedulerExperiments(YTEnvSetup):
                   spec={"experiment_overrides": ["exp_b2.treatment"]})
 
 
+@pytest.mark.opensource
 class TestSchedulerExperimentsArchivation(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -374,6 +377,7 @@ class TestSchedulerExperimentsArchivation(YTEnvSetup):
         assert cypress_info == archive_info
 
 
+@pytest.mark.opensource
 class TestUserJobAndJobIOExperiments(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -613,6 +617,7 @@ class TestUserJobAndJobIOExperiments(YTEnvSetup):
         assert spec["merge_job_io"]["foo_spec"] == "patched"
 
 
+@pytest.mark.opensource
 class TestListOperationFilterExperiments(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1

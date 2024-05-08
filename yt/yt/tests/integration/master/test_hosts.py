@@ -15,6 +15,7 @@ import pytest
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestHosts(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -148,12 +149,14 @@ class TestHosts(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestHostsMulticell(TestHosts):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestPreserveRackForNewHost(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1

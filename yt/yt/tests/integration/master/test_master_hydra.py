@@ -13,6 +13,7 @@ import time
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestMasterLeaderSwitch(YTEnvSetup):
     NUM_MASTERS = 7
     NUM_NODES = 0
@@ -57,6 +58,7 @@ class TestMasterLeaderSwitch(YTEnvSetup):
         assert _get_master_grace_delay_status(new_leader_rpc_address) == "previous_lease_abandoned"
 
 
+@pytest.mark.opensource
 class TestMasterResetStateHash(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_NODES = 0
@@ -75,6 +77,7 @@ class TestMasterResetStateHash(YTEnvSetup):
         _test(new_state_hash=0xbebebebe)
 
 
+@pytest.mark.opensource
 class TestDiscombobulate(YTEnvSetup):
     NUM_MASTERS = 5
     NUM_NONVOTING_MASTERS = 2

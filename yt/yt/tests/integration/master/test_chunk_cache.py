@@ -6,6 +6,7 @@ from yt_commands import (
     read_table, write_table, write_file)
 
 import os.path
+import pytest
 
 #################################################################
 
@@ -15,6 +16,7 @@ def trim(filepath):
         pass
 
 
+@pytest.mark.opensource
 class TestChunkCache(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

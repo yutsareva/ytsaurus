@@ -40,6 +40,7 @@ import time
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCypressRootCreationTime(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_CELLS = 1
@@ -63,6 +64,7 @@ def not_implemented_in_sequoia(func):
     return decorator.decorate(func, wrapper)
 
 
+@pytest.mark.opensource
 class TestCypress(YTEnvSetup):
     NUM_TEST_PARTITIONS = 12
 
@@ -3935,6 +3937,7 @@ class TestCypress(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCypressMulticell(TestCypress):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -3980,6 +3983,7 @@ class TestCypressMulticell(TestCypress):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCypressPortal(TestCypressMulticell):
     ENABLE_TMP_PORTAL = True
     NUM_SECONDARY_MASTER_CELLS = 3
@@ -4137,6 +4141,7 @@ class TestCypressPortal(TestCypressMulticell):
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestCypressShardedTx(TestCypressPortal):
     NUM_SECONDARY_MASTER_CELLS = 4
     MASTER_CELL_DESCRIPTORS = {
@@ -4146,6 +4151,7 @@ class TestCypressShardedTx(TestCypressPortal):
     }
 
 
+@pytest.mark.opensource
 class TestCypressShardedTxCTxS(TestCypressShardedTx):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -4159,12 +4165,14 @@ class TestCypressShardedTxCTxS(TestCypressShardedTx):
     }
 
 
+@pytest.mark.opensource
 class TestCypressNoLocalReadExecutor(TestCypress):
     def setup_method(self, method):
         super(TestCypressNoLocalReadExecutor, self).setup_method(method)
         set("//sys/@config/object_service/enable_local_read_executor", False)
 
 
+@pytest.mark.opensource
 class TestCypressCypressProxy(TestCypressShardedTx):
     NUM_CYPRESS_PROXIES = 2
 
@@ -4172,11 +4180,13 @@ class TestCypressCypressProxy(TestCypressShardedTx):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCypressRpcProxy(TestCypress):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
 
 
+@pytest.mark.opensource
 class TestCypressMulticellRpcProxy(TestCypressMulticell, TestCypressRpcProxy):
     pass
 
@@ -4184,6 +4194,7 @@ class TestCypressMulticellRpcProxy(TestCypressMulticell, TestCypressRpcProxy):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCypressLeaderSwitch(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_NODES = 0
@@ -4209,6 +4220,7 @@ class TestCypressLeaderSwitch(YTEnvSetup):
 
 ##################################################################
 
+@pytest.mark.opensource
 class TestCypressForbidSet(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 0
@@ -4276,6 +4288,7 @@ class TestCypressForbidSet(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCypressApiVersion4(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 0
@@ -4334,6 +4347,7 @@ class TestCypressApiVersion4(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCypressNestingLevelLimit(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 0
@@ -4408,6 +4422,7 @@ class TestCypressNestingLevelLimit(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCypressNestingLevelLimitRpcProxy(TestCypressNestingLevelLimit):
     ENABLE_RPC_PROXY = True
     ENABLE_HTTP_PROXY = True
@@ -4423,6 +4438,7 @@ class TestCypressNestingLevelLimitRpcProxy(TestCypressNestingLevelLimit):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCypressNestingLevelLimitHttpProxy(TestCypressNestingLevelLimit):
     ENABLE_HTTP_PROXY = True
     NUM_HTTP_PROXIES = 1
@@ -4475,6 +4491,7 @@ class TestCypressNestingLevelLimitHttpProxy(TestCypressNestingLevelLimit):
         self._execute_command("PUT", "multiset_attributes", kwargs, input_stream=BytesIO(subrequests))
 
 
+@pytest.mark.opensource
 class TestBuiltinAttributesRevision(YTEnvSetup):
     USE_DYNAMIC_TABLES = True
 
@@ -4507,6 +4524,7 @@ class TestBuiltinAttributesRevision(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestAccessControlObjects(YTEnvSetup):
     NUM_SECONDARY_MASTER_CELLS = 1
 
@@ -4690,6 +4708,7 @@ class TestAccessControlObjects(YTEnvSetup):
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestSequoia(TestCypressMulticell):
     NUM_NODES = 5
     USE_SEQUOIA = True

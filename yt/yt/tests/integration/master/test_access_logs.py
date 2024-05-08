@@ -14,11 +14,13 @@ from yt_type_helpers import make_schema
 
 import json
 import os
+import pytest
 
 ##################################################################
 
 
 @authors("shakurov", "avmatrosov")
+@pytest.mark.opensource
 class TestAccessLog(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_SCHEDULERS = 1
@@ -559,6 +561,7 @@ class TestAccessLog(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestAccessLogPortal(TestAccessLog):
     NUM_SECONDARY_MASTER_CELLS = 3
     ENABLE_TMP_PORTAL = True

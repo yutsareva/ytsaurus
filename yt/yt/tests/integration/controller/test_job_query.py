@@ -21,6 +21,7 @@ import os
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestJobQuery(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5

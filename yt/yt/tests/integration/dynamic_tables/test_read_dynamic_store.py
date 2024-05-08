@@ -69,6 +69,7 @@ def _make_path_with_range(path, lower_limit, upper_limit):
 
 
 @authors("ifsmirnov")
+@pytest.mark.opensource
 class TestReadSortedDynamicTables(TestSortedDynamicTablesBase):
     NUM_TEST_PARTITIONS = 2
     NUM_SCHEDULERS = 1
@@ -554,6 +555,7 @@ class TestReadSortedDynamicTables(TestSortedDynamicTablesBase):
         op.track()
 
 
+@pytest.mark.opensource
 class TestReadSortedDynamicTablesMulticell(TestReadSortedDynamicTables):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -562,6 +564,7 @@ class TestReadSortedDynamicTablesMulticell(TestReadSortedDynamicTables):
 
 
 @authors("ifsmirnov")
+@pytest.mark.opensource
 class TestReadOrderedDynamicTables(TestOrderedDynamicTablesBase):
     NUM_SCHEDULERS = 1
 
@@ -890,6 +893,7 @@ class TestReadOrderedDynamicTables(TestOrderedDynamicTablesBase):
 
 
 @authors("ifsmirnov")
+@pytest.mark.opensource
 class TestReadGenericDynamicTables(DynamicTablesBase):
     NUM_SCHEDULERS = 1
     ENABLE_BULK_INSERT = True

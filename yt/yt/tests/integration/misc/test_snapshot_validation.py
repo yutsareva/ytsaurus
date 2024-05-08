@@ -14,6 +14,7 @@ from pytest import fail
 import subprocess
 import os
 import os.path
+import pytest
 
 ##################################################################
 
@@ -24,6 +25,7 @@ import os.path
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSnapshotValidation(YTEnvSetup):
     NUM_MASTERS = 1
     USE_DYNAMIC_TABLES = True

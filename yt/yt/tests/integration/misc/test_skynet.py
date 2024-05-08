@@ -47,6 +47,7 @@ SKYNET_TABLE_SCHEMA = make_schema(
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSkynetIntegration(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5

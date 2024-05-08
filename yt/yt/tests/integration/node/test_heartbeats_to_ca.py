@@ -8,10 +8,12 @@ from yt_commands import (
     authors, run_test_vanilla,
     with_breakpoint, wait_breakpoint, release_breakpoint
 )
+import pytest
 
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestNodeHeartbeatsToCA(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1

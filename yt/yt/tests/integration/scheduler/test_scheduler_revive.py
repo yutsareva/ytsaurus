@@ -31,6 +31,7 @@ from io import BytesIO
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerRandomMasterDisconnections(YTEnvSetup):
     NUM_TEST_PARTITIONS = 2
     NUM_MASTERS = 1
@@ -182,6 +183,7 @@ class TestSchedulerRandomMasterDisconnections(YTEnvSetup):
         assert ok
 
 
+@pytest.mark.opensource
 class TestSchedulerRestart(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -402,6 +404,7 @@ class TestSchedulerRestart(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestControllerAgentReconnection(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -595,6 +598,7 @@ class TestControllerAgentReconnection(YTEnvSetup):
 
 
 @authors("levysotsky")
+@pytest.mark.opensource
 class TestControllerAgentZombieOrchids(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -656,6 +660,7 @@ class TestControllerAgentZombieOrchids(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestRaceBetweenShardAndStrategy(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 2  # snapshot upload replication factor is 2; unable to configure
@@ -1015,6 +1020,7 @@ class OperationReviveBase(YTEnvSetup):
         wait_no_assert(failed_jobs_exist)
 
 
+@pytest.mark.opensource
 class TestSchedulerReviveForMap(OperationReviveBase):
     OP_TYPE = "map"
 
@@ -1022,6 +1028,7 @@ class TestSchedulerReviveForMap(OperationReviveBase):
         return map(command=command, in_=["//tmp/t_in"], out="//tmp/t_out", **kwargs)
 
 
+@pytest.mark.opensource
 class TestSchedulerReviveForVanilla(OperationReviveBase):
     OP_TYPE = "vanilla"
 
@@ -1035,6 +1042,7 @@ class TestSchedulerReviveForVanilla(OperationReviveBase):
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestJobRevivalBase(YTEnvSetup):
     def _wait_for_single_job(self, op_id):
         path = get_operation_cypress_path(op_id) + "/controller_orchid"
@@ -1065,6 +1073,7 @@ class TestJobRevivalBase(YTEnvSetup):
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestJobRevival(TestJobRevivalBase):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1397,6 +1406,7 @@ class TestJobRevival(TestJobRevivalBase):
 
 ##################################################################
 
+@pytest.mark.opensource
 class TestHasFailedJobsOnRevive(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1464,6 +1474,7 @@ class TestHasFailedJobsOnRevive(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestDisabledJobRevival(TestJobRevivalBase):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1567,6 +1578,7 @@ class TestDisabledJobRevival(TestJobRevivalBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestPreserveSlotIndexAfterRevive(YTEnvSetup, PrepareTables):
     NUM_MASTERS = 1
     NUM_NODES = 3

@@ -713,6 +713,7 @@ class DynamicTablesSingleCellBase(DynamicTablesBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestDynamicTablesSingleCell(DynamicTablesSingleCellBase):
     NUM_TEST_PARTITIONS = 16
 
@@ -3083,6 +3084,7 @@ class TestDynamicTablesSingleCell(DynamicTablesSingleCellBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestDynamicTablesErasureJournals(TestDynamicTablesSingleCell):
     NUM_NODES = 8
 
@@ -3105,6 +3107,7 @@ class TestDynamicTablesErasureJournals(TestDynamicTablesSingleCell):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestDynamicTablesSafeMode(DynamicTablesBase):
     USE_PERMISSION_CACHE = False
 
@@ -3134,6 +3137,7 @@ class TestDynamicTablesSafeMode(DynamicTablesBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestDynamicTablesMulticell(TestDynamicTablesSingleCell):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -3309,6 +3313,7 @@ class TestDynamicTablesMulticell(TestDynamicTablesSingleCell):
         assert get("//tmp/t/@remount_needed_tablet_count") == 0
 
 
+@pytest.mark.opensource
 class TestDynamicTablesDecommissionStall(DynamicTablesBase):
     NUM_SECONDARY_MASTER_CELLS = 2
     DELTA_NODE_CONFIG = {
@@ -3334,10 +3339,12 @@ class TestDynamicTablesDecommissionStall(DynamicTablesBase):
         wait(lambda: not exists(cell_path))
 
 
+@pytest.mark.opensource
 class TestDynamicTablesPortal(TestDynamicTablesMulticell):
     ENABLE_TMP_PORTAL = True
 
 
+@pytest.mark.opensource
 class TestDynamicTablesShardedTx(TestDynamicTablesPortal):
     NUM_SECONDARY_MASTER_CELLS = 3
     MASTER_CELL_DESCRIPTORS = {
@@ -3346,6 +3353,7 @@ class TestDynamicTablesShardedTx(TestDynamicTablesPortal):
     }
 
 
+@pytest.mark.opensource
 class TestDynamicTablesCypressProxy(TestDynamicTablesShardedTx):
     NUM_CYPRESS_PROXIES = 1
 
@@ -3353,6 +3361,7 @@ class TestDynamicTablesCypressProxy(TestDynamicTablesShardedTx):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestDynamicTablesRpcProxy(TestDynamicTablesSingleCell):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -3364,6 +3373,7 @@ class TestDynamicTablesRpcProxy(TestDynamicTablesSingleCell):
         pass
 
 
+@pytest.mark.opensource
 class TestDynamicTablesWithAbandoningLeaderLeaseDuringRecovery(DynamicTablesSingleCellBase):
     DELTA_NODE_CONFIG = {
         "tablet_node": {
@@ -3383,6 +3393,7 @@ class TestDynamicTablesWithAbandoningLeaderLeaseDuringRecovery(DynamicTablesSing
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestTabletOrchid(DynamicTablesBase):
     DELTA_NODE_CONFIG = {
         "resource_limits": {
@@ -3481,6 +3492,7 @@ class TestTabletOrchid(DynamicTablesBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestTabletCellJanitor(DynamicTablesBase):
     NUM_MASTERS = 3
     NUM_SECONDARY_MASTER_CELLS = 2

@@ -17,6 +17,7 @@ import time
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerAlerts(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -135,6 +136,7 @@ class LowCpuUsageSchedulerAlertBase(YTEnvSetup):
     }
 
 
+@pytest.mark.opensource
 class TestLowCpuUsageSchedulerAlertPresence(LowCpuUsageSchedulerAlertBase):
     DELTA_CONTROLLER_AGENT_CONFIG = {
         "controller_agent": {
@@ -156,6 +158,7 @@ class TestLowCpuUsageSchedulerAlertPresence(LowCpuUsageSchedulerAlertBase):
         assert "low_cpu_usage" in op.get_alerts()
 
 
+@pytest.mark.opensource
 class TestLowCpuUsageSchedulerAlertAbsence(LowCpuUsageSchedulerAlertBase):
     DELTA_CONTROLLER_AGENT_CONFIG = {
         "controller_agent": {
@@ -179,6 +182,7 @@ class TestLowCpuUsageSchedulerAlertAbsence(LowCpuUsageSchedulerAlertBase):
         assert "low_cpu_usage" not in op.get_alerts()
 
 
+@pytest.mark.opensource
 class TestSchedulerOperationAlerts(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -545,6 +549,7 @@ class TestSchedulerOperationAlerts(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerJobSpecThrottlerOperationAlert(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -590,6 +595,7 @@ class TestSchedulerJobSpecThrottlerOperationAlert(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestControllerAgentAlerts(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1

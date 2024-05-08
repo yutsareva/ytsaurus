@@ -8,11 +8,12 @@ from yt_commands import (
 from yt_helpers import read_structured_log, write_log_barrier
 
 import os
-
+import pytest
 ##################################################################
 
 
 @authors("kvk1920")
+@pytest.mark.opensource
 class TestNodeTrackerLog(YTEnvSetup):
     LOG_WRITE_WAIT_TIME = 0.2
 

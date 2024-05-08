@@ -9,6 +9,7 @@ import pytest
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestGetFeatures(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

@@ -18,6 +18,7 @@ from datetime import datetime
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestMaintenanceTracker(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -319,6 +320,7 @@ class TestMaintenanceTracker(YTEnvSetup):
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestMaintenanceTrackerMulticell(TestMaintenanceTracker):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -345,5 +347,6 @@ class TestMaintenanceTrackerMulticell(TestMaintenanceTracker):
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestMaintenanceTrackerWithRpc(TestMaintenanceTracker):
     DRIVER_BACKEND = "rpc"

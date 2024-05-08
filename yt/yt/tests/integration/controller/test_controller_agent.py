@@ -25,6 +25,7 @@ from collections import defaultdict
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestControllerAgentOrchid(YTEnvSetup):
     NUM_SCHEDULERS = 1
 
@@ -77,6 +78,7 @@ class TestControllerAgentOrchid(YTEnvSetup):
         assert list(get(orchid_path)) == [str(op.id)]
 
 
+@pytest.mark.opensource
 class TestControllerAgentConfig(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_CONTROLLER_AGENTS = 1
@@ -86,6 +88,7 @@ class TestControllerAgentConfig(YTEnvSetup):
         assert get("//sys/controller_agents/config/@type") == "document"
 
 
+@pytest.mark.opensource
 class TestControllerAgentRegistration(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_CONTROLLER_AGENTS = 1
@@ -103,6 +106,7 @@ class TestControllerAgentRegistration(YTEnvSetup):
             remove(node_path)
 
 
+@pytest.mark.opensource
 class TestControllerMemoryUsage(YTEnvSetup):
     NUM_SCHEDULERS = 1
 
@@ -230,6 +234,7 @@ class TestControllerMemoryUsage(YTEnvSetup):
             assert False, "Must not exist alive operations"
 
 
+@pytest.mark.opensource
 class TestControllerAgentMemoryPickStrategy(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_CONTROLLER_AGENTS = 2
@@ -327,6 +332,7 @@ class TestControllerAgentMemoryPickStrategy(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerControllerThrottling(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -370,6 +376,7 @@ class TestSchedulerControllerThrottling(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCustomControllerQueues(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -435,6 +442,7 @@ class TestCustomControllerQueues(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestGetJobSpecFailed(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -482,6 +490,7 @@ class TestGetJobSpecFailed(YTEnvSetup):
         wait(check)
 
 
+@pytest.mark.opensource
 class TestGetJobSpecFailedWithJobSpecService(TestGetJobSpecFailed):
     DELTA_DYNAMIC_NODE_CONFIG = {
         "%true": {
@@ -497,6 +506,7 @@ class TestGetJobSpecFailedWithJobSpecService(TestGetJobSpecFailed):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestControllerAgentTags(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_CONTROLLER_AGENTS = 3
@@ -622,6 +632,7 @@ class TestControllerAgentTags(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestOperationControllerResourcesCheck(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -680,6 +691,7 @@ class TestOperationControllerResourcesCheck(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestOperationControllerLimit(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -714,6 +726,7 @@ class TestOperationControllerLimit(YTEnvSetup):
 
 
 @pytest.mark.skipif(is_asan_build(), reason="Memory allocation is not reported under ASAN")
+@pytest.mark.opensource
 class TestMemoryOverconsumptionThreshold(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -748,6 +761,7 @@ class TestMemoryOverconsumptionThreshold(YTEnvSetup):
 
 
 @pytest.mark.skipif(is_asan_build(), reason="Memory allocation is not reported under ASAN")
+@pytest.mark.opensource
 class TestTotalControllerMemoryLimit(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -798,6 +812,7 @@ class TestTotalControllerMemoryLimit(YTEnvSetup):
 
 
 @pytest.mark.skipif(is_asan_build(), reason="Memory allocation is not reported under ASAN")
+@pytest.mark.opensource
 class TestTotalControllerMemoryExceedLimit(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -852,6 +867,7 @@ class TestTotalControllerMemoryExceedLimit(YTEnvSetup):
 
 
 @pytest.mark.skipif(is_asan_build(), reason="Memory allocation is not reported under ASAN")
+@pytest.mark.opensource
 class TestControllerAgentMemoryAlert(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -938,6 +954,7 @@ class TestControllerAgentMemoryAlert(YTEnvSetup):
 
 
 @pytest.mark.skipif(is_asan_build(), reason="Memory allocation is not reported under ASAN")
+@pytest.mark.opensource
 class TestMemoryWatchdog(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 4

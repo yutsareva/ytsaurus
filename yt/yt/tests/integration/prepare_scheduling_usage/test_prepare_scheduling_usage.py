@@ -52,6 +52,7 @@ class OperationInfo:
 
 
 @authors("ignat")
+@pytest.mark.opensource
 class TestPrepareSchedulingUsage(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

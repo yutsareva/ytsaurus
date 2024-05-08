@@ -27,6 +27,7 @@ def get_sorted_jobs(op):
     return sorted(jobs, key=lambda job: job["start_time"])
 
 
+@pytest.mark.opensource
 class TestSpeculativeJobEngine(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -233,6 +234,7 @@ class TestSpeculativeJobEngine(YTEnvSetup):
         return op
 
 
+@pytest.mark.opensource
 class TestSpeculativeJobSplitter(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 6
@@ -360,6 +362,7 @@ class TestSpeculativeJobSplitter(YTEnvSetup):
         return op
 
 
+@pytest.mark.opensource
 class TestListSpeculativeJobs(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -548,6 +551,7 @@ class TestListSpeculativeJobs(YTEnvSetup):
         assert jobs[1]["has_competitors"]
 
 
+@pytest.mark.opensource
 class TestSpeculativeJobsOther(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1

@@ -1,10 +1,12 @@
 from yt_env_setup import YTEnvSetup, wait
 
 from yt_commands import authors, ls, get, exists
+import pytest
 
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCypressAnnotations(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SECONDARY_MASTER_CELLS = 1

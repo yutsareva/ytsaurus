@@ -14,6 +14,7 @@ import pytest
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestNewLivePreview(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 3
@@ -245,5 +246,6 @@ class TestNewLivePreview(YTEnvSetup):
             )
 
 
+@pytest.mark.opensource
 class TestNewLivePreviewMulticell(TestNewLivePreview):
     NUM_SECONDARY_MASTER_CELLS = 2

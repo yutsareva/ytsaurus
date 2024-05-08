@@ -35,6 +35,7 @@ import inspect
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestMasterCellAdditionBase(YTEnvSetup):
     DEFER_SECONDARY_CELL_START = True
     DEFER_NODE_START = True
@@ -160,6 +161,7 @@ class TestMasterCellAdditionBase(YTEnvSetup):
                 next(s)
 
 
+@pytest.mark.opensource
 class TestMasterCellAddition(TestMasterCellAdditionBase):
     PATCHED_CONFIGS = []
     STASHED_CELL_CONFIGS = []
@@ -427,6 +429,7 @@ class TestMasterCellAddition(TestMasterCellAdditionBase):
         self._execute_checks_with_cell_addition()
 
 
+@pytest.mark.opensource
 class TestMasterCellAdditionChaosMultiCluster(TestMasterCellAdditionBase):
     PATCHED_CONFIGS = []
     STASHED_CELL_CONFIGS = []

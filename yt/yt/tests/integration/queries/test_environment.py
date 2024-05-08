@@ -9,8 +9,10 @@ from yt.common import YtError
 from yt_commands import wait, authors, ls, get, set, assert_yt_error
 
 import yt_error_codes
+import pytest
 
 
+@pytest.mark.opensource
 class TestEnvironment(YTEnvSetup):
     NUM_QUERY_TRACKERS = 3
 

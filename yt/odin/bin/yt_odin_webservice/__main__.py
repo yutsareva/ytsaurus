@@ -271,7 +271,7 @@ def main():
         handler.setFormatter(logging.Formatter("%(asctime)-15s\t%(levelname)s\t%(message)s"))
         app.logger.handlers = [handler]
         app.logger.setLevel(logging.INFO)
-        logging.getLogger("werkzeug").setLevel(logging.ERROR)
+        logging.getLogger("werkzeug").setLevel(logging.INFO)
 
         yt_logger = logging.getLogger("Yt")
         yt_logger.handlers = [handler]

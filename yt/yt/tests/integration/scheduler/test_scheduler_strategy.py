@@ -52,6 +52,7 @@ def get_from_tree_orchid(tree, path, **kwargs):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestResourceUsage(YTEnvSetup, PrepareTables):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -537,6 +538,7 @@ class TestResourceUsage(YTEnvSetup, PrepareTables):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestStrategyWithSlowController(YTEnvSetup, PrepareTables):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -596,6 +598,7 @@ class TestStrategyWithSlowController(YTEnvSetup, PrepareTables):
         assert abs(op1.get_job_count("running") - op2.get_job_count("running")) <= self.CONCURRENT_HEARTBEAT_LIMIT
 
 
+@pytest.mark.opensource
 class TestUnavailableChunkStrategies(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 2
@@ -800,6 +803,7 @@ class TestUnavailableChunkStrategies(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerOperationLimits(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1231,6 +1235,7 @@ class TestSchedulerOperationLimits(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestInferWeightFromGuarantees(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1359,6 +1364,7 @@ class TestInferWeightFromGuarantees(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerHangingOperations(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1592,6 +1598,7 @@ class TestSchedulerHangingOperations(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestEphemeralPools(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -2040,6 +2047,7 @@ class TestEphemeralPools(YTEnvSetup):
         assert pool_info["resource_limits"]["cpu"] == 1.0
 
 
+@pytest.mark.opensource
 class TestSchedulerPoolsCommon(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -2162,6 +2170,7 @@ class TestSchedulerPoolsCommon(YTEnvSetup):
             update_op_parameters(op.id, parameters={"pool": "invalid|name"})
 
 
+@pytest.mark.opensource
 class TestSchedulerPoolsReconfiguration(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -2260,6 +2269,7 @@ class TestSchedulerPoolsReconfiguration(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerSuspiciousJobs(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -2471,6 +2481,7 @@ class TestSchedulerSuspiciousJobs(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestMinNeededResources(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -2575,6 +2586,7 @@ class TestMinNeededResources(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerInferChildrenWeightsFromHistoricUsage(YTEnvSetup):
     NUM_CPUS_PER_NODE = 10
     NUM_SLOTS_PER_NODE = 10
@@ -2758,6 +2770,7 @@ class TestSchedulerInferChildrenWeightsFromHistoricUsage(YTEnvSetup):
 
 
 @authors("renadeen")
+@pytest.mark.opensource
 class TestIntegralGuarantees(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -3322,6 +3335,7 @@ class TestIntegralGuarantees(YTEnvSetup):
 
 
 @authors("renadeen")
+@pytest.mark.opensource
 class TestCrashDuringDistributingFreeVolumeAfterRemovingAllResourceFlow(YTEnvSetup):
     # Scenario:
     # 1. there are burst pool with running operation and relaxed pool which supplies free volume for the first
@@ -3394,6 +3408,7 @@ class TestCrashDuringDistributingFreeVolumeAfterRemovingAllResourceFlow(YTEnvSet
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSatisfactionRatio(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -3615,6 +3630,7 @@ class TestSatisfactionRatio(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestVectorStrongGuarantees(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -3802,6 +3818,7 @@ class TestVectorStrongGuarantees(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestFifoPools(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -3962,6 +3979,7 @@ class TestFifoPools(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestRaceBetweenOperationUnregistrationAndFairShareUpdate(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -4011,6 +4029,7 @@ class TestRaceBetweenOperationUnregistrationAndFairShareUpdate(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestGuaranteePriorityScheduling(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1

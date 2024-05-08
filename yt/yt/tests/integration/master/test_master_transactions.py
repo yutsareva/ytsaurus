@@ -19,6 +19,7 @@ import builtins
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestMasterTransactions(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_NODES = 3
@@ -570,6 +571,7 @@ class TestMasterTransactions(YTEnvSetup):
             get("#a-b-c-d/@")
 
 
+@pytest.mark.opensource
 class TestMasterTransactionsMulticell(TestMasterTransactions):
     NUM_SECONDARY_MASTER_CELLS = 3
     MASTER_CELL_DESCRIPTORS = {
@@ -656,6 +658,7 @@ class TestMasterTransactionsMulticell(TestMasterTransactions):
             remove("//portals", recursive=True)
 
 
+@pytest.mark.opensource
 class TestMasterTransactionsShardedTx(TestMasterTransactionsMulticell):
     NUM_SECONDARY_MASTER_CELLS = 5
     NUM_TEST_PARTITIONS = 4
@@ -817,6 +820,7 @@ class TestMasterTransactionsShardedTx(TestMasterTransactionsMulticell):
         assert exists("//tmp/qqq")
 
 
+@pytest.mark.opensource
 class TestMasterTransactionsCTxS(TestMasterTransactionsShardedTx):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -830,6 +834,7 @@ class TestMasterTransactionsCTxS(TestMasterTransactionsShardedTx):
     }
 
 
+@pytest.mark.opensource
 class TestMasterTransactionsRpcProxy(TestMasterTransactions):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

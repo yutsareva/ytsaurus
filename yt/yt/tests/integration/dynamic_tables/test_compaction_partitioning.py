@@ -25,6 +25,7 @@ from time import sleep, time
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestCompactionPartitioning(TestSortedDynamicTablesBase):
     @authors("ifsmirnov")
     def test_partition_balancer_chunk_view(self):
@@ -677,5 +678,6 @@ class TestCompactionPartitioning(TestSortedDynamicTablesBase):
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestCompactionPartitioningMulticell(TestCompactionPartitioning):
     NUM_SECONDARY_MASTER_CELLS = 2

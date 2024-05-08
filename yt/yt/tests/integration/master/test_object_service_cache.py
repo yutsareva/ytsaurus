@@ -1,9 +1,11 @@
 from yt_env_setup import YTEnvSetup
 from yt_commands import authors, wait, get, ls
+import pytest
 
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestObjectServiceCache(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1

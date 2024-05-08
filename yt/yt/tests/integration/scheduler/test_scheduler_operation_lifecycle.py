@@ -42,6 +42,7 @@ from datetime import datetime, timedelta
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerFunctionality(YTEnvSetup, PrepareTables):
     NUM_TEST_PARTITIONS = 4
     NUM_MASTERS = 1
@@ -754,6 +755,7 @@ class TestSchedulerFunctionality(YTEnvSetup, PrepareTables):
         assert new_connection_time == connection_time
 
 
+@pytest.mark.opensource
 class TestSchedulerProfiling(YTEnvSetup, PrepareTables):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -1145,6 +1147,7 @@ class TestSchedulerProfiling(YTEnvSetup, PrepareTables):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerProfilingOnOperationFinished(YTEnvSetup, PrepareTables):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -1215,6 +1218,7 @@ class TestSchedulerProfilingOnOperationFinished(YTEnvSetup, PrepareTables):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerErrorTruncate(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1298,6 +1302,7 @@ class TestSchedulerErrorTruncate(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSafeAssertionsMode(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1431,6 +1436,7 @@ class TestSafeAssertionsMode(YTEnvSetup):
         assert op.get_error().contains_code(213)  # NScheduler::EErrorCode::TestingError
 
 
+@pytest.mark.opensource
 class TestSchedulerAttributes(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -1604,6 +1610,7 @@ class TestSchedulerAttributes(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestAsyncControllerActions(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 2  # snapshot upload replication factor is 2; unable to configure
@@ -1876,6 +1883,7 @@ class TestAsyncControllerActions(YTEnvSetup):
         op.track()
 
 
+@pytest.mark.opensource
 class TestControllerAgentPrerequisiteTxError(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 2  # snapshot upload replication factor is 2; unable to configure
@@ -1924,6 +1932,7 @@ class TestControllerAgentPrerequisiteTxError(YTEnvSetup):
         op.track()
 
 
+@pytest.mark.opensource
 class TestControllerAgentDisconnectionDuringUnregistration(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 2  # snapshot upload replication factor is 2; unable to configure
@@ -1978,6 +1987,7 @@ class TestControllerAgentDisconnectionDuringUnregistration(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSuccessfulScheduleJobDurationEstimate(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1

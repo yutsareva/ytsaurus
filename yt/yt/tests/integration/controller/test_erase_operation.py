@@ -11,6 +11,7 @@ import pytest
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerEraseCommands(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -193,5 +194,6 @@ class TestSchedulerEraseCommands(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerEraseCommandsMulticell(TestSchedulerEraseCommands):
     NUM_SECONDARY_MASTER_CELLS = 2

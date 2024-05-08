@@ -3,10 +3,12 @@ from yt_env_setup import YTEnvSetup
 from yt_commands import authors, wait, get, set, ls, exists, create_user
 
 from yt.common import YtError
+import pytest
 
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestDiscovery(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SECONDARY_MASTER_CELLS = 1
@@ -17,6 +19,7 @@ class TestDiscovery(YTEnvSetup):
         assert exists("//sys/primary_masters/{0}/orchid/discovery_server".format(master))
 
 
+@pytest.mark.opensource
 class TestDiscoveryServers(YTEnvSetup):
     NUM_DISCOVERY_SERVERS = 5
 

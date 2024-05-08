@@ -22,6 +22,7 @@ import time
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestHunkStorage(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -437,10 +438,12 @@ class TestHunkStorage(YTEnvSetup):
         self._remove_hunk_storage("//tmp/h")
 
 
+@pytest.mark.opensource
 class TestHunkStorageMulticell(TestHunkStorage):
     NUM_SECONDARY_MASTER_CELLS = 1
 
 
+@pytest.mark.opensource
 class TestHunkStoragePortal(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

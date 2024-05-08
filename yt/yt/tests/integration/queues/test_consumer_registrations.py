@@ -64,6 +64,7 @@ class QueueConsumerRegistration:
                    r["vital"], cls._normalize_partitions(r["partitions"]))
 
 
+@pytest.mark.opensource
 class TestQueueConsumerApiBase(ReplicatedObjectBase):
     def _get_drivers(self, clusters=None):
         if clusters is None:
@@ -212,6 +213,7 @@ class TestQueueConsumerApiBase(ReplicatedObjectBase):
             self._apply_registration_manager_dynamic_config_patch(config_patch, cluster)
 
 
+@pytest.mark.opensource
 class TestConsumerRegistrations(TestQueueConsumerApiBase):
     NUM_TEST_PARTITIONS = 4
 
@@ -758,6 +760,7 @@ class TestConsumerRegistrations(TestQueueConsumerApiBase):
         wait(lambda: self._registrations_are(local_replica_path, replica_clusters, builtins.set()))
 
 
+@pytest.mark.opensource
 class TestDataApi(TestQueueConsumerApiBase, ReplicatedObjectBase, TestQueueAgentBase):
     NUM_TEST_PARTITIONS = 2
 

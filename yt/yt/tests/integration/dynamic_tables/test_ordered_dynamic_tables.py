@@ -24,6 +24,7 @@ import random
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestOrderedDynamicTablesBase(DynamicTablesBase):
     def _create_simple_table(self, path, **attributes):
         if "schema" not in attributes:
@@ -84,6 +85,7 @@ class TestOrderedDynamicTablesBase(DynamicTablesBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestOrderedDynamicTables(TestOrderedDynamicTablesBase):
     NUM_TEST_PARTITIONS = 2
 
@@ -1355,14 +1357,17 @@ class TestOrderedDynamicTables(TestOrderedDynamicTablesBase):
             assert [t["trimmed_row_count"] for t in get("//tmp/t/@tablets")] == trimmed_row_counts
 
 
+@pytest.mark.opensource
 class TestOrderedDynamicTablesMulticell(TestOrderedDynamicTables):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestOrderedDynamicTablesPortal(TestOrderedDynamicTablesMulticell):
     ENABLE_TMP_PORTAL = True
 
 
+@pytest.mark.opensource
 class TestOrderedDynamicTablesRpcProxy(TestOrderedDynamicTables):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -1371,6 +1376,7 @@ class TestOrderedDynamicTablesRpcProxy(TestOrderedDynamicTables):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestOrderedDynamicTablesMultipleWriteBatches(TestOrderedDynamicTablesBase):
     DELTA_DRIVER_CONFIG = {"max_rows_per_write_request": 10}
 

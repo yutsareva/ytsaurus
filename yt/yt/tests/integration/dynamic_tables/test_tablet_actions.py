@@ -115,6 +115,7 @@ class TabletActionsBase(DynamicTablesBase):
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestTabletActions(TabletActionsBase):
     ENABLE_TABLET_BALANCER = True
     NUM_TEST_PARTITIONS = 3
@@ -1387,6 +1388,7 @@ class TabletBalancerBase(TabletActionsBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestTabletBalancer(TabletBalancerBase):
     ENABLE_TABLET_BALANCER = True
     NUM_TEST_PARTITIONS = 4
@@ -1498,10 +1500,12 @@ class TestTabletBalancer(TabletBalancerBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestTabletActionsMulticell(TestTabletActions):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestTabletActionsRpcProxy(TestTabletActions):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -1510,10 +1514,12 @@ class TestTabletActionsRpcProxy(TestTabletActions):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestTabletBalancerMulticell(TestTabletBalancer):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestTabletBalancerRpcProxy(TestTabletBalancer):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -1522,6 +1528,7 @@ class TestTabletBalancerRpcProxy(TestTabletBalancer):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestRemoteChangelogStore(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 6
@@ -1551,5 +1558,6 @@ class TestRemoteChangelogStore(YTEnvSetup):
                     assert get("#{}/@native_cell_tag".format(chunk_id)) == desired_cell_tag
 
 
+@pytest.mark.opensource
 class TestRemoteChangelogStoreMulticell(TestRemoteChangelogStore):
     NUM_SECONDARY_MASTER_CELLS = 2

@@ -5,6 +5,7 @@ from yt_commands import authors, create_dynamic_table, sync_mount_table, sync_cr
 from yt_type_helpers import make_schema
 
 
+@pytest.mark.opensource
 class TestExplainQuery(YTEnvSetup):
     USE_DYNAMIC_TABLES = True
 

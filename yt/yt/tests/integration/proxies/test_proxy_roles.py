@@ -12,6 +12,7 @@ import pytest
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestProxyRoles(YTEnvSetup):
     NUM_MASTERS = 1
 

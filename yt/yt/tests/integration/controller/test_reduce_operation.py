@@ -24,6 +24,7 @@ import binascii
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerReduceCommands(YTEnvSetup):
     NUM_TEST_PARTITIONS = 8
 
@@ -3171,6 +3172,7 @@ for line in sys.stdin:
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerReduceCommandsSliceSize(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -3239,10 +3241,12 @@ class TestSchedulerReduceCommandsSliceSize(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerReduceCommandsMulticell(TestSchedulerReduceCommands):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestSchedulerReduceCommandsNewSortedPool(TestSchedulerReduceCommands):
     DELTA_SCHEDULER_CONFIG = {
         "scheduler": {

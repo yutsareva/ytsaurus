@@ -23,6 +23,7 @@ import pytest
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestNodeIOTrackingBase(YTEnvSetup):
     def setup_method(self, method):
         super(TestNodeIOTrackingBase, self).setup_method(method)
@@ -118,6 +119,7 @@ class TestNodeIOTrackingBase(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestDataNodeIOTracking(TestNodeIOTrackingBase):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -343,6 +345,7 @@ class TestDataNodeIOTracking(TestNodeIOTrackingBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestDataNodeErasureIOTracking(TestNodeIOTrackingBase):
     NUM_MASTERS = 1
     NUM_NODES = 6
@@ -418,6 +421,7 @@ class TestDataNodeErasureIOTracking(TestNodeIOTrackingBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestMasterJobIOTracking(TestNodeIOTrackingBase):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -567,6 +571,7 @@ class TestMasterJobIOTracking(TestNodeIOTrackingBase):
         assert aggregate_events[0]["io_requests"] > 0
 
 
+@pytest.mark.opensource
 class TestRepairMasterJobIOTracking(TestNodeIOTrackingBase):
     NUM_MASTERS = 1
     # We need six nodes to store chunks for reed_solomon_3_3 and one extra node to store repaired chunk.
@@ -617,6 +622,7 @@ class TestRepairMasterJobIOTracking(TestNodeIOTrackingBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestClientIOTracking(TestNodeIOTrackingBase):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -875,6 +881,7 @@ class TestClientIOTracking(TestNodeIOTrackingBase):
         assert "object_id" in read_event
 
 
+@pytest.mark.opensource
 class TestClientRpcProxyIOTracking(TestClientIOTracking):
     DRIVER_BACKEND = "rpc"
     ENABLE_HTTP_PROXY = True
@@ -895,6 +902,7 @@ class TestClientRpcProxyIOTracking(TestClientIOTracking):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestJobIOTrackingBase(TestNodeIOTrackingBase):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -980,6 +988,7 @@ class TestJobIOTrackingBase(TestNodeIOTrackingBase):
         return paths
 
 
+@pytest.mark.opensource
 class TestJobIOTracking(TestJobIOTrackingBase):
     @authors("gepardo")
     def test_pools(self):
@@ -1478,6 +1487,7 @@ class TestJobIOTracking(TestJobIOTrackingBase):
         assert read_table("//tmp/table_out") == table_data
 
 
+@pytest.mark.opensource
 class TestMapReduceJobIOTracking(TestJobIOTrackingBase):
     DELTA_CONTROLLER_AGENT_CONFIG = {
         "controller_agent": {
@@ -1787,6 +1797,7 @@ cat
         assert sorted_dicts(read_table("//tmp/table_out")) == table_data
 
 
+@pytest.mark.opensource
 class TestSortJobIOTracking(TestJobIOTrackingBase):
     DELTA_CONTROLLER_AGENT_CONFIG = {
         "controller_agent": {
@@ -2075,6 +2086,7 @@ class TestSortJobIOTracking(TestJobIOTrackingBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestRemoteCopyIOTrackingBase(TestNodeIOTrackingBase):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -2120,6 +2132,7 @@ class TestRemoteCopyIOTrackingBase(TestNodeIOTrackingBase):
         assert "erasure_codec@" in event
 
 
+@pytest.mark.opensource
 class TestRemoteCopyIOTracking(TestRemoteCopyIOTrackingBase):
     USE_DYNAMIC_TABLES = True
     ENABLE_BULK_INSERT = True
@@ -2226,6 +2239,7 @@ class TestRemoteCopyIOTracking(TestRemoteCopyIOTrackingBase):
         assert read_table("//tmp/dyntable_out") == table_data
 
 
+@pytest.mark.opensource
 class TestRemoteCopyErasureIOTracking(TestRemoteCopyIOTrackingBase):
     NUM_NODES = 6
     NUM_NODES_REMOTE_0 = 6
@@ -2367,6 +2381,7 @@ class TestRemoteCopyErasureIOTracking(TestRemoteCopyIOTrackingBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestUserJobIOTracking(TestJobIOTrackingBase):
     USE_PORTO = True
 

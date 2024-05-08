@@ -16,6 +16,7 @@ from time import sleep
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSequoiaEnvSetup(YTEnvSetup):
     USE_SEQUOIA = True
     NUM_CYPRESS_PROXIES = 1
@@ -41,6 +42,7 @@ class TestSequoiaEnvSetup(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSequoiaInternals(YTEnvSetup):
     USE_SEQUOIA = True
     ENABLE_TMP_ROOTSTOCK = True
@@ -204,6 +206,7 @@ class TestSequoiaInternals(YTEnvSetup):
 
 
 @authors("kvk1920")
+@pytest.mark.opensource
 class TestSequoiaTmpCleanup(YTEnvSetup):
     USE_SEQUOIA = True
     ENABLE_TMP_ROOTSTOCK = True

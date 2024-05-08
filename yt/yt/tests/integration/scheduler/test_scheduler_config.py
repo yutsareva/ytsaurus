@@ -6,11 +6,13 @@ from yt_commands import (
     ls, get,
     set, exists, write_table,
     map)
+import pytest
 
 
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerConfig(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5

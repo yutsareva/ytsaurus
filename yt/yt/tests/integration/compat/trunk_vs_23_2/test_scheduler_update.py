@@ -68,6 +68,7 @@ def check_running_operation(lookup_in_archive=False):
         assert op.lookup_in_archive()["state"] == "completed"
 
 
+@pytest.mark.opensource
 class TestSchedulerUpdate(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -105,6 +106,7 @@ class TestSchedulerUpdate(YTEnvSetup):
                 next(s)
 
 
+@pytest.mark.opensource
 class TestSchedulerUpdateWithOperationsCleaner(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1

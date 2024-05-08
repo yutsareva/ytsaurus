@@ -18,6 +18,7 @@ import pytest
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestConcatenate(YTEnvSetup):
     NUM_TEST_PARTITIONS = 2
     NUM_MASTERS = 1
@@ -806,6 +807,7 @@ class TestConcatenate(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestConcatenateMulticell(TestConcatenate):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -853,6 +855,7 @@ class TestConcatenateMulticell(TestConcatenate):
         assert read_table("//tmp/t") == [{"a": "b"}]
 
 
+@pytest.mark.opensource
 class TestConcatenatePortal(TestConcatenateMulticell):
     ENABLE_TMP_PORTAL = True
     NUM_SECONDARY_MASTER_CELLS = 3
@@ -890,6 +893,7 @@ class TestConcatenatePortal(TestConcatenateMulticell):
         assert read_table("//portals/p/dst") == [{"a": "b"}, {"c": "d"}]
 
 
+@pytest.mark.opensource
 class TestConcatenateShardedTx(TestConcatenatePortal):
     NUM_SECONDARY_MASTER_CELLS = 5
     MASTER_CELL_DESCRIPTORS = {
@@ -910,6 +914,7 @@ class TestConcatenateShardedTx(TestConcatenatePortal):
     }
 
 
+@pytest.mark.opensource
 class TestConcatenateShardedTxCTxS(TestConcatenateShardedTx):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -923,11 +928,13 @@ class TestConcatenateShardedTxCTxS(TestConcatenateShardedTx):
     }
 
 
+@pytest.mark.opensource
 class TestConcatenateRpcProxy(TestConcatenate):
     DRIVER_BACKEND = "rpc"
     ENABLE_HTTP_PROXY = True
     ENABLE_RPC_PROXY = True
 
 
+@pytest.mark.opensource
 class TestConcatenateCypressProxy(TestConcatenate):
     NUM_CYPRESS_PROXIES = 1

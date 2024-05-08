@@ -39,6 +39,7 @@ import os.path
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestRpcProxy(YTEnvSetup):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -151,6 +152,7 @@ class RpcProxyAccessCheckerTestBase(YTEnvSetup):
         wait(lambda: not check_access("u"))
 
 
+@pytest.mark.opensource
 class TestRpcProxyAccessChecker(RpcProxyAccessCheckerTestBase):
     def create_proxy_role_namespace(self):
         create("rpc_proxy_role_map", "//sys/rpc_proxy_roles")
@@ -162,6 +164,7 @@ class TestRpcProxyAccessChecker(RpcProxyAccessCheckerTestBase):
         set(f"//sys/rpc_proxy_roles/{role}/@acl", acl)
 
 
+@pytest.mark.opensource
 class TestRpcProxyAccessCheckerWithAco(RpcProxyAccessCheckerTestBase):
     @classmethod
     def setup_class(cls):
@@ -181,6 +184,7 @@ class TestRpcProxyAccessCheckerWithAco(RpcProxyAccessCheckerTestBase):
         set(f"//sys/access_control_object_namespaces/rpc_proxy_roles/{role}/principal/@acl", acl)
 
 
+@pytest.mark.opensource
 class TestRpcProxyStructuredLogging(YTEnvSetup):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -419,6 +423,7 @@ class TestRpcProxyStructuredLogging(YTEnvSetup):
         assert read_entry("SelectRows", from_barrier=b1, to_barrier=b2)["request"]["query"] == query[:10]
 
 
+@pytest.mark.opensource
 class TestRpcProxyDiscovery(YTEnvSetup):
     ENABLE_HTTP_PROXY = True
     ENABLE_RPC_PROXY = True
@@ -479,6 +484,7 @@ class TestRpcProxyDiscovery(YTEnvSetup):
         assert len(proxies) == 0
 
 
+@pytest.mark.opensource
 class TestRpcProxyDiscoveryRoleFromStaticConfig(YTEnvSetup):
     ENABLE_HTTP_PROXY = True
     ENABLE_RPC_PROXY = True
@@ -513,6 +519,7 @@ class TestRpcProxyDiscoveryRoleFromStaticConfig(YTEnvSetup):
         assert sorted(proxies) == configured_proxy_addresses
 
 
+@pytest.mark.opensource
 class TestRpcProxyDiscoveryBalancers(YTEnvSetup):
     ENABLE_HTTP_PROXY = True
     ENABLE_RPC_PROXY = True
@@ -566,6 +573,7 @@ class TestRpcProxyDiscoveryBalancers(YTEnvSetup):
         assert len(proxies) == 0
 
 
+@pytest.mark.opensource
 class TestRpcProxyDiscoveryViaHttp(YTEnvSetup):
     DRIVER_BACKEND = "rpc"
     ENABLE_HTTP_PROXY = True
@@ -631,6 +639,7 @@ class TestRpcProxyDiscoveryViaHttp(YTEnvSetup):
         assert excinfo.value.contains_text("Proxy list is empty")
 
 
+@pytest.mark.opensource
 class TestRpcProxyBase(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -690,6 +699,7 @@ class TestRpcProxyBase(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestRpcProxyClientRetries(TestRpcProxyBase):
     NUM_NODES = 2
 
@@ -821,6 +831,7 @@ class TestRpcProxyClientRetries(TestRpcProxyBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestOperationsRpcProxy(TestRpcProxyBase):
     @authors("kiselyovp")
     def test_map_reduce_simple(self):
@@ -905,6 +916,7 @@ class TestOperationsRpcProxy(TestRpcProxyBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestDumpJobContextRpcProxy(TestRpcProxyBase):
     DELTA_DYNAMIC_NODE_CONFIG = {
         "%true": {
@@ -958,6 +970,7 @@ class TestDumpJobContextRpcProxy(TestRpcProxyBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestPessimisticQuotaCheckRpcProxy(TestRpcProxyBase):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1038,6 +1051,7 @@ class TestPessimisticQuotaCheckRpcProxy(TestRpcProxyBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestPessimisticQuotaCheckMulticellRpcProxy(TestPessimisticQuotaCheckRpcProxy):
     NUM_SECONDARY_MASTER_CELLS = 2
     NUM_SCHEDULERS = 1
@@ -1046,6 +1060,7 @@ class TestPessimisticQuotaCheckMulticellRpcProxy(TestPessimisticQuotaCheckRpcPro
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestModifyRowsRpcProxy(TestRpcProxyBase):
     BATCH_CAPACITY = 10
     DELTA_RPC_DRIVER_CONFIG = {"modify_rows_batch_capacity": BATCH_CAPACITY}
@@ -1079,6 +1094,7 @@ class TestModifyRowsRpcProxy(TestRpcProxyBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestRpcProxyWithoutDiscovery(TestRpcProxyBase):
     NUM_RPC_PROXIES = 1
     ENABLE_HTTP_PROXY = False
@@ -1098,6 +1114,7 @@ class TestRpcProxyWithoutDiscovery(TestRpcProxyBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCompressionRpcProxy(YTEnvSetup):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -1135,6 +1152,7 @@ class TestCompressionRpcProxy(YTEnvSetup):
         lookup_rows("//tmp/d", [{"key": 0}])
 
 
+@pytest.mark.opensource
 class TestModernCompressionRpcProxy(TestCompressionRpcProxy):
     DELTA_DRIVER_CONFIG = {
         "request_codec": "lz4",
@@ -1146,6 +1164,7 @@ class TestModernCompressionRpcProxy(TestCompressionRpcProxy):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestRpcProxyFormatConfig(TestRpcProxyBase, _TestProxyFormatConfigBase):
     def setup_method(self, method):
         super(TestRpcProxyFormatConfig, self).setup_method(method)
@@ -1187,6 +1206,7 @@ class TestRpcProxyFormatConfig(TestRpcProxyBase, _TestProxyFormatConfigBase):
 
 
 @pytest.mark.skipif(is_asan_build(), reason="Memory allocation is not reported under ASAN")
+@pytest.mark.opensource
 class TestRpcProxyHeapUsageStatisticsBase(TestRpcProxyBase):
     NUM_RPC_PROXIES = 1
 
@@ -1251,6 +1271,7 @@ class TestRpcProxyHeapUsageStatisticsBase(TestRpcProxyBase):
 
 
 @pytest.mark.skipif(is_asan_build(), reason="Memory allocation is not reported under ASAN")
+@pytest.mark.opensource
 class TestRpcProxyHeapUsageStatistics(TestRpcProxyHeapUsageStatisticsBase):
     DELTA_RPC_PROXY_CONFIG = {
         "api_service": {
@@ -1345,6 +1366,7 @@ class TestRpcProxyHeapUsageStatistics(TestRpcProxyHeapUsageStatisticsBase):
 
 
 @pytest.mark.skipif(is_asan_build(), reason="Memory allocation is not reported under ASAN")
+@pytest.mark.opensource
 class TestRpcProxyNullApiTestingOptions(TestRpcProxyHeapUsageStatisticsBase):
     @authors("ni-stoiko")
     def test_null_api_testing_options(self):

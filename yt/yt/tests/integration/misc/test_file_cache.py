@@ -14,6 +14,7 @@ import time
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestFileCache(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -218,6 +219,7 @@ class TestFileCache(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestFileCacheRpcProxy(TestFileCache):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

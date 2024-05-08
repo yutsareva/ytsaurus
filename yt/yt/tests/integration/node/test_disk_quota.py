@@ -20,6 +20,7 @@ import shutil
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestDiskUsagePorto(YTEnvSetup):
     USE_PORTO = True
 
@@ -289,6 +290,7 @@ class DiskMediumTestConfiguration(object):
     }
 
 
+@pytest.mark.opensource
 class TestDiskMediumsPorto(YTEnvSetup, DiskMediumTestConfiguration):
     NUM_SCHEDULERS = 1
     NUM_MASTERS = 1
@@ -534,6 +536,7 @@ class TestDiskMediumsPorto(YTEnvSetup, DiskMediumTestConfiguration):
             assert op3.get_job_count(type) == 0
 
 
+@pytest.mark.opensource
 class TestDiskMediumRenamePorto(YTEnvSetup, DiskMediumTestConfiguration):
     NUM_SCHEDULERS = 1
     NUM_MASTERS = 1
@@ -658,6 +661,7 @@ class TestDiskMediumRenamePorto(YTEnvSetup, DiskMediumTestConfiguration):
         start_op(3, "ssd_renamed", track=True)
 
 
+@pytest.mark.opensource
 class TestDefaultDiskMediumPorto(YTEnvSetup, DiskMediumTestConfiguration):
     NUM_SCHEDULERS = 1
     NUM_MASTERS = 1
@@ -762,6 +766,7 @@ class TestDefaultDiskMediumPorto(YTEnvSetup, DiskMediumTestConfiguration):
         op.abort()
 
 
+@pytest.mark.opensource
 class TestDefaultDiskMediumWithUnspecifiedMediumPorto(YTEnvSetup, DiskMediumTestConfiguration):
     NUM_SCHEDULERS = 1
     NUM_MASTERS = 1
@@ -911,6 +916,7 @@ class TestDefaultDiskMediumWithUnspecifiedMediumPorto(YTEnvSetup, DiskMediumTest
         assert aborted3 == op3.get_job_count("aborted")
 
 
+@pytest.mark.opensource
 class TestDefaultDiskMediumWithUnspecifiedMediumAndMultipleSlotsPorto(YTEnvSetup, DiskMediumTestConfiguration):
     NUM_SCHEDULERS = 1
     NUM_MASTERS = 1
@@ -1013,6 +1019,7 @@ class TestDefaultDiskMediumWithUnspecifiedMediumAndMultipleSlotsPorto(YTEnvSetup
         wait(lambda: get(node_orchid_job_path + "/exec_attributes/medium_name") == "ssd")
 
 
+@pytest.mark.opensource
 class TestDiskMediumAccounting(YTEnvSetup, DiskMediumTestConfiguration):
     NUM_SCHEDULERS = 1
     NUM_MASTERS = 1

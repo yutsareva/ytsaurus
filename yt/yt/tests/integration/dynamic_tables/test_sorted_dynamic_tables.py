@@ -46,6 +46,7 @@ def get_tablet_follower_addresses(tablet_id):
 
 ##################################################################
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesBase(DynamicTablesBase):
     DELTA_NODE_CONFIG = {
         "cluster_connection": {
@@ -217,6 +218,7 @@ class TestSortedDynamicTablesBase(DynamicTablesBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTables(TestSortedDynamicTablesBase):
     NUM_TEST_PARTITIONS = 6
 
@@ -1669,10 +1671,12 @@ class TestSortedDynamicTables(TestSortedDynamicTablesBase):
             lookup_rows("//tmp/t", [{"key": 1}])
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesMulticell(TestSortedDynamicTables):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesPortal(TestSortedDynamicTablesMulticell):
     ENABLE_TMP_PORTAL = True
 
@@ -1693,6 +1697,7 @@ class TestSortedDynamicTablesPortal(TestSortedDynamicTablesMulticell):
     }
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesRpcProxy(TestSortedDynamicTables):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -1779,6 +1784,7 @@ class TestSortedDynamicTablesRpcProxy(TestSortedDynamicTables):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesSpecialColumns(TestSortedDynamicTablesBase):
     @authors("ifsmirnov")
     def test_required_columns(self):
@@ -1970,21 +1976,25 @@ class TestSortedDynamicTablesSpecialColumns(TestSortedDynamicTablesBase):
         assert_items_equal(actual, expected)
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesSpecialColumnsMulticell(TestSortedDynamicTablesSpecialColumns):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesSpecialColumnsRpcProxy(TestSortedDynamicTablesSpecialColumns):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesSpecialColumnsPortal(TestSortedDynamicTablesSpecialColumnsMulticell):
     ENABLE_TMP_PORTAL = True
 
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesMemoryLimit(TestSortedDynamicTablesBase):
     NUM_NODES = 1
 
@@ -2131,6 +2141,7 @@ class TestSortedDynamicTablesMemoryLimit(TestSortedDynamicTablesBase):
         assert_items_equal(actual, expected)
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesMemoryLimitRpcProxy(TestSortedDynamicTablesMemoryLimit):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -2138,6 +2149,7 @@ class TestSortedDynamicTablesMemoryLimitRpcProxy(TestSortedDynamicTablesMemoryLi
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesMultipleWriteBatches(TestSortedDynamicTablesBase):
     DELTA_DRIVER_CONFIG = {
         "max_rows_per_write_request": 10
@@ -2156,6 +2168,7 @@ class TestSortedDynamicTablesMultipleWriteBatches(TestSortedDynamicTablesBase):
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesTabletDynamicMemory(TestSortedDynamicTablesBase):
     NUM_NODES = 1
 
@@ -2302,6 +2315,7 @@ class TestSortedDynamicTablesTabletDynamicMemory(TestSortedDynamicTablesBase):
                 break
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesMultipleSlotsPerNode(TestSortedDynamicTablesBase):
     NUM_NODES = 1
     DELTA_NODE_CONFIG = {
@@ -2344,6 +2358,7 @@ class TestSortedDynamicTablesMultipleSlotsPerNode(TestSortedDynamicTablesBase):
         assert_items_equal(select_rows("* from [//tmp/t]"), rows)
 
 
+@pytest.mark.opensource
 class TestReshardWithSlicing(TestSortedDynamicTablesBase):
     NUM_TEST_PARTITIONS = 2
 
@@ -2633,6 +2648,7 @@ class TestReshardWithSlicing(TestSortedDynamicTablesBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesChunkFormat(TestSortedDynamicTablesBase):
     @authors("babenko")
     def test_validate_chunk_format_on_mount(self):

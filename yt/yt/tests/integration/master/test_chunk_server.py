@@ -24,6 +24,7 @@ from time import sleep
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestChunkServer(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_NODES = 21
@@ -496,6 +497,7 @@ class TestChunkServer(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestNodeLeaseTransactionTimeout(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 4
@@ -570,6 +572,7 @@ class TestNodeLeaseTransactionTimeout(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestChunkServerMulticell(TestChunkServer):
     NUM_SECONDARY_MASTER_CELLS = 2
     NUM_SCHEDULERS = 1
@@ -719,6 +722,7 @@ class TestChunkServerMulticell(TestChunkServer):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestChunkServerReplicaRemoval(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_NODES = 8
@@ -785,6 +789,7 @@ class TestChunkServerReplicaRemoval(YTEnvSetup):
         self._wait_for_replicas_removal("//tmp/j", service_to_restart)
 
 
+@pytest.mark.opensource
 class TestChunkServerReplicaRemovalMulticell(TestChunkServerReplicaRemoval):
     NUM_SECONDARY_MASTER_CELLS = 2
     NUM_SCHEDULERS = 1
@@ -793,6 +798,7 @@ class TestChunkServerReplicaRemovalMulticell(TestChunkServerReplicaRemoval):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestLastFinishedJobStoreLimit(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 4
@@ -834,6 +840,7 @@ class TestLastFinishedJobStoreLimit(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestMultipleErasurePartsPerNode(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -863,6 +870,7 @@ class TestMultipleErasurePartsPerNode(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestConsistentChunkReplicaPlacementBase(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_NODES = 20
@@ -936,6 +944,7 @@ class TestConsistentChunkReplicaPlacementBase(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestConsistentChunkReplicaPlacement(TestConsistentChunkReplicaPlacementBase):
     NUM_TEST_PARTITIONS = 3
     NUM_SECONDARY_MASTER_CELLS = 2
@@ -1183,6 +1192,7 @@ class TestConsistentChunkReplicaPlacement(TestConsistentChunkReplicaPlacementBas
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestConsistentChunkReplicaPlacementSnapshotLoading(TestConsistentChunkReplicaPlacementBase):
     @authors("shakurov")
     def test_after_snapshot_loading_consistency(self):
@@ -1208,6 +1218,7 @@ class TestConsistentChunkReplicaPlacementSnapshotLoading(TestConsistentChunkRepl
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestConsistentChunkReplicaPlacementLeaderSwitch(TestConsistentChunkReplicaPlacementBase):
     @authors("shakurov")
     def test_leader_switch_consistency(self):
@@ -1235,6 +1246,7 @@ class TestConsistentChunkReplicaPlacementLeaderSwitch(TestConsistentChunkReplica
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestChunkWeightStatisticsHistogram(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1351,6 +1363,7 @@ class TestChunkWeightStatisticsHistogram(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestChunkCreationThrottler(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1384,6 +1397,7 @@ class TestChunkCreationThrottler(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestChunkServerCypressIntegration(YTEnvSetup):
     @authors("danilalexeev")
     def test_filtered_virtual_map_mutating_attribute_request(self):

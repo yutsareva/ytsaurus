@@ -8,7 +8,7 @@ from yt_commands import (authors, get, create, remove, start_transaction, commit
 from yt.yson import YsonEntity
 
 import builtins
-
+import pytest
 
 class QueueAgentHelpers:
     @staticmethod
@@ -30,6 +30,7 @@ class QueueAgentHelpers:
             assert consumers[path] == get(path + "/@attribute_revision")
 
 
+@pytest.mark.opensource
 class TestQueueAgentObjectRevisions(ChaosTestBase, YTEnvSetup):
     USE_DYNAMIC_TABLES = True
 
@@ -383,6 +384,7 @@ class TestQueueAgentObjectRevisions(ChaosTestBase, YTEnvSetup):
                 set(f"//tmp/{consumer_name}/@treat_as_queue_consumer", True, tx=tx)
 
 
+@pytest.mark.opensource
 class TestQueueAgentObjectsRevisionsPortal(TestQueueAgentObjectRevisions):
     NUM_SECONDARY_MASTER_CELLS = 2
     ENABLE_TMP_PORTAL = True

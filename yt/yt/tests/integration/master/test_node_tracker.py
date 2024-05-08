@@ -24,6 +24,7 @@ import time
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestNodeTracker(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -287,6 +288,7 @@ class TestNodeTracker(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestNodeTrackerMulticell(TestNodeTracker):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -315,6 +317,7 @@ class TestNodeTrackerMulticell(TestNodeTracker):
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestRemoveClusterNodes(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -350,6 +353,7 @@ class TestRemoveClusterNodes(YTEnvSetup):
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestNodeUnrecognizedOptionsAlert(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -370,6 +374,7 @@ class TestNodeUnrecognizedOptionsAlert(YTEnvSetup):
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestReregisterNode(YTEnvSetup):
     NUM_NODES = 2
     FIRST_CONFIG = None

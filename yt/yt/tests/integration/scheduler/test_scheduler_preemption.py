@@ -48,6 +48,7 @@ def get_scheduling_options(user_slots):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerPreemption(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -673,6 +674,7 @@ class TestSchedulerPreemption(YTEnvSetup):
         wait(lambda: preemptible_job not in op.get_running_jobs())
 
 
+@pytest.mark.opensource
 class TestNonPreemptibleResourceUsageThreshold(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -869,6 +871,7 @@ class TestNonPreemptibleResourceUsageThreshold(YTEnvSetup):
         wait_no_assert(lambda: self._check_preemptible_job_count(op, 1, 2))
 
 
+@pytest.mark.opensource
 class TestPreemptionPriorityScope(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -946,6 +949,7 @@ class TestPreemptionPriorityScope(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestRacyPreemption(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -1001,6 +1005,7 @@ class TestRacyPreemption(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulingBugOfOperationWithGracefulPreemption(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -1040,6 +1045,7 @@ class TestSchedulingBugOfOperationWithGracefulPreemption(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestResourceLimitsOverdraftPreemption(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 2
@@ -1182,6 +1188,7 @@ class TestResourceLimitsOverdraftPreemption(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerAggressivePreemption(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 4
@@ -1347,6 +1354,7 @@ class TestSchedulerAggressivePreemption(YTEnvSetup):
 
 
 # TODO(ignat): merge with class above.
+@pytest.mark.opensource
 class TestSchedulerAggressivePreemption2(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -1479,6 +1487,7 @@ class TestSchedulerAggressivePreemption2(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestIncreasedStarvationToleranceForFullySatisfiedDemand(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -1540,6 +1549,7 @@ class TestIncreasedStarvationToleranceForFullySatisfiedDemand(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSsdPriorityPreemption(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 4

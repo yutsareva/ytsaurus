@@ -28,6 +28,7 @@ import random
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestTables(YTEnvSetup):
     NUM_TEST_PARTITIONS = 10
 
@@ -2778,6 +2779,7 @@ class TestTables(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestTablesChunkFormats(YTEnvSetup):
     NUM_MASTERS = 1
 
@@ -2818,6 +2820,7 @@ def check_multicell_statistics(path, chunk_count_map):
         assert statistics[cell_tag]["chunk_count"] == chunk_count_map[cell_tag]
 
 
+@pytest.mark.opensource
 class TestTablesMulticell(TestTables):
     NUM_SECONDARY_MASTER_CELLS = 3
 
@@ -3043,10 +3046,12 @@ class TestTablesMulticell(TestTables):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestTablesPortal(TestTablesMulticell):
     ENABLE_TMP_PORTAL = True
 
 
+@pytest.mark.opensource
 class TestTablesShardedTx(TestTablesPortal):
     NUM_SECONDARY_MASTER_CELLS = 4
     MASTER_CELL_DESCRIPTORS = {
@@ -3064,6 +3069,7 @@ class TestTablesShardedTx(TestTablesPortal):
     }
 
 
+@pytest.mark.opensource
 class TestTablesShardedTxCTxS(TestTablesShardedTx):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -3077,6 +3083,7 @@ class TestTablesShardedTxCTxS(TestTablesShardedTx):
     }
 
 
+@pytest.mark.opensource
 class TestTablesRpcProxy(TestTables):
     DRIVER_BACKEND = "rpc"
     ENABLE_HTTP_PROXY = True
@@ -3099,6 +3106,7 @@ class TestTablesRpcProxy(TestTables):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestYPathTypeConversion(TestTables):
     @authors("gepardo")
     def test_type_conversion(self):

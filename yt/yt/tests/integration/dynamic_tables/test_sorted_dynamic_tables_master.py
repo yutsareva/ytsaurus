@@ -26,6 +26,7 @@ import builtins
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesMountUnmountFreeze(TestSortedDynamicTablesBase):
     @authors("babenko", "ignat")
     def test_mount(self):
@@ -295,15 +296,18 @@ class TestSortedDynamicTablesMountUnmountFreeze(TestSortedDynamicTablesBase):
         assert not exists("//tmp/t")
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesMountUnmountFreezeMulticell(TestSortedDynamicTablesMountUnmountFreeze):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesMountUnmountFreezeRpcProxy(TestSortedDynamicTablesMountUnmountFreeze):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesMountUnmountFreezePortal(TestSortedDynamicTablesMountUnmountFreezeMulticell):
     ENABLE_TMP_PORTAL = True
 
@@ -311,6 +315,7 @@ class TestSortedDynamicTablesMountUnmountFreezePortal(TestSortedDynamicTablesMou
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesCopyReshard(TestSortedDynamicTablesBase):
     def _prepare_copy(self):
         sync_create_cells(1)
@@ -836,14 +841,17 @@ class TestSortedDynamicTablesCopyReshard(TestSortedDynamicTablesBase):
             alter_table("//tmp/t", schema=old_schema)
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesCopyReshardMulticell(TestSortedDynamicTablesCopyReshard):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesCopyReshardRpcProxy(TestSortedDynamicTablesCopyReshard):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesCopyReshardPortal(TestSortedDynamicTablesCopyReshardMulticell):
     ENABLE_TMP_PORTAL = True

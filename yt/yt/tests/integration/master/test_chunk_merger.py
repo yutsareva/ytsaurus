@@ -42,6 +42,7 @@ def _schematize_rows(rows, schema):
     return [_schematize_row(row, schema) for row in rows]
 
 
+@pytest.mark.opensource
 class TestChunkMerger(YTEnvSetup):
     NUM_TEST_PARTITIONS = 16
 
@@ -1372,6 +1373,7 @@ class TestChunkMerger(YTEnvSetup):
         assert get("//tmp/t/@chunk_ids") == chunk_ids
 
 
+@pytest.mark.opensource
 class TestChunkMergerMulticell(TestChunkMerger):
     NUM_TEST_PARTITIONS = 6
 
@@ -1407,6 +1409,7 @@ class TestChunkMergerMulticell(TestChunkMerger):
             wait(lambda: not exists("#{}".format(chunk_id)))
 
 
+@pytest.mark.opensource
 class TestChunkMergerPortal(TestChunkMergerMulticell):
     NUM_TEST_PARTITIONS = 6
 
@@ -1414,6 +1417,7 @@ class TestChunkMergerPortal(TestChunkMergerMulticell):
     NUM_SECONDARY_MASTER_CELLS = 3
 
 
+@pytest.mark.opensource
 class TestShallowMergeValidation(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_NODES = 3

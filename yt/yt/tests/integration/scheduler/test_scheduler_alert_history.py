@@ -15,6 +15,7 @@ from yt.yson import YsonEntity
 
 import time
 from datetime import datetime
+import pytest
 
 ##################################################################
 
@@ -71,6 +72,7 @@ def _run_op_with_input_chunks_alert(return_events=True, wait_until_set_event_sen
         return op
 
 
+@pytest.mark.opensource
 class TestSchedulerAlertHistoryBase(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -116,6 +118,7 @@ class TestSchedulerAlertHistoryBase(YTEnvSetup):
     }
 
 
+@pytest.mark.opensource
 class TestSchedulerAlertHistory(TestSchedulerAlertHistoryBase):
     def setup_method(self, method):
         super(TestSchedulerAlertHistory, self).setup_method(method)
@@ -190,6 +193,7 @@ class TestSchedulerAlertHistory(TestSchedulerAlertHistoryBase):
         _wait_for_alert_events(op2, 2)
 
 
+@pytest.mark.opensource
 class TestUpdateAlertEventsSenderPeriodOnDisabledCleaner(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -212,6 +216,7 @@ class TestUpdateAlertEventsSenderPeriodOnDisabledCleaner(YTEnvSetup):
         update_scheduler_config("operations_cleaner/operation_alert_event_send_period", 1000)
 
 
+@pytest.mark.opensource
 class TestAlertsHistoryInApi(TestSchedulerAlertHistoryBase):
     def setup_method(self, method):
         super(TestAlertsHistoryInApi, self).setup_method(method)
@@ -307,6 +312,7 @@ class TestAlertsHistoryInApi(TestSchedulerAlertHistoryBase):
         assert alert_events[0]["error"]["code"] != 0
 
 
+@pytest.mark.opensource
 class TestAlertsHistoryInApiRpcProxy(TestAlertsHistoryInApi):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

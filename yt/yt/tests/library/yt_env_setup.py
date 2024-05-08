@@ -418,7 +418,7 @@ class YTEnvSetup(object):
         modify_configs_func = functools.partial(cls.apply_config_patches, cluster_index=index)
         modify_dynamic_configs_func = functools.partial(cls.apply_dynamic_config_patches, cluster_index=index)
 
-        yt.logger.info("Creating cluster instance")
+        yt.logger.info("Creating cluster instance !!!")
 
         if hasattr(cls, "USE_NATIVE_AUTH"):
             use_native_auth = getattr(cls, "USE_NATIVE_AUTH")
@@ -489,6 +489,9 @@ class YTEnvSetup(object):
             enable_tvm_only_proxies=cls.get_param("ENABLE_TVM_ONLY_PROXIES", index),
             mock_tvm_id=(1000 + index if use_native_auth else None),
         )
+
+        yt.logger.info(f"yt_config: {yt_config}")
+        yt.logger.info(f"runtime_data={os.path.abspath(os.path.join(path, 'runtime_data'))}")
 
         if yt_config.jobs_environment_type == "cri" and yt_config.cri_endpoint is None:
             yt_config.cri_endpoint = find_cri_endpoint()
@@ -1173,7 +1176,7 @@ class YTEnvSetup(object):
     def _master_exit_read_only_sync(self, yt_instance, driver=None):
         logger = yt.logger.LOGGER
         old_level = logger.level
-        logger.setLevel(logging.ERROR)
+        logger.setLevel(logging.INFO)
 
         master_exit_read_only_sync(driver=driver)
 

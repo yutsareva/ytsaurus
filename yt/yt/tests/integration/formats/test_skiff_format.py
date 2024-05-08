@@ -87,6 +87,7 @@ def make_skiff_format(*table_skiff_schemas):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSkiffFormat(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -701,6 +702,7 @@ while True:
     (35, 16, "yson32"),
 ])
 @authors("ermolovd")
+@pytest.mark.opensource
 class TestGoodSkiffDecimal(YTEnvSetup):
     def _encode_row(self, row_data):
         return b"\x00\x00" + row_data

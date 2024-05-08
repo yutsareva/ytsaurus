@@ -185,6 +185,7 @@ class YTInstance(object):
         self.logs_path = os.path.abspath(os.path.join(self.path, "logs"))
         self.configs_path = os.path.abspath(os.path.join(self.path, "configs"))
         self.runtime_data_path = os.path.abspath(os.path.join(self.path, "runtime_data"))
+
         self.pids_filename = os.path.join(self.path, "pids.txt")
 
         self._load_existing_environment = False
@@ -239,6 +240,8 @@ class YTInstance(object):
         makedirp(self.runtime_data_path)
 
         # NB: we should not write logs before this point.
+        logger.info(f"runtime_data_path = {self.runtime_data_path}")
+        logger.info(f"log path = {os.path.join(self.path, 'yt_local.log')}")
         _configure_logger(os.path.join(self.path, "yt_local.log"))
 
         self.stderrs_path = stderrs_path or os.path.join(self.path, "stderrs")
@@ -393,6 +396,7 @@ class YTInstance(object):
 
         logger.info("Preparing directories")
         dirs = self._prepare_directories()
+        logger.error(f"Node dirs: {dirs['node']}")
 
         logger.info("Preparing configs")
         cluster_configuration = build_configs(
@@ -467,8 +471,9 @@ class YTInstance(object):
             self._wait_functions.append(function)
 
     def remove_runtime_data(self):
-        if os.path.exists(self.runtime_data_path):
-            shutil.rmtree(self.runtime_data_path, ignore_errors=True)
+        pass
+        # if os.path.exists(self.runtime_data_path):
+        #     shutil.rmtree(self.runtime_data_path, ignore_errors=True)
 
     def start(self, on_masters_started_func=None):
         for name, processes in iteritems(self._service_processes):
@@ -1145,7 +1150,7 @@ class YTInstance(object):
 
             logger = logging.getLogger("Yt")
             old_level = logger.level
-            logger.setLevel(logging.ERROR)
+            logger.setLevel(logging.INFO)
             try:
                 # XXX(asaitgalin): Once we're able to execute set("//sys/@config") then quorum is ready
                 # and the world is initialized. Secondary masters can only be checked with native
@@ -1229,7 +1234,7 @@ class YTInstance(object):
 
             logger = logging.getLogger("Yt")
             old_level = logger.level
-            logger.setLevel(logging.ERROR)
+            logger.setLevel(logging.INFO)
             try:
                 client = self.create_native_client("clock_driver")
                 client.generate_timestamp()

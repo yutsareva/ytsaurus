@@ -19,6 +19,7 @@ import pytest
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestGrafting(YTEnvSetup):
     USE_SEQUOIA = True
     NUM_CYPRESS_PROXIES = 1
@@ -107,6 +108,7 @@ class TestGrafting(YTEnvSetup):
 
 
 @authors("kvk1920")
+@pytest.mark.opensource
 class TestGraftingTmpCleanup(YTEnvSetup):
     USE_SEQUOIA = True
     ENABLE_TMP_ROOTSTOCK = True

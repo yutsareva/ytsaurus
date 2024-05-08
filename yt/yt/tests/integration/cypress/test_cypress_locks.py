@@ -16,6 +16,7 @@ import builtins
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCypressLocks(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_NODES = 3
@@ -1555,15 +1556,18 @@ class TestCypressLocks(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCypressLocksMulticell(TestCypressLocks):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestCypressLocksRpcProxy(TestCypressLocks):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
 
 
+@pytest.mark.opensource
 class TestCypressLocksMulticellRpcProxy(TestCypressLocksMulticell, TestCypressLocksRpcProxy):
     pass
 
@@ -1571,6 +1575,7 @@ class TestCypressLocksMulticellRpcProxy(TestCypressLocksMulticell, TestCypressLo
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCypressLocksShardedTx(TestCypressLocksMulticell):
     NUM_SECONDARY_MASTER_CELLS = 4
     MASTER_CELL_DESCRIPTORS = {
@@ -1580,6 +1585,7 @@ class TestCypressLocksShardedTx(TestCypressLocksMulticell):
     }
 
 
+@pytest.mark.opensource
 class TestCypressLocksShardedTxCTxS(TestCypressLocksShardedTx):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

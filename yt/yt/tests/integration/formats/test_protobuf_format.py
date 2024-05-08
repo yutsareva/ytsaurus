@@ -117,6 +117,7 @@ SCHEMALESS_TABLE_PROTOBUF_CONFIG = {
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchemalessProtobufFormat(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -834,6 +835,7 @@ def make_random_variant_struct(fields):
 
 
 @authors("levysotsky")
+@pytest.mark.opensource
 class TestSchemafulProtobufFormat(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

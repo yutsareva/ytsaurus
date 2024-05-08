@@ -69,6 +69,7 @@ def wait_for_data_in_job_archive(op_id, job_ids):
     wait(lambda: len(get_job_spec_rows_for_jobs(job_ids)) == len(job_ids))
 
 
+@pytest.mark.opensource
 class TestGetJobInput(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -578,6 +579,7 @@ class TestGetJobInput(YTEnvSetup):
             wait(lambda: len(get_job_spec_rows_for_jobs(job_ids)) > 0)
 
 
+@pytest.mark.opensource
 class TestGetJobStderr(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -728,6 +730,7 @@ class TestGetJobStderr(YTEnvSetup):
             set("//sys/operations/@inherit_acl", True)
 
 
+@pytest.mark.opensource
 class TestGetJobSpec(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -809,17 +812,20 @@ class TestGetJobSpec(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestGetJobInputRpcProxy(TestGetJobInput):
     DRIVER_BACKEND = "rpc"
     ENABLE_HTTP_PROXY = True
     ENABLE_RPC_PROXY = True
 
 
+@pytest.mark.opensource
 class TestGetJobStderrRpcProxy(TestGetJobStderr):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
 
 
+@pytest.mark.opensource
 class TestGetJobSpecRpcProxy(TestGetJobSpec):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

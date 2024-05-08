@@ -13,6 +13,7 @@ from yt.common import YtError
 import pytest
 
 
+@pytest.mark.opensource
 class TestJobProbingDuringRevival(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

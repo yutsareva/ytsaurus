@@ -12,6 +12,7 @@ import pytest
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestTabletTransactions(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5

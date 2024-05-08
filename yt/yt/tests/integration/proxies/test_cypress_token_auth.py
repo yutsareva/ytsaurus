@@ -4,11 +4,12 @@ from yt_commands import (
 )
 
 import requests
-
+import pytest
 
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestCypressTokenAuth(YTEnvSetup):
     NUM_MASTERS = 1
 

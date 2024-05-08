@@ -24,8 +24,9 @@ def get_sorted_jobs(op):
         jobs.append(job)
 
     return sorted(jobs, key=lambda job: job["start_time"])
+import pytest
 
-
+@pytest.mark.opensource
 class TestCrashOnSchedulingJobWithStaleNeededResources(YTEnvSetup):
     # Scenario:
     # 1. an operation with one job has started, demand = needed_resources = {default_tree: 1 job, cloud_tree: 0 jobs}
@@ -62,6 +63,7 @@ class TestCrashOnSchedulingJobWithStaleNeededResources(YTEnvSetup):
         op.track()
 
 
+@pytest.mark.opensource
 class TestCrashOnLostProbingJobResult(YTEnvSetup):
     # YT-17172
     # Scenario:
@@ -154,6 +156,7 @@ class TestCrashOnLostProbingJobResult(YTEnvSetup):
         return [node_id]
 
 
+@pytest.mark.opensource
 class TestProbingJobs(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

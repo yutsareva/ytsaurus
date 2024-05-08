@@ -26,6 +26,7 @@ def parse_time(t):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestMasterCellChunkStatisticsCollector(YTEnvSetup):
     NUM_MASTERS = 5
     NUM_NODES = 3

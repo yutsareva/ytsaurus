@@ -1,10 +1,12 @@
 from yt_env_setup import YTEnvSetup
 
 from yt_commands import authors, generate_timestamp, start_transaction, commit_transaction
+import pytest
 
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestTimestampProvider(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -25,5 +27,6 @@ class TestTimestampProvider(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestTimestampProviderClocks(TestTimestampProvider):
     NUM_CLOCKS = 1

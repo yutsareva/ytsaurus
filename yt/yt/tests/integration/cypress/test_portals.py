@@ -39,6 +39,7 @@ def _maybe_purge_resolve_cache(flag, path):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestPortals(YTEnvSetup):
     NUM_TEST_PARTITIONS = 2
 
@@ -1598,12 +1599,14 @@ class TestPortals(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestPortalsCypressProxy(TestPortals):
     NUM_CYPRESS_PROXIES = 1
 
 
 ##################################################################
 
+@pytest.mark.opensource
 class TestResolveCache(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 0

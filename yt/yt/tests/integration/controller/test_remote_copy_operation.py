@@ -35,6 +35,7 @@ import builtins
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerRemoteCopyCommandsBase(YTEnvSetup):
     NUM_TEST_PARTITIONS = 5
 
@@ -69,6 +70,7 @@ class TestSchedulerRemoteCopyCommandsBase(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerRemoteCopyCommands(TestSchedulerRemoteCopyCommandsBase):
     @authors("ignat")
     def test_empty_table(self):
@@ -1040,6 +1042,7 @@ class TestSchedulerRemoteCopyCommands(TestSchedulerRemoteCopyCommandsBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerRemoteCopyNetworks(TestSchedulerRemoteCopyCommandsBase):
     @classmethod
     def modify_node_config(cls, config, cluster_index):
@@ -1177,6 +1180,7 @@ class TestSchedulerRemoteCopyNetworks(TestSchedulerRemoteCopyCommandsBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerRemoteCopyCommandsMulticell(TestSchedulerRemoteCopyCommands):
     NUM_TEST_PARTITIONS = 6
     NUM_SECONDARY_MASTER_CELLS = 2
@@ -1185,6 +1189,7 @@ class TestSchedulerRemoteCopyCommandsMulticell(TestSchedulerRemoteCopyCommands):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerRemoteCopyDynamicTables(TestSchedulerRemoteCopyCommandsBase):
     USE_DYNAMIC_TABLES = True
     ENABLE_BULK_INSERT = True
@@ -1500,6 +1505,7 @@ class TestSchedulerRemoteCopyDynamicTables(TestSchedulerRemoteCopyCommandsBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerRemoteCopyDynamicTablesMulticell(TestSchedulerRemoteCopyDynamicTables):
     NUM_SECONDARY_MASTER_CELLS = 2
 

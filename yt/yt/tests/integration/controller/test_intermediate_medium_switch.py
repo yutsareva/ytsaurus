@@ -33,6 +33,7 @@ def get_operation_tasks(op):
     return builtins.set(tasks)
 
 
+@pytest.mark.opensource
 class TestIntermediateMediumSwitch(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5

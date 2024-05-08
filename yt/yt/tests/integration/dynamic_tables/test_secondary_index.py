@@ -49,6 +49,7 @@ INDEX_ON_KEY_SCHEMA = [
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSecondaryIndexBase(DynamicTablesBase):
     def _create_basic_tables(
         self,
@@ -70,6 +71,7 @@ class TestSecondaryIndexBase(DynamicTablesBase):
         return table_id, index_table_id, index_id
 
 
+@pytest.mark.opensource
 class TestSecondaryIndex(TestSecondaryIndexBase):
     @authors("sabdenovch")
     def test_secondary_index_create_index(self):
@@ -329,6 +331,7 @@ class TestSecondaryIndex(TestSecondaryIndexBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSecondaryIndexMulticell(TestSecondaryIndex):
     NUM_SECONDARY_MASTER_CELLS = 2
 

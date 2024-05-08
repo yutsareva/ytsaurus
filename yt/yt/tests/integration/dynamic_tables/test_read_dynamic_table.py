@@ -20,6 +20,7 @@ import time
 ################################################################################
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesReadTable(TestSortedDynamicTablesBase):
     @authors("psushin")
     def test_read_invalid_limits(self):
@@ -258,19 +259,23 @@ class TestSortedDynamicTablesReadTable(TestSortedDynamicTablesBase):
             write_table("//tmp/t", [{"key": 1, "value": 2}])
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesReadTableMulticell(TestSortedDynamicTablesReadTable):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesReadTableRpcProxy(TestSortedDynamicTablesReadTable):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
 
 
+@pytest.mark.opensource
 class TestSortedDynamicTablesReadTablePortal(TestSortedDynamicTablesReadTableMulticell):
     ENABLE_TMP_PORTAL = True
 
 
+@pytest.mark.opensource
 class TestReadDynamicTableFormats(DynamicTablesBase):
     @authors("aleexfi")
     def test_read_table_with_complex_schema(self):

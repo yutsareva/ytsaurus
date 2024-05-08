@@ -43,6 +43,7 @@ except ImportError:
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerCommon(YTEnvSetup):
     NUM_TEST_PARTITIONS = 4
     NUM_MASTERS = 1
@@ -974,6 +975,7 @@ class TestSchedulerCommon(YTEnvSetup):
         wait(lambda: get(op.get_path() + "/@suspended"))
 
 
+@pytest.mark.opensource
 class TestSchedulerCommonMulticell(TestSchedulerCommon):
     NUM_TEST_PARTITIONS = 6
     NUM_SECONDARY_MASTER_CELLS = 2
@@ -1048,6 +1050,7 @@ class TestMultipleSchedulers(YTEnvSetup, PrepareTables):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerMaxChunkPerJob(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1120,6 +1123,7 @@ class TestSchedulerMaxChunkPerJob(YTEnvSetup):
 
 ##################################################################
 
+@pytest.mark.opensource
 class TestSchedulerMaxInputOutputTableCount(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1163,6 +1167,7 @@ class TestSchedulerMaxInputOutputTableCount(YTEnvSetup):
 
 ##################################################################
 
+@pytest.mark.opensource
 class TestSchedulerMaxChildrenPerAttachRequest(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1229,6 +1234,7 @@ class TestSchedulerMaxChildrenPerAttachRequest(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerOperationSnapshots(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -1365,6 +1371,7 @@ class TestSchedulerOperationSnapshots(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerHeterogeneousConfiguration(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1432,6 +1439,7 @@ class TestSchedulerHeterogeneousConfiguration(YTEnvSetup):
 ###############################################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerJobStatistics(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1577,6 +1585,7 @@ class TestSchedulerJobStatistics(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestConnectToMaster(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -1640,6 +1649,7 @@ class TestConnectToMaster(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestJobStatisticsPorto(YTEnvSetup):
     NUM_SCHEDULERS = 1
     USE_PORTO = True
@@ -1726,6 +1736,7 @@ class TestJobStatisticsPorto(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerObjectsDestruction(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1781,6 +1792,7 @@ class TestSchedulerObjectsDestruction(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestScheduleJobDelayAndRevive(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1812,6 +1824,7 @@ class TestScheduleJobDelayAndRevive(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestDelayInNodeHeartbeat(YTEnvSetup):
     # YT-17272
     # Scenario:

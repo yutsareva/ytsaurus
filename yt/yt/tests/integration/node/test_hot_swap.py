@@ -22,12 +22,14 @@ try:
     import zstd
 except ImportError:
     import zstandard as zstd
+import pytest
 
 ##################################################################
 
 log = logging.getLogger(__name__)
 
 
+@pytest.mark.opensource
 class TestHotSwap(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 2

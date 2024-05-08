@@ -35,6 +35,7 @@ import functools
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestQuery(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1766,6 +1767,7 @@ class TestQuery(YTEnvSetup):
             assert expected == actual
 
 
+@pytest.mark.opensource
 class TestQueryRpcProxy(TestQuery):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

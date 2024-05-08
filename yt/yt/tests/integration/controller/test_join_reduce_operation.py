@@ -20,6 +20,7 @@ import pytest
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerJoinReduceCommands(YTEnvSetup):
     NUM_TEST_PARTITIONS = 2
 
@@ -1701,6 +1702,7 @@ done
             )
 
 
+@pytest.mark.opensource
 class TestSchedulerJoinReduceCommandsMulticell(TestSchedulerJoinReduceCommands):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -1708,6 +1710,7 @@ class TestSchedulerJoinReduceCommandsMulticell(TestSchedulerJoinReduceCommands):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestMaxTotalSliceCount(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1751,6 +1754,7 @@ class TestMaxTotalSliceCount(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerJoinReduceCommandsNewSortedPool(TestSchedulerJoinReduceCommands):
     DELTA_SCHEDULER_CONFIG = {
         "scheduler": {

@@ -261,6 +261,7 @@ class _TestGetJobCommon(_TestGetJobBase):
         assert get_operation_id_from_archive(job_id) == op.id
 
 
+@pytest.mark.opensource
 class TestGetJob(_TestGetJobCommon):
     DELTA_CONTROLLER_AGENT_CONFIG = {
         "controller_agent": {
@@ -473,11 +474,13 @@ class TestGetJob(_TestGetJobCommon):
             assert job_info.get("is_stale")
 
 
+@pytest.mark.opensource
 class TestGetJobStatisticsLz4(_TestGetJobCommon):
     DELTA_DYNAMIC_NODE_CONFIG = deepcopy(_TestGetJobBase.DELTA_DYNAMIC_NODE_CONFIG)
     DELTA_DYNAMIC_NODE_CONFIG["%true"]["exec_node"]["job_reporter"]["report_statistics_lz4"] = True
 
 
+@pytest.mark.opensource
 class TestGetJobMonitoring(_TestGetJobBase):
     USE_PORTO = True
 
@@ -508,6 +511,7 @@ class TestGetJobMonitoring(_TestGetJobBase):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestGetJobRpcProxy(TestGetJob):
     USE_DYNAMIC_TABLES = True
     DRIVER_BACKEND = "rpc"
@@ -515,6 +519,7 @@ class TestGetJobRpcProxy(TestGetJob):
     ENABLE_HTTP_PROXY = True
 
 
+@pytest.mark.opensource
 class TestGetJobStatisticsLz4RpcProxy(TestGetJobStatisticsLz4):
     USE_DYNAMIC_TABLES = True
     DRIVER_BACKEND = "rpc"

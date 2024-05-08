@@ -12,8 +12,9 @@ from yt.test_helpers import assert_items_equal
 from decimal_helpers import encode_decimal
 
 from yt.wrapper import yson
+import pytest
 
-
+@pytest.mark.opensource
 class TestQueriesQL(YTEnvSetup):
     USE_DYNAMIC_TABLES = True
 

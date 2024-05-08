@@ -22,6 +22,7 @@ import time
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestMapOnDynamicTables(YTEnvSetup):
     NUM_TEST_PARTITIONS = 8
 
@@ -458,10 +459,12 @@ class TestMapOnDynamicTables(YTEnvSetup):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestMapOnDynamicTablesMulticell(TestMapOnDynamicTables):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestMapOnDynamicTablesPortal(TestMapOnDynamicTablesMulticell):
     ENABLE_TMP_PORTAL = True
 
@@ -574,6 +577,7 @@ class MROverOrderedDynTablesHelper(YTEnvSetup):
         write_file(b"//tmp/script.py", str.encode(script))
 
 
+@pytest.mark.opensource
 class TestInputOutputForOrderedWithTabletIndex(MROverOrderedDynTablesHelper):
     NUM_TEST_PARTITIONS = 2
 
@@ -874,10 +878,12 @@ class TestInputOutputForOrderedWithTabletIndex(MROverOrderedDynTablesHelper):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestInputOutputForOrderedWithTabletIndexMulticell(TestInputOutputForOrderedWithTabletIndex):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestInputOutputForOrderedWithTabletIndexPortal(TestInputOutputForOrderedWithTabletIndexMulticell):
     ENABLE_TMP_PORTAL = True
 
@@ -885,6 +891,7 @@ class TestInputOutputForOrderedWithTabletIndexPortal(TestInputOutputForOrderedWi
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerMapReduceDynamic(MROverOrderedDynTablesHelper):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -1054,9 +1061,11 @@ class TestSchedulerMapReduceDynamic(MROverOrderedDynTablesHelper):
 ##################################################################
 
 
+@pytest.mark.opensource
 class TestSchedulerMapReduceDynamicMulticell(TestSchedulerMapReduceDynamic):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
+@pytest.mark.opensource
 class TestSchedulerMapReduceDynamicPortal(TestSchedulerMapReduceDynamicMulticell):
     ENABLE_TMP_PORTAL = True

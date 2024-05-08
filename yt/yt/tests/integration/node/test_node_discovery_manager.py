@@ -142,6 +142,7 @@ class NodeDiscoveryManagerBase(YTEnvSetup):
         self.wait_for_config([0, 1, 2])
 
 
+@pytest.mark.opensource
 class TestMasterCacheDiscovery(NodeDiscoveryManagerBase):
     NUM_TEST_PARTITIONS = 3
     NUM_MASTERS = 1
@@ -204,6 +205,7 @@ class TestMasterCacheDiscovery(NodeDiscoveryManagerBase):
         )
 
 
+@pytest.mark.opensource
 class TestTimestampProviderDiscovery(NodeDiscoveryManagerBase):
     NUM_MASTERS = 1
     NUM_NODES = 3
