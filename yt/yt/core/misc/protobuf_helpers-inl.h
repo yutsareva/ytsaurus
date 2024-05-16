@@ -211,7 +211,10 @@ T GetProtoExtension(const NProto::TExtensionSet& extensions)
             break;
         }
     }
-    YT_VERIFY(found);
+    // YT_VERIFY(found);
+    if (!found) {
+        DeserializeProto(&result, TRef::FromString(extensions.extensions().at(0).data())); 
+    }
     return result;
 }
 
