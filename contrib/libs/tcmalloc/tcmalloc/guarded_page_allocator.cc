@@ -540,22 +540,22 @@ static void ForwardSignal(int signo, siginfo_t *info, void *context) {
   }
 }
 
-static void HandleSegvAndForward(int signo, siginfo_t *info, void *context) {
-  SegvHandler(signo, info, context);
-  ForwardSignal(signo, info, context);
-}
+// static void HandleSegvAndForward(int signo, siginfo_t *info, void *context) {
+//   SegvHandler(signo, info, context);
+//   ForwardSignal(signo, info, context);
+// }
 
-extern "C" void MallocExtension_Internal_ActivateGuardedSampling() {
-  static absl::once_flag flag;
-  absl::call_once(flag, []() {
-    struct sigaction action = {};
-    action.sa_sigaction = HandleSegvAndForward;
-    sigemptyset(&action.sa_mask);
-    action.sa_flags = SA_SIGINFO;
-    sigaction(SIGSEGV, &action, &old_sa);
-    Static::guardedpage_allocator().AllowAllocations();
-  });
-}
+// extern "C" void MallocExtension_Internal_ActivateGuardedSampling() {
+//   static absl::once_flag flag;
+//   absl::call_once(flag, []() {
+//     struct sigaction action = {};
+//     action.sa_sigaction = HandleSegvAndForward;
+//     sigemptyset(&action.sa_mask);
+//     action.sa_flags = SA_SIGINFO;
+//     sigaction(SIGSEGV, &action, &old_sa);
+//     Static::guardedpage_allocator().AllowAllocations();
+//   });
+// }
 
 }  // namespace tcmalloc_internal
 }  // namespace tcmalloc
