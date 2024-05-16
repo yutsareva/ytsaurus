@@ -299,9 +299,10 @@ bool ConfigureFromEnv()
     static const TString ConfigEnvVarName = "YT_ALLOC_CONFIG";
     auto configVarValue = GetEnv(ConfigEnvVarName);
     if (!configVarValue) {
-        YT_LOG_DEBUG("No %v environment variable is found",
-            ConfigEnvVarName);
-        return false;
+        configVarValue = "{}";
+        // YT_LOG_DEBUG("No %v environment variable is found",
+        //     ConfigEnvVarName);
+        // return false;
     }
 
     TYTAllocConfigPtr config;
