@@ -19,7 +19,6 @@ import builtins
 ################################################################################
 
 
-@pytest.mark.opensource
 class TestMedia(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 10
@@ -647,7 +646,6 @@ class TestMedia(YTEnvSetup):
 ################################################################################
 
 
-@pytest.mark.opensource
 class TestMediaMulticell(TestMedia):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -655,7 +653,6 @@ class TestMediaMulticell(TestMedia):
 ################################################################################
 
 
-@pytest.mark.opensource
 class TestDynamicMedia(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1

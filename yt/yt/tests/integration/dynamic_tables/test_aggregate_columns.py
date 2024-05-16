@@ -24,7 +24,6 @@ from yt.xdelta_aggregate_column.bindings import XDeltaCodec
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestAggregateColumns(TestSortedDynamicTablesBase):
     def _create_table_with_aggregate_column(self, path, aggregate="sum", **attributes):
         if "schema" not in attributes:
@@ -504,12 +503,10 @@ class TestAggregateColumns(TestSortedDynamicTablesBase):
 
 ##################################################################
 
-@pytest.mark.opensource
 class TestAggregateColumnsMulticell(TestAggregateColumns):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
-@pytest.mark.opensource
 class TestAggregateColumnsRpcProxy(TestAggregateColumns):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

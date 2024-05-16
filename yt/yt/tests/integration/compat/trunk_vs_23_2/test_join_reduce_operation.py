@@ -3,7 +3,6 @@ from original_tests.yt.yt.tests.integration.controller.test_join_reduce_operatio
 import pytest
 
 
-@pytest.mark.opensource
 class TestJoinReduceCommandsCompatNewCA(BaseTestJoinReduceCommands):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "node", "job-proxy", "exec", "tools"],
@@ -11,7 +10,6 @@ class TestJoinReduceCommandsCompatNewCA(BaseTestJoinReduceCommands):
     }
 
 
-@pytest.mark.opensource
 class TestJoinReduceCommandsCompatNewNodes(BaseTestJoinReduceCommands):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "scheduler", "controller-agent"],

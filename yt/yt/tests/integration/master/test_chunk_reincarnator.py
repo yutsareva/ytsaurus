@@ -72,7 +72,6 @@ class ReincarnatorStatistic:
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestChunkReincarnatorBase(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_NODES = 3
@@ -265,7 +264,6 @@ class TestChunkReincarnatorBase(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestChunkReincarnatorSingleCell(TestChunkReincarnatorBase):
     @authors("kvk1920")
     @pytest.mark.parametrize("optimize_for", ["lookup", "scan"])
@@ -519,7 +517,6 @@ class TestChunkReincarnatorSingleCell(TestChunkReincarnatorBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestChunkReincarnatorMultiCell(TestChunkReincarnatorSingleCell):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -888,7 +885,6 @@ class TestChunkReincarnatorMultiCell(TestChunkReincarnatorSingleCell):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestChunkReincarnatorForErasureSingleCell(TestChunkReincarnatorSingleCell):
     ERASURE_CODEC = "reed_solomon_3_3"
 
@@ -896,7 +892,6 @@ class TestChunkReincarnatorForErasureSingleCell(TestChunkReincarnatorSingleCell)
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestChunkReincarnatorForErasureMultiCell(TestChunkReincarnatorMultiCell):
     ERASURE_CODEC = "reed_solomon_3_3"
 
@@ -904,7 +899,6 @@ class TestChunkReincarnatorForErasureMultiCell(TestChunkReincarnatorMultiCell):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestChunkReincarnationLeaderSwitch(TestChunkReincarnatorBase):
     @authors("kvk1920")
     def test_leader_switch_consistency(self):

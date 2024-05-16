@@ -8,7 +8,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestErrorCodes(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1

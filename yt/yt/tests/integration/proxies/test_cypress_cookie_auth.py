@@ -15,7 +15,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestCypressCookieAuth(YTEnvSetup):
     NUM_MASTERS = 1
 

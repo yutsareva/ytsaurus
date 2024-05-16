@@ -3,7 +3,6 @@ from original_tests.yt.yt.tests.integration.misc.test_get_supported_features \
 
 import pytest
 
-@pytest.mark.opensource
 class TestGetFeaturesNewProxy(BaseTestGetFeatures):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "node", "job-proxy", "exec", "tools", "scheduler", "controller-agent"],

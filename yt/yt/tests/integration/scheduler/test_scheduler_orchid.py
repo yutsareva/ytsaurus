@@ -22,7 +22,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerOperationsByPoolOrchid(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -233,7 +232,6 @@ class TestSchedulerOperationsByPoolOrchid(YTEnvSetup):
         }
 
 
-@pytest.mark.opensource
 class TestOrchidOnSchedulerRestart(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

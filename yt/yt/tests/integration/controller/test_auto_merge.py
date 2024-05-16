@@ -20,7 +20,6 @@ from time import sleep
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerAutoMergeBase(YTEnvSetup):
     NUM_TEST_PARTITIONS = 12
     NUM_MASTERS = 1
@@ -130,7 +129,6 @@ class TestSchedulerAutoMergeBase(YTEnvSetup):
             assert data_flow_graph["edges"].get("shallow_auto_merge", {}).get("sink", {}).get("statistics", {}).get("data_weight", 0) == 0
 
 
-@pytest.mark.opensource
 class TestSchedulerAutoMerge(TestSchedulerAutoMergeBase):
     def _create_account(self, chunk_count):
         create_account("acc")
@@ -863,12 +861,10 @@ class TestSchedulerAutoMerge(TestSchedulerAutoMergeBase):
             job_type=wrong_merge_type))
 
 
-@pytest.mark.opensource
 class TestSchedulerShallowAutoMerge(TestSchedulerAutoMerge):
     ENABLE_SHALLOW_MERGE = True
 
 
-@pytest.mark.opensource
 class TestSchedulerAutoMergeAborted(TestSchedulerAutoMergeBase):
     ENABLE_SHALLOW_MERGE = True
 

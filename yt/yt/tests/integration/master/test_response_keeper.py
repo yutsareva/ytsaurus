@@ -11,7 +11,6 @@ import time
 ################################################################################
 
 
-@pytest.mark.opensource
 class TestResponseKeeper(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_NODES = 0
@@ -54,7 +53,6 @@ class TestResponseKeeper(YTEnvSetup):
         assert get("//tmp/t/@id") == table_id
 
 
-@pytest.mark.opensource
 class TestResponseKeeperOldHydra(TestResponseKeeper):
     DELTA_MASTER_CONFIG = {
         "use_new_hydra": False

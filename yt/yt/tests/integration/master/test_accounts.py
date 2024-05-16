@@ -340,7 +340,6 @@ class AccountsTestSuiteBase(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestAccounts(AccountsTestSuiteBase):
     @authors("babenko", "ignat")
     def test_init(self):
@@ -2330,7 +2329,6 @@ class TestAccounts(AccountsTestSuiteBase):
         assert get("//sys/accounts/parent/@resource_limits") == limits
 
 
-@pytest.mark.opensource
 class TestAccountTree(AccountsTestSuiteBase):
     USE_DYNAMIC_TABLES = True
 
@@ -4352,7 +4350,6 @@ class TestAccountTree(AccountsTestSuiteBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestAccountsMulticell(TestAccounts):
     NUM_SECONDARY_MASTER_CELLS = 2
     NUM_SCHEDULERS = 1
@@ -4614,7 +4611,6 @@ class TestAccountsMulticell(TestAccounts):
         assert len(ls("//sys/accounts/a/@multicell_statistics", driver=get_driver(2))) == 1
 
 
-@pytest.mark.opensource
 class TestAccountTreeMulticell(TestAccountTree):
     NUM_SECONDARY_MASTER_CELLS = 2
     NUM_SCHEDULERS = 1

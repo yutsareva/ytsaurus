@@ -7,7 +7,6 @@ from yt_commands import (
 from yt_helpers import JobCountProfiler
 import pytest
 
-@pytest.mark.opensource
 class TestMemoryPressureDetector(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -56,7 +55,6 @@ class TestMemoryPressureDetector(YTEnvSetup):
         wait(lambda: get(node_memory) < memory_before_pressure - 3*self.FREE_MEMORY_WATERMARK)
 
 
-@pytest.mark.opensource
 class TestMemoryPressureAtJobProxy(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1

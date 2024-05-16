@@ -25,7 +25,6 @@ import datetime
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestUsers(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 0
@@ -733,7 +732,6 @@ class TestUsers(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestUsersRpcProxy(TestUsers):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -747,7 +745,6 @@ class TestUsersRpcProxy(TestUsers):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestUsersMulticell(TestUsers):
     NUM_SECONDARY_MASTER_CELLS = 2
 

@@ -12,7 +12,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestRff(YTEnvSetup):
     NUM_MASTERS = 5
     NUM_NONVOTING_MASTERS = 2
@@ -92,6 +91,5 @@ class TestRff(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestRffMulticell(TestRff):
     NUM_SECONDARY_MASTER_CELLS = 2

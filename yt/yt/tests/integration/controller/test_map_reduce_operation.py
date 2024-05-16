@@ -28,7 +28,6 @@ from flaky import flaky
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerMapReduceCommands(YTEnvSetup):
     NUM_TEST_PARTITIONS = 8
     NUM_MASTERS = 1
@@ -3319,7 +3318,6 @@ done
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerMapReduceCommandsMulticell(TestSchedulerMapReduceCommands):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -3327,7 +3325,6 @@ class TestSchedulerMapReduceCommandsMulticell(TestSchedulerMapReduceCommands):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerMapReduceCommandsPortal(TestSchedulerMapReduceCommandsMulticell):
     ENABLE_TMP_PORTAL = True
 
@@ -3335,7 +3332,6 @@ class TestSchedulerMapReduceCommandsPortal(TestSchedulerMapReduceCommandsMultice
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerMapReduceCommandsNewSortedPool(TestSchedulerMapReduceCommands):
     DELTA_CONTROLLER_AGENT_CONFIG = {
         "controller_agent": {

@@ -13,7 +13,6 @@ import threading
 import pytest
 
 
-@pytest.mark.opensource
 class TestP2P(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 4

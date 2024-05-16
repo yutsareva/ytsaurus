@@ -15,7 +15,6 @@ from collections import Counter
 import pytest
 
 
-@pytest.mark.opensource
 class TestQueriesMock(YTEnvSetup):
     DELTA_DRIVER_CONFIG = {
         "cluster_connection_dynamic_config_policy": "from_cluster_directory",
@@ -200,7 +199,6 @@ class TestQueriesMock(YTEnvSetup):
         assert not q.get_result(1)["is_truncated"]
 
 
-@pytest.mark.opensource
 class TestAccessControl(YTEnvSetup):
     NUM_TEST_PARTITIONS = 16
 
@@ -429,7 +427,6 @@ class TestAccessControl(YTEnvSetup):
 
 
 # Separate list to fit 480 seconds limit for a test class.
-@pytest.mark.opensource
 class TestAccessControlList(YTEnvSetup):
     NUM_TEST_PARTITIONS = 16
 

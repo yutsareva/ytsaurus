@@ -21,7 +21,6 @@ import time
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestJobProber(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -414,7 +413,6 @@ class TestJobProber(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestJobShellInSubcontainer(TestJobProber):
     DELTA_NODE_CONFIG = {
         "exec_node": {
@@ -689,7 +687,6 @@ class TestJobShellInSubcontainer(TestJobProber):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestJobProberRpcProxy(TestJobProber):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -699,7 +696,6 @@ class TestJobProberRpcProxy(TestJobProber):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestJobShellInSubcontainerRpcProxy(TestJobShellInSubcontainer):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

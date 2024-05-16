@@ -4,7 +4,6 @@ from yt_commands import (
     authors, run_test_vanilla, with_breakpoint, wait_breakpoint, get, ls, release_breakpoint, exists)
 import pytest
 
-@pytest.mark.opensource
 class TestJobControllerOrchid(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -33,7 +32,6 @@ class TestJobControllerOrchid(YTEnvSetup):
         op.track()
 
 
-@pytest.mark.opensource
 class TestJobResourceManagerOrchid(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1

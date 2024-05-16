@@ -17,7 +17,6 @@ def set_or_remove(path, value):
         set(path, value)
 
 
-@pytest.mark.opensource
 class TestCypressRequestLimits(YTEnvSetup):
     NUM_CELLS = 1
     NUM_MASTERS = 1
@@ -203,7 +202,6 @@ class TestCypressRequestLimits(YTEnvSetup):
 ################################################################################
 
 
-@pytest.mark.opensource
 class TestCypressRequestLimitsRpcProxy(TestCypressRequestLimits):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

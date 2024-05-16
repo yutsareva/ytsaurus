@@ -14,7 +14,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestAdminCommandsACL(YTEnvSetup):
     NUM_MASTERS = 3
     ENABLE_SECONDARY_CELLS_CLEANUP = True

@@ -131,7 +131,6 @@ UNIFIED_TYPES_YSON = [s.strip() for s in UNIFIED_TYPES_YSON]
 
 
 @authors("ermolovd")
-@pytest.mark.opensource
 class TestTypeV3Type(YTEnvSetup):
     @pytest.mark.parametrize("type_yson", UNIFIED_TYPES_YSON)
     def test_type_v3_type(self, type_yson):

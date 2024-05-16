@@ -20,7 +20,6 @@ import tempfile
 from collections import Counter
 
 
-@pytest.mark.opensource
 class TestLayers(YTEnvSetup):
     NUM_SCHEDULERS = 1
     DELTA_NODE_CONFIG = {
@@ -213,7 +212,6 @@ class TestLayers(YTEnvSetup):
             assert b"static-bin" in op.read_stderr(job_id)
 
 
-@pytest.mark.opensource
 class TestProbingLayer(TestLayers):
     NUM_TEST_PARTITIONS = 5
 
@@ -454,7 +452,6 @@ class TestProbingLayer(TestLayers):
         self.run_sort(user_slots=job_count)
 
 
-@pytest.mark.opensource
 class TestDockerImage(TestLayers):
     INPUT_TABLE = "//tmp/input_table"
     OUTPUT_TABLE = "//tmp/output_table"
@@ -562,7 +559,6 @@ class TestDockerImage(TestLayers):
 
 
 @authors("psushin")
-@pytest.mark.opensource
 class TestTmpfsLayerCache(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 1
@@ -671,7 +667,6 @@ class TestTmpfsLayerCache(YTEnvSetup):
 
 
 @authors("ignat")
-@pytest.mark.opensource
 class TestJobSetup(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 1
@@ -748,7 +743,6 @@ class TestJobSetup(YTEnvSetup):
 
 
 @authors("eshcherbin")
-@pytest.mark.opensource
 class TestJobAbortDuringVolumePreparation(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 1
@@ -823,7 +817,6 @@ class TestJobAbortDuringVolumePreparation(YTEnvSetup):
 
 
 @authors("yuryalekseev")
-@pytest.mark.opensource
 class TestLocalSquashFSLayers(YTEnvSetup):
     NUM_SCHEDULERS = 1
     DELTA_NODE_CONFIG = {
@@ -936,7 +929,6 @@ class TestLocalSquashFSLayers(YTEnvSetup):
 
 
 @authors("yuryalekseev")
-@pytest.mark.opensource
 class TestNbdSquashFSLayers(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 1
@@ -1081,7 +1073,6 @@ class TestNbdSquashFSLayers(YTEnvSetup):
 
 
 @authors("yuryalekseev")
-@pytest.mark.opensource
 class TestNbdConnectionFailuresWithSquashFSLayers(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 1
@@ -1224,7 +1215,6 @@ class TestNbdConnectionFailuresWithSquashFSLayers(YTEnvSetup):
 
 
 @authors("yuryalekseev")
-@pytest.mark.opensource
 class TestInvalidAttributeValues(YTEnvSetup):
     NUM_SCHEDULERS = 1
 

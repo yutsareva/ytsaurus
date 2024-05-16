@@ -13,7 +13,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestClockServer(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_CLOCKS = 3
@@ -89,6 +88,5 @@ class TestClockServer(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestClockServerMulticell(TestClockServer):
     NUM_SECONDARY_MASTER_CELLS = 1

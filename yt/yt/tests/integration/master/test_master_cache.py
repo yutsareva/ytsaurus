@@ -5,7 +5,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestMasterCache(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -36,6 +35,5 @@ class TestMasterCache(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestMasterCacheMulticell(TestMasterCache):
     NUM_SECONDARY_MASTER_CELLS = 2

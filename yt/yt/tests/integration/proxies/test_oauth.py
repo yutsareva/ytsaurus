@@ -27,7 +27,6 @@ def auth_config(port):
     }
 
 
-@pytest.mark.opensource
 class TestOAuthBase(YTEnvSetup):
     ENABLE_HTTP_PROXY = True
     DELTA_PROXY_CONFIG = {}
@@ -76,7 +75,6 @@ class TestOAuthBase(YTEnvSetup):
         return rsp.status_code == 401
 
 
-@pytest.mark.opensource
 class TestOAuth(TestOAuthBase):
     @pytest.fixture(autouse=True)
     def setup_route(self, mock_server):  # noqa

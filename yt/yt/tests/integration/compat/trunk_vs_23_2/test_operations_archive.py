@@ -9,7 +9,6 @@ import pytest
 
 ##################################################################
 
-@pytest.mark.opensource
 class TestOperationsArchive(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1

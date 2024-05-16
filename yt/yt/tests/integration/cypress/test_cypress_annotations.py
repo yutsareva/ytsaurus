@@ -6,7 +6,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestCypressAnnotations(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SECONDARY_MASTER_CELLS = 1

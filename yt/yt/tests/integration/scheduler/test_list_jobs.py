@@ -83,7 +83,6 @@ def checked_list_jobs(*args, **kwargs):
     return res
 
 
-@pytest.mark.opensource
 class TestListJobsBase(YTEnvSetup):
     DELTA_NODE_CONFIG = {
         "exec_node": {
@@ -598,13 +597,11 @@ class TestListJobsBase(YTEnvSetup):
         wait_no_assert(lambda: self._check_after_finish(op, job_ids, operation_cleaned=True))
 
 
-@pytest.mark.opensource
 class TestListJobsStatisticsLz4(TestListJobsBase):
     DELTA_DYNAMIC_NODE_CONFIG = deepcopy(TestListJobsBase.DELTA_DYNAMIC_NODE_CONFIG)
     DELTA_DYNAMIC_NODE_CONFIG["%true"]["exec_node"]["job_reporter"]["report_statistics_lz4"] = True
 
 
-@pytest.mark.opensource
 class TestListJobs(TestListJobsBase):
     @authors("ermolovd", "levysotsky")
     def test_running_jobs_stderr_size(self):
@@ -910,14 +907,12 @@ class TestListJobs(TestListJobsBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestListJobsRpcProxy(TestListJobs):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
     ENABLE_HTTP_PROXY = True
 
 
-@pytest.mark.opensource
 class TestListJobsStatisticsLz4RpcProxy(TestListJobsStatisticsLz4):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

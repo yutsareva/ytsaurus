@@ -14,7 +14,6 @@ import builtins
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestAllyReplicas(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 7
@@ -192,6 +191,5 @@ class TestAllyReplicas(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestAllyReplicasMulticell(TestAllyReplicas):
     NUM_SECONDARY_MASTER_CELLS = 2

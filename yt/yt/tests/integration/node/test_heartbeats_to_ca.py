@@ -13,7 +13,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestNodeHeartbeatsToCA(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1

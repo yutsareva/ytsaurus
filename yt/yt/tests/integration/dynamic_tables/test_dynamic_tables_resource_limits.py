@@ -54,7 +54,6 @@ class DynamicTablesResourceLimitsBase(DynamicTablesBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestDynamicTablesResourceLimits(DynamicTablesResourceLimitsBase):
     def _verify_resource_usage(self, account, resource, expected):
         def resource_usage_matches(driver):
@@ -563,17 +562,14 @@ class TestDynamicTablesResourceLimits(DynamicTablesResourceLimitsBase):
         assert get("//sys/tablet_cell_bundles/b/@changelog_account_violated_resource_limits/disk_space_per_medium/default")
 
 
-@pytest.mark.opensource
 class TestDynamicTablesResourceLimitsMulticell(TestDynamicTablesResourceLimits):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
-@pytest.mark.opensource
 class TestDynamicTablesResourceLimitsPortal(TestDynamicTablesResourceLimitsMulticell):
     ENABLE_TMP_PORTAL = True
 
 
-@pytest.mark.opensource
 class TestDynamicTablesResourceLimitsShardedTx(TestDynamicTablesResourceLimitsPortal):
     NUM_SECONDARY_MASTER_CELLS = 3
     MASTER_CELL_DESCRIPTORS = {
@@ -582,7 +578,6 @@ class TestDynamicTablesResourceLimitsShardedTx(TestDynamicTablesResourceLimitsPo
     }
 
 
-@pytest.mark.opensource
 class TestDynamicTablesResourceLimitsShardedTxCTxS(TestDynamicTablesResourceLimitsShardedTx):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -599,7 +594,6 @@ class TestDynamicTablesResourceLimitsShardedTxCTxS(TestDynamicTablesResourceLimi
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestPerBundleAccounting(DynamicTablesResourceLimitsBase):
     def _verify_resource_usage(self, bundle, resource, expected):
         def resource_usage_matches(driver):
@@ -930,17 +924,14 @@ class TestPerBundleAccounting(DynamicTablesResourceLimitsBase):
         insert_rows("//tmp/t", [{"key": 1}])
 
 
-@pytest.mark.opensource
 class TestPerBundleAccountingMulticell(TestPerBundleAccounting):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
-@pytest.mark.opensource
 class TestPerBundleAccountingPortal(TestPerBundleAccountingMulticell):
     ENABLE_TMP_PORTAL = True
 
 
-@pytest.mark.opensource
 class TestPerBundleAccountingShardedTx(TestPerBundleAccountingPortal):
     NUM_SECONDARY_MASTER_CELLS = 3
     MASTER_CELL_DESCRIPTORS = {
@@ -949,7 +940,6 @@ class TestPerBundleAccountingShardedTx(TestPerBundleAccountingPortal):
     }
 
 
-@pytest.mark.opensource
 class TestPerBundleAccountingShardedTxCTxS(TestPerBundleAccountingShardedTx):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

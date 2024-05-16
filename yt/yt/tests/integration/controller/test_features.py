@@ -59,7 +59,6 @@ class ControllerFeatures(object):
         assert self.operation is not None
 
 
-@pytest.mark.opensource
 class TestControllerFeatures(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -229,7 +228,6 @@ class TestControllerFeatures(YTEnvSetup):
         assert features.operation.tags["total_job_count"] == 1
 
 
-@pytest.mark.opensource
 class TestJobStatisticFeatures(YTEnvSetup):
     NUM_SCHEDULERS = 1
     USE_PORTO = True
@@ -274,7 +272,6 @@ class TestJobStatisticFeatures(YTEnvSetup):
         wait(check_statistic)
 
 
-@pytest.mark.opensource
 class TestPendingTimeFeatures(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1

@@ -11,7 +11,6 @@ import yt.yson as yson
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestMountConfig(DynamicTablesBase):
     @staticmethod
     def _validate_dict_subset(full, subset):
@@ -382,6 +381,5 @@ class TestMountConfig(DynamicTablesBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestMountConfigMulticell(TestMountConfig):
     NUM_SECONDARY_MASTER_CELLS = 2

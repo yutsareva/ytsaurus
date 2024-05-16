@@ -159,7 +159,6 @@ class _TestColumnarStatisticsBase(YTEnvSetup):
                     "Error when checking {}, table path is {}".format(statistics_name, path)
 
 
-@pytest.mark.opensource
 class TestColumnarStatistics(_TestColumnarStatisticsBase):
     @authors("max42")
     def test_get_table_columnar_statistics(self):
@@ -541,7 +540,6 @@ class TestColumnarStatistics(_TestColumnarStatisticsBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestColumnarStatisticsOperations(_TestColumnarStatisticsBase):
     @authors("max42")
     def test_map_thin_column(self):
@@ -779,7 +777,6 @@ class TestColumnarStatisticsOperations(_TestColumnarStatisticsBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestColumnarStatisticsOperationsEarlyFinish(TestColumnarStatisticsOperations):
     DELTA_CONTROLLER_AGENT_CONFIG = {
         "controller_agent": {
@@ -827,7 +824,6 @@ class TestColumnarStatisticsOperationsEarlyFinish(TestColumnarStatisticsOperatio
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestColumnarStatisticsCommandEarlyFinish(_TestColumnarStatisticsBase):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -873,7 +869,6 @@ class TestColumnarStatisticsCommandEarlyFinish(_TestColumnarStatisticsBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestColumnarStatisticsCommandEarlyFinishRpcProxy(TestColumnarStatisticsCommandEarlyFinish):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -888,7 +883,6 @@ class TestColumnarStatisticsCommandEarlyFinishRpcProxy(TestColumnarStatisticsCom
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestColumnarStatisticsRenamedColumns(_TestColumnarStatisticsBase):
     @authors("levysotsky")
     def test_get_table_columnar_statistics(self):
@@ -978,7 +972,6 @@ class TestColumnarStatisticsRenamedColumns(_TestColumnarStatisticsBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestColumnarStatisticsRpcProxy(TestColumnarStatistics):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -987,7 +980,6 @@ class TestColumnarStatisticsRpcProxy(TestColumnarStatistics):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestColumnarStatisticsUseControllerAgentDefault(_TestColumnarStatisticsBase):
     DELTA_CONTROLLER_AGENT_CONFIG = {
         "controller_agent": {

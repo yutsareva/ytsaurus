@@ -8,7 +8,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestIncumbents(YTEnvSetup):
     NUM_MASTERS = 5
 

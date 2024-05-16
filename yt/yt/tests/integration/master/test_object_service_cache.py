@@ -5,7 +5,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestObjectServiceCache(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1

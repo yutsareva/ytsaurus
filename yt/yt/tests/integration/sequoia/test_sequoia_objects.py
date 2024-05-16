@@ -23,7 +23,6 @@ def sequoia_tables_empty():
         for table in SEQUOIA_CHUNK_TABLES)
 
 
-@pytest.mark.opensource
 class TestSequoiaReplicas(YTEnvSetup):
     USE_SEQUOIA = True
     NUM_SECONDARY_MASTER_CELLS = 0
@@ -150,7 +149,6 @@ class TestSequoiaReplicas(YTEnvSetup):
         remove("//tmp/t")
 
 
-@pytest.mark.opensource
 class TestSequoiaReplicasMulticell(TestSequoiaReplicas):
     NUM_SECONDARY_MASTER_CELLS = 3
 

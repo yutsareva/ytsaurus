@@ -12,7 +12,6 @@ import yt_error_codes
 import pytest
 
 
-@pytest.mark.opensource
 class TestEnvironment(YTEnvSetup):
     NUM_QUERY_TRACKERS = 3
 

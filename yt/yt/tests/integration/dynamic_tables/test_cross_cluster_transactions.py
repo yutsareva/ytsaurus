@@ -11,7 +11,6 @@ from yt.environment.helpers import assert_items_equal
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestCrossClusterTransactions(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -70,7 +69,6 @@ class TestCrossClusterTransactions(YTEnvSetup):
         assert_items_equal(select_rows("* from [//tmp/remote]", driver=self.remote_driver), REMOTE_ROWS)
 
 
-@pytest.mark.opensource
 class TestCrossClusterTransactionsRpcProxy(TestCrossClusterTransactions):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

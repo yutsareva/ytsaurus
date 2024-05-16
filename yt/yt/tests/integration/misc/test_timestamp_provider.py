@@ -6,7 +6,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestTimestampProvider(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -27,6 +26,5 @@ class TestTimestampProvider(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestTimestampProviderClocks(TestTimestampProvider):
     NUM_CLOCKS = 1

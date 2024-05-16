@@ -49,7 +49,6 @@ def get_running_job_count(op_id):
     return result["brief_progress"]["jobs"]["running"]
 
 
-@pytest.mark.opensource
 class TestGetOperation(YTEnvSetup):
     NUM_TEST_PARTITIONS = 4
     NUM_MASTERS = 1
@@ -551,7 +550,6 @@ class TestGetOperation(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestGetOperationRpcProxy(TestGetOperation):
     USE_DYNAMIC_TABLES = True
     DRIVER_BACKEND = "rpc"
@@ -566,7 +564,6 @@ class TestGetOperationRpcProxy(TestGetOperation):
     }
 
 
-@pytest.mark.opensource
 class TestGetOperationHeavyRuntimeParameters(TestGetOperation):
     DELTA_SCHEDULER_CONFIG = {
         "scheduler": {
@@ -589,7 +586,6 @@ class TestGetOperationHeavyRuntimeParameters(TestGetOperation):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestOperationAliases(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -742,7 +738,6 @@ class TestOperationAliases(YTEnvSetup):
         assert info["type"] == "vanilla"
 
 
-@pytest.mark.opensource
 class TestOperationAliasesRpcProxy(TestOperationAliases):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

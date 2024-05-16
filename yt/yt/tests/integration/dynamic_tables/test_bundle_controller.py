@@ -7,7 +7,6 @@ from yt_commands import authors, ls, exists
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestBundleController(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

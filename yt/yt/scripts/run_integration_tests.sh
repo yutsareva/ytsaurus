@@ -11,4 +11,4 @@ source "$VIRTUALENV_PATH/bin/activate"
 
 cd $SOURCE_ROOT/yt/yt/tests/integration
 
-./run_tests.sh -m opensource
+./run_tests.sh

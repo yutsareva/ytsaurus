@@ -16,7 +16,6 @@ def trim(filepath):
         pass
 
 
-@pytest.mark.opensource
 class TestChunkCache(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

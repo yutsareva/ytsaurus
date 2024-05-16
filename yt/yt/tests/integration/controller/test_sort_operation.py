@@ -208,7 +208,6 @@ def sort_maniac(in_, out, sort_by, validate_types=False):
     return op
 
 
-@pytest.mark.opensource
 class TestSchedulerSortCommands(YTEnvSetup):
     NUM_TEST_PARTITIONS = 18
     NUM_MASTERS = 1
@@ -2376,12 +2375,10 @@ class TestSchedulerSortCommands(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerSortCommandsMulticell(TestSchedulerSortCommands):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
-@pytest.mark.opensource
 class TestSchedulerSortCommandsNewSortedPool(TestSchedulerSortCommands):
     DELTA_CONTROLLER_AGENT_CONFIG = {
         "controller_agent": {

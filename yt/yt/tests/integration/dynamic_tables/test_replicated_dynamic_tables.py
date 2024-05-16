@@ -93,7 +93,6 @@ EXPRESSIONLESS_SCHEMA = [
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestReplicatedDynamicTablesBase(DynamicTablesBase):
     NUM_TEST_PARTITIONS = 8
     NUM_REMOTE_CLUSTERS = 1
@@ -217,7 +216,6 @@ class TestReplicatedDynamicTablesBase(DynamicTablesBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestReplicatedDynamicTables(TestReplicatedDynamicTablesBase):
     @authors("savrus")
     def test_replicated_table_must_be_dynamic(self):
@@ -3060,7 +3058,6 @@ class TestReplicatedDynamicTables(TestReplicatedDynamicTablesBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestReplicatedDynamicTablesSafeMode(TestReplicatedDynamicTablesBase):
     USE_PERMISSION_CACHE = False
 
@@ -3170,7 +3167,6 @@ class TestReplicatedDynamicTablesSafeMode(TestReplicatedDynamicTablesBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestReplicatedDynamicTablesMulticell(TestReplicatedDynamicTables):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -3205,7 +3201,6 @@ class TestReplicatedDynamicTablesMulticell(TestReplicatedDynamicTables):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestReplicatedDynamicTablesRpcProxy(TestReplicatedDynamicTables):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -3376,7 +3371,6 @@ class TestReplicatedDynamicTablesRpcProxy(TestReplicatedDynamicTables):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestErasureReplicatedDynamicTables(TestReplicatedDynamicTablesBase):
     @authors("babenko")
     def test_erasure_replicated_table(self):

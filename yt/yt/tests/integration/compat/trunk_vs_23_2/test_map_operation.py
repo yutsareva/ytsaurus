@@ -4,7 +4,6 @@ from original_tests.yt.yt.tests.integration.controller.test_map_operation \
 from yt_commands import authors
 import pytest
 
-@pytest.mark.opensource
 class TestMapCommandsCompatNewCA(BaseTestMapCommands):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "node", "job-proxy", "exec", "tools"],
@@ -17,7 +16,6 @@ class TestMapCommandsCompatNewCA(BaseTestMapCommands):
         pass
 
 
-@pytest.mark.opensource
 class TestMapCommandsCompatNewNodes(BaseTestMapCommands):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "scheduler", "controller-agent", "exec", "tools", "node", "job-proxy"],

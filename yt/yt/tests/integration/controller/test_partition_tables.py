@@ -11,7 +11,6 @@ from collections import defaultdict
 import pytest
 
 
-@pytest.mark.opensource
 class TestPartitionTablesBase(YTEnvSetup):
     def setup_method(self, method):
         super(TestPartitionTablesBase, self).setup_method(method)
@@ -58,7 +57,6 @@ class TestPartitionTablesBase(YTEnvSetup):
         return get(f"{table}/@data_weight")
 
 
-@pytest.mark.opensource
 class TestPartitionTablesCommand(TestPartitionTablesBase):
     NUM_MASTERS = 1
     NUM_NODES = 1

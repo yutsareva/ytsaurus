@@ -309,7 +309,6 @@ pools_config = yson.to_yson_type(
 
 
 @authors("antonkikh")
-@pytest.mark.opensource
 class TestSchedulerSimulator(YTEnvSetup, PrepareTables):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -530,7 +529,6 @@ class TestSchedulerSimulator(YTEnvSetup, PrepareTables):
 
 
 @authors("ignat")
-@pytest.mark.opensource
 class TestSchedulerSimulatorWithRemoteEventLog(TestSchedulerSimulator):
     # We are going to remove remote event log in scheduler simulator anyway. This is the only
     # thing in scheduler simulator that requires native authentication, so there's no reason to

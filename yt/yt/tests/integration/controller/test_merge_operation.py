@@ -24,7 +24,6 @@ from time import sleep
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerMergeCommands(YTEnvSetup):
     NUM_TEST_PARTITIONS = 6
 
@@ -2276,7 +2275,6 @@ class TestSchedulerMergeCommands(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerMergeCommandsSliceSize(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -2340,7 +2338,6 @@ class TestSchedulerMergeCommandsSliceSize(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerMergeCommandsMulticell(TestSchedulerMergeCommands):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -2637,7 +2634,6 @@ class TestSchedulerMergeCommandsMulticell(TestSchedulerMergeCommands):
         assert read_table("//tmp/out") == [{"value": i} for i in range(m, n)]
 
 
-@pytest.mark.opensource
 class TestSchedulerMergeCommandsNewSortedPool(TestSchedulerMergeCommands):
     DELTA_SCHEDULER_CONFIG = {
         "scheduler": {

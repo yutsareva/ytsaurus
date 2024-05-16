@@ -50,7 +50,6 @@ def create_memory_script(memory, before_action=""):
 ###############################################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerMemoryLimits(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -107,12 +106,10 @@ class TestSchedulerMemoryLimits(YTEnvSetup):
         )
 
 
-@pytest.mark.opensource
 class TestSchedulerMemoryLimitsPorto(TestSchedulerMemoryLimits):
     USE_PORTO = True
 
 
-@pytest.mark.opensource
 class TestDisabledMemoryLimit(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -143,7 +140,6 @@ class TestDisabledMemoryLimit(YTEnvSetup):
 ###############################################################################################
 
 
-@pytest.mark.opensource
 class TestMemoryReserveFactor(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -227,7 +223,6 @@ class TestMemoryReserveFactor(YTEnvSetup):
 
 @pytest.mark.skipif(is_asan_build(), reason="This test does not work under ASAN")
 @pytest.mark.skipif(is_debug_build(), reason="This test does not work under Debug build")
-@pytest.mark.opensource
 class TestMemoryReserveMultiplier(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -395,7 +390,6 @@ class TestMemoryReserveMultiplier(YTEnvSetup):
 
 @pytest.mark.skipif(is_asan_build(), reason="This test does not work under ASAN")
 @pytest.mark.skipif(is_debug_build(), reason="This test does not work under Debug build")
-@pytest.mark.opensource
 class TestResourceOverdraftAbort(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -510,7 +504,6 @@ class TestResourceOverdraftAbort(YTEnvSetup):
 ###############################################################################################
 
 
-@pytest.mark.opensource
 class TestContainerCpuProperties(YTEnvSetup):
     USE_PORTO = True
     NUM_SCHEDULERS = 1
@@ -618,7 +611,6 @@ class TestContainerCpuProperties(YTEnvSetup):
 ###############################################################################################
 
 
-@pytest.mark.opensource
 class TestDaemonSubcontainer(YTEnvSetup):
     USE_PORTO = True
     NUM_SCHEDULERS = 1
@@ -650,7 +642,6 @@ class TestDaemonSubcontainer(YTEnvSetup):
 ###############################################################################################
 
 
-@pytest.mark.opensource
 class TestUpdateInstanceLimits(YTEnvSetup):
     DELTA_NODE_CONFIG = {
         "instance_limits_update_period": 200,
@@ -781,7 +772,6 @@ class TestUpdateInstanceLimits(YTEnvSetup):
 ###############################################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerGpu(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -918,7 +908,6 @@ class TestSchedulerGpu(YTEnvSetup):
 ###############################################################################################
 
 
-@pytest.mark.opensource
 class TestPorts(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 1
@@ -1060,7 +1049,6 @@ class TestPorts(YTEnvSetup):
 
 
 @authors("don-dron")
-@pytest.mark.opensource
 class TestJobWorkspaceBuilder(TestMemoryReserveFactor):
 
     DELTA_DYNAMIC_NODE_CONFIG = {

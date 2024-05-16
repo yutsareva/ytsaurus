@@ -10,7 +10,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestOrchid(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_NODES = 5
@@ -98,7 +97,6 @@ class TestOrchid(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestOrchidMulticell(TestOrchid):
     NUM_SECONDARY_MASTER_CELLS = 2
 

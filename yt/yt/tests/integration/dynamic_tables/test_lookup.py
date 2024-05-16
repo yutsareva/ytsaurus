@@ -31,7 +31,6 @@ import time
 ################################################################################
 
 
-@pytest.mark.opensource
 class TestLookup(TestSortedDynamicTablesBase):
     NUM_TEST_PARTITIONS = 2
     NUM_SCHEDULERS = 1
@@ -883,7 +882,6 @@ class TestLookup(TestSortedDynamicTablesBase):
         assert read_table("//tmp/out") == rows
 
 
-@pytest.mark.opensource
 class TestAlternativeLookupMethods(TestSortedDynamicTablesBase):
     NUM_TEST_PARTITIONS = 2
 
@@ -1280,7 +1278,6 @@ class TestAlternativeLookupMethods(TestSortedDynamicTablesBase):
         assert get(row_count) == 1
 
 
-@pytest.mark.opensource
 class TestLookupWithRelativeNetworkThrottler(TestSortedDynamicTablesBase):
     NUM_NODES = 2
 
@@ -1330,7 +1327,6 @@ class TestLookupWithRelativeNetworkThrottler(TestSortedDynamicTablesBase):
 ################################################################################
 
 
-@pytest.mark.opensource
 class TestLookupCache(TestSortedDynamicTablesBase):
     DELTA_NODE_CONFIG = {
         "cluster_connection": {
@@ -1694,12 +1690,10 @@ class TestLookupCache(TestSortedDynamicTablesBase):
 ################################################################################
 
 
-@pytest.mark.opensource
 class TestLookupMulticell(TestLookup):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
-@pytest.mark.opensource
 class TestLookupRpcProxy(TestLookup):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

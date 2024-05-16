@@ -11,7 +11,6 @@ from yt_helpers import JobCountProfiler
 ##################################################################
 import pytest
 
-@pytest.mark.opensource
 class TestJobs(YTEnvSetup):
     NUM_NODES = 1
     NUM_SCHEDULERS = 1
@@ -72,6 +71,5 @@ class TestJobs(YTEnvSetup):
 
 
 @authors("khlebnikov")
-@pytest.mark.opensource
 class TestJobsCri(TestJobs):
     JOB_ENVIRONMENT_TYPE = "cri"

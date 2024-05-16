@@ -16,7 +16,6 @@ import pytest
 
 
 @authors("renadeen")
-@pytest.mark.opensource
 class TestSchedulerPoolManipulations(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 0
@@ -1058,7 +1057,6 @@ class TestSchedulerPoolManipulations(YTEnvSetup):
 
 
 @authors("renadeen")
-@pytest.mark.opensource
 class TestSchedulerPoolAcls(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 0
@@ -1263,7 +1261,6 @@ class TestSchedulerPoolAcls(YTEnvSetup):
 
 
 @authors("renadeen")
-@pytest.mark.opensource
 class TestTransferPoolResourcesCommand(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 0
@@ -1779,7 +1776,6 @@ class TestTransferPoolResourcesCommand(YTEnvSetup):
 
 
 @authors("ignat")
-@pytest.mark.opensource
 class TestSchedulerPoolConfigPresets(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1

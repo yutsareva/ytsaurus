@@ -14,7 +14,6 @@ import pytest
 #################################################################
 
 
-@pytest.mark.opensource
 class TestNodeFlavors(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 6
@@ -162,12 +161,10 @@ class TestNodeFlavors(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestNodeFlavorsMulticell(TestNodeFlavors):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
-@pytest.mark.opensource
 class TestNodeFlavorsExecNodeIsNotDataNode(TestNodeFlavors):
     DELTA_NODE_CONFIG = {
         "data_node": {
@@ -178,7 +175,6 @@ class TestNodeFlavorsExecNodeIsNotDataNode(TestNodeFlavors):
     }
 
 
-@pytest.mark.opensource
 class TestNodeFlavorsExecNodeIsNotDataNodeMulticell(TestNodeFlavors):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -193,7 +189,6 @@ class TestNodeFlavorsExecNodeIsNotDataNodeMulticell(TestNodeFlavors):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestDataAndTabletNodesCollocation(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5

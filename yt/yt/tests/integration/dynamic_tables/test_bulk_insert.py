@@ -34,7 +34,6 @@ from io import BytesIO
 
 
 @authors("ifsmirnov")
-@pytest.mark.opensource
 class TestBulkInsert(DynamicTablesBase):
     NUM_TEST_PARTITIONS = 6
     NUM_MASTERS = 1
@@ -1415,7 +1414,6 @@ class TestBulkInsert(DynamicTablesBase):
 
 
 @authors("ifsmirnov")
-@pytest.mark.opensource
 class TestUnversionedUpdateFormat(DynamicTablesBase):
     NUM_TEST_PARTITIONS = 2
     NUM_MASTERS = 1
@@ -2110,17 +2108,14 @@ class TestUnversionedUpdateFormat(DynamicTablesBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestBulkInsertMulticell(TestBulkInsert):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
-@pytest.mark.opensource
 class TestBulkInsertPortal(TestBulkInsertMulticell):
     ENABLE_TMP_PORTAL = True
 
 
-@pytest.mark.opensource
 class TestBulkInsertShardedTx(TestBulkInsertPortal):
     NUM_SECONDARY_MASTER_CELLS = 3
     MASTER_CELL_DESCRIPTORS = {
@@ -2131,7 +2126,6 @@ class TestBulkInsertShardedTx(TestBulkInsertPortal):
     }
 
 
-@pytest.mark.opensource
 class TestBulkInsertShardedTxCTxS(TestBulkInsertShardedTx):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -2145,13 +2139,11 @@ class TestBulkInsertShardedTxCTxS(TestBulkInsertShardedTx):
     }
 
 
-@pytest.mark.opensource
 class TestUnversionedUpdateFormatRpcProxy(TestUnversionedUpdateFormat):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
 
 
-@pytest.mark.opensource
 class TestUnversionedUpdateFormatShardedTx(TestUnversionedUpdateFormat):
     ENABLE_TMP_PORTAL = True
     NUM_SECONDARY_MASTER_CELLS = 3
@@ -2163,7 +2155,6 @@ class TestUnversionedUpdateFormatShardedTx(TestUnversionedUpdateFormat):
     }
 
 
-@pytest.mark.opensource
 class TestUnversionedUpdateFormatShardedTxCTxS(TestUnversionedUpdateFormatShardedTx):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

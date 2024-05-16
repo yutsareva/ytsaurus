@@ -35,7 +35,6 @@ def check_attributes(op, options):
         assert get(spec_path + "/output_table_path") == get(brief_spec_path + "/output_table_paths/0")
 
 
-@pytest.mark.opensource
 class TestSchedulerBriefSpec(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5

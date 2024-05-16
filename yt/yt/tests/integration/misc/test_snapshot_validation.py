@@ -25,7 +25,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSnapshotValidation(YTEnvSetup):
     NUM_MASTERS = 1
     USE_DYNAMIC_TABLES = True

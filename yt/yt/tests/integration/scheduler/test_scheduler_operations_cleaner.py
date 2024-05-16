@@ -54,7 +54,6 @@ def _run_maps_parallel(count, command, expect_fail=False, max_failed_job_count=1
     return [op.id for op in ops]
 
 
-@pytest.mark.opensource
 class TestSchedulerOperationsCleaner(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

@@ -33,7 +33,6 @@ import time
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestRuntimeParameters(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -535,14 +534,12 @@ class TestRuntimeParameters(YTEnvSetup):
         assert get(acl_path) == [u2_ace, root_ace]
 
 
-@pytest.mark.opensource
 class TestRuntimeParametersWithRecentResourceUsage(TestRuntimeParameters):
     def setup_method(self, method):
         super(TestRuntimeParametersWithRecentResourceUsage, self).setup_method(method)
         set("//sys/pool_trees/default/@config/use_recent_resource_usage_for_local_satisfaction", True)
 
 
-@pytest.mark.opensource
 class TestRuntimeParametersWithHeavyRuntimeParameters(TestRuntimeParameters):
     DELTA_SCHEDULER_CONFIG = {
         "scheduler": {
@@ -557,7 +554,6 @@ class TestRuntimeParametersWithHeavyRuntimeParameters(TestRuntimeParameters):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerResourceUsageStrategySwitches(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -607,7 +603,6 @@ class TestSchedulerResourceUsageStrategySwitches(YTEnvSetup):
             assert read_table("//tmp/t_out" + str(index)) == [{"foo": "bar"}] * 3
 
 
-@pytest.mark.opensource
 class TestJobsAreScheduledAfterPoolChange(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -645,7 +640,6 @@ class TestJobsAreScheduledAfterPoolChange(YTEnvSetup):
         wait(lambda: op.get_job_count("running") + op.get_job_count("completed") > scheduled + 10)
 
 
-@pytest.mark.opensource
 class TestOperationDetailedLogs(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

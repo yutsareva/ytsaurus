@@ -21,7 +21,6 @@ from collections import Counter
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerVanillaCommands(YTEnvSetup):
     NUM_TEST_PARTITIONS = 3
 
@@ -593,14 +592,12 @@ class TestSchedulerVanillaCommands(YTEnvSetup):
             )
 
 
-@pytest.mark.opensource
 class TestSchedulerVanillaCommandsMulticell(TestSchedulerVanillaCommands):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
 ##################################################################
 
-@pytest.mark.opensource
 class TestSchedulerVanillaInterrupts(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -718,6 +715,5 @@ wait $child_pid
         op.track()
 
 
-@pytest.mark.opensource
 class TestSchedulerVanillaInterruptsPorto(TestSchedulerVanillaInterrupts):
     USE_PORTO = True

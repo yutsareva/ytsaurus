@@ -54,7 +54,6 @@ def find_operation_by_mutation_id(mutation_id):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSandboxTmpfs(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -726,7 +725,6 @@ time.sleep(10)
         )
 
 
-@pytest.mark.opensource
 class TestTmpfsWithDiskLimit(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -783,7 +781,6 @@ class TestTmpfsWithDiskLimit(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSandboxTmpfsOverflow(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -891,7 +888,6 @@ class TestSandboxTmpfsOverflow(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestDisabledSandboxTmpfs(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -927,7 +923,6 @@ class TestDisabledSandboxTmpfs(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestFilesInSandbox(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -1032,7 +1027,6 @@ class TestFilesInSandbox(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestArtifactCacheBypass(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1181,7 +1175,6 @@ class TestArtifactCacheBypass(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestUserJobIsolation(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1362,7 +1355,6 @@ class TestUserJobIsolation(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestJobStderr(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1526,18 +1518,15 @@ class TestJobStderr(YTEnvSetup):
         check_all_stderrs(op, b"stderr\n", 11)
 
 
-@pytest.mark.opensource
 class TestJobStderrMulticell(TestJobStderr):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
-@pytest.mark.opensource
 class TestJobStderrPorto(TestJobStderr):
     USE_PORTO = True
 
 
 @authors("khlebnikov")
-@pytest.mark.opensource
 class TestJobStderrCri(TestJobStderr):
     JOB_ENVIRONMENT_TYPE = "cri"
 
@@ -1545,7 +1534,6 @@ class TestJobStderrCri(TestJobStderr):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestUserFiles(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1843,18 +1831,15 @@ class TestUserFiles(YTEnvSetup):
         ]
 
 
-@pytest.mark.opensource
 class TestUserFilesMulticell(TestUserFiles):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
-@pytest.mark.opensource
 class TestUserFilesPorto(TestUserFiles):
     USE_PORTO = True
 
 
 @authors("khlebnikov")
-@pytest.mark.opensource
 class TestUserFilesCri(TestUserFiles):
     JOB_ENVIRONMENT_TYPE = "cri"
 
@@ -1862,7 +1847,6 @@ class TestUserFilesCri(TestUserFiles):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSecureVault(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -2061,7 +2045,6 @@ class TestSecureVault(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestUserJobMonitoring(YTEnvSetup):
     USE_DYNAMIC_TABLES = True
     NUM_MASTERS = 1
@@ -2436,7 +2419,6 @@ class TestUserJobMonitoring(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestHealExecNode(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -2567,7 +2549,6 @@ class TestHealExecNode(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestArtifactInvalidFormat(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -2668,7 +2649,6 @@ class TestArtifactInvalidFormat(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestJobProxyFailBeforeStart(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -2699,7 +2679,6 @@ class TestJobProxyFailBeforeStart(YTEnvSetup):
 
 
 @pytest.mark.skipif(is_asan_build(), reason="Memory allocation is not reported under ASAN")
-@pytest.mark.opensource
 class TestUnusedMemoryAlertWithMemoryReserveFactorSet(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -2747,7 +2726,6 @@ class TestUnusedMemoryAlertWithMemoryReserveFactorSet(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestConsecutiveJobAborts(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -2822,7 +2800,6 @@ class TestConsecutiveJobAborts(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestIdleSlots(YTEnvSetup):
     USE_PORTO = True
 
@@ -2987,7 +2964,6 @@ class TestIdleSlots(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestCpuSet(YTEnvSetup):
     USE_PORTO = True
 
@@ -3169,7 +3145,6 @@ class TestCpuSet(YTEnvSetup):
         assert self._get_actual_cpu_set(op, job_id)[:2] == "0-"
 
 
-@pytest.mark.opensource
 class TestCpuSetCri(YTEnvSetup):
     JOB_ENVIRONMENT_TYPE = "cri"
 
@@ -3238,7 +3213,6 @@ class TestCpuSetCri(YTEnvSetup):
             assert actual_cpu_set == expected_cpu_set
 
 
-@pytest.mark.opensource
 class TestSlotManagerResurrect(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -3636,7 +3610,6 @@ class TestSlotManagerResurrect(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestGpuStatistics(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -3681,7 +3654,6 @@ class TestGpuStatistics(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestCriJobStatistics(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

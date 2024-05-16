@@ -79,7 +79,6 @@ def expect_to_find_in_stderr_table(stderr_table_path, content):
     assert sorted(job_id_list) == job_id_list
 
 
-@pytest.mark.opensource
 class TestStderrTable(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -555,7 +554,6 @@ class TestStderrTable(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestStderrTableShardedTx(TestStderrTable):
     NUM_SECONDARY_MASTER_CELLS = 5
     ENABLE_TMP_PORTAL = True
@@ -569,7 +567,6 @@ class TestStderrTableShardedTx(TestStderrTable):
     }
 
 
-@pytest.mark.opensource
 class TestStderrTableShardedTxCTxS(TestStderrTableShardedTx):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -598,7 +595,6 @@ def queue_iterator(queue):
         yield chunk
 
 
-@pytest.mark.opensource
 class TestCoreTable(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -1257,7 +1253,6 @@ class TestCoreTable(YTEnvSetup):
 
 
 @pytest.mark.skipif(is_asan_build(), reason="Cores are not dumped in ASAN build")
-@pytest.mark.opensource
 class TestCoreTablePorto(TestCoreTable):
     USE_PORTO = True
 
@@ -1289,7 +1284,6 @@ class TestCoreTablePorto(TestCoreTable):
 
 
 @pytest.mark.skipif(is_asan_build(), reason="Cores are not dumped in ASAN build")
-@pytest.mark.opensource
 class TestCoreTablePortoRootfs(TestCoreTablePorto):
     USE_CUSTOM_ROOTFS = True
 
@@ -1306,7 +1300,6 @@ def get_profiles_from_table(operation_id):
     )
 
 
-@pytest.mark.opensource
 class TestJobProfiling(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

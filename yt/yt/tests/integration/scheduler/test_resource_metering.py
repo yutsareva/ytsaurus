@@ -32,7 +32,6 @@ def get_by_composite_key(item, composite_key, default=None):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestResourceMetering(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 5

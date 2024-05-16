@@ -43,7 +43,6 @@ def get_cypress_metrics(operation_id, key):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestPoolMetrics(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -750,7 +749,6 @@ class TestPoolMetrics(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestImproperlyPreemptedResources(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1

@@ -15,7 +15,6 @@ USER_NETWORK_PROJECT = "user_network_project"
 USER_NETWORK_PROJECT_ID = 333
 
 
-@pytest.mark.opensource
 class TestJobExperiment(YTEnvSetup):
     NUM_TEST_PARTITIONS = 5
 

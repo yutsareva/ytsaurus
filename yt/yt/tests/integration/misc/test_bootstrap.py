@@ -8,7 +8,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestClusterConnectionDynamicConfig(YTEnvSetup):
     ENABLE_HTTP_PROXY = True
 

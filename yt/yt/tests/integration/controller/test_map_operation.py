@@ -31,7 +31,6 @@ import base64
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerMapCommands(YTEnvSetup):
     NUM_TEST_PARTITIONS = 12
     NUM_MASTERS = 1
@@ -1930,7 +1929,6 @@ done
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerMapCommandsWithJobSpecService(TestSchedulerMapCommands):
     DELTA_DYNAMIC_NODE_CONFIG = {
         "%true": {
@@ -1946,7 +1944,6 @@ class TestSchedulerMapCommandsWithJobSpecService(TestSchedulerMapCommands):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerMapCommandsPorto(TestSchedulerMapCommands):
     USE_PORTO = True
 
@@ -1954,7 +1951,6 @@ class TestSchedulerMapCommandsPorto(TestSchedulerMapCommands):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerMapCommandsMulticell(TestSchedulerMapCommands):
     NUM_TEST_PARTITIONS = 15
     NUM_SECONDARY_MASTER_CELLS = 2
@@ -1978,12 +1974,10 @@ class TestSchedulerMapCommandsMulticell(TestSchedulerMapCommands):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerMapCommandsPortal(TestSchedulerMapCommandsMulticell):
     ENABLE_TMP_PORTAL = True
 
 
-@pytest.mark.opensource
 class TestSchedulerMapCommandsShardedTx(TestSchedulerMapCommandsPortal):
     NUM_SECONDARY_MASTER_CELLS = 5
     MASTER_CELL_DESCRIPTORS = {
@@ -1996,13 +1990,11 @@ class TestSchedulerMapCommandsShardedTx(TestSchedulerMapCommandsPortal):
     }
 
 
-@pytest.mark.opensource
 class TestSchedulerMapCommandsSequoia(TestSchedulerMapCommandsShardedTx):
     USE_SEQUOIA = True
     NUM_CYPRESS_PROXIES = 1
 
 
-@pytest.mark.opensource
 class TestSchedulerMapCommandsShardedTxCTxS(TestSchedulerMapCommandsShardedTx):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -2019,7 +2011,6 @@ class TestSchedulerMapCommandsShardedTxCTxS(TestSchedulerMapCommandsShardedTx):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestJobSizeAdjuster(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 5
@@ -2129,7 +2120,6 @@ class TestJobSizeAdjuster(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestInputOutputFormats(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -2438,7 +2428,6 @@ print '{hello=world}'
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestInputOutputFormatsMulticell(TestInputOutputFormats):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -2446,7 +2435,6 @@ class TestInputOutputFormatsMulticell(TestInputOutputFormats):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestNestingLevelLimitOperations(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -2507,7 +2495,6 @@ class TestNestingLevelLimitOperations(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestEnvironment(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

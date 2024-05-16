@@ -17,7 +17,6 @@ import builtins
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestDataCenters(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 20
@@ -480,6 +479,5 @@ class TestDataCenters(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestDataCentersMulticell(TestDataCenters):
     NUM_SECONDARY_MASTER_CELLS = 2

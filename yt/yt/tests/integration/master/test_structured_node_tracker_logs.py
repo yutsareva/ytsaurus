@@ -13,7 +13,6 @@ import pytest
 
 
 @authors("kvk1920")
-@pytest.mark.opensource
 class TestNodeTrackerLog(YTEnvSetup):
     LOG_WRITE_WAIT_TIME = 0.2
 

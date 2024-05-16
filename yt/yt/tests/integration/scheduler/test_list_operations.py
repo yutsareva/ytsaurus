@@ -957,7 +957,6 @@ class _TestListOperationsBase(ListOperationsSetup):
             )
 
 
-@pytest.mark.opensource
 class TestListOperationsCypressOnly(_TestListOperationsBase):
     NUM_TEST_PARTITIONS = 4
     include_archive = False
@@ -1049,7 +1048,6 @@ class TestListOperationsCypressOnly(_TestListOperationsBase):
         ]
 
 
-@pytest.mark.opensource
 class TestListOperationsCypressArchive(_TestListOperationsBase):
     USE_DYNAMIC_TABLES = True
 
@@ -1072,7 +1070,6 @@ class TestListOperationsCypressArchive(_TestListOperationsBase):
             list_operations(include_archive=True, from_time=self.op1.before_start_time)
 
 
-@pytest.mark.opensource
 class TestListOperationsArchiveOnly(_TestListOperationsBase):
     USE_DYNAMIC_TABLES = True
 
@@ -1101,7 +1098,6 @@ class TestListOperationsArchiveOnly(_TestListOperationsBase):
         clean_operations()
 
 
-@pytest.mark.opensource
 class TestListOperationsArchiveHacks(ListOperationsSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1160,7 +1156,6 @@ class TestListOperationsArchiveHacks(ListOperationsSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestListOperationsCypressOnlyRpcProxy(TestListOperationsCypressOnly):
     USE_DYNAMIC_TABLES = True
     DRIVER_BACKEND = "rpc"
@@ -1168,7 +1163,6 @@ class TestListOperationsCypressOnlyRpcProxy(TestListOperationsCypressOnly):
     ENABLE_HTTP_PROXY = True
 
 
-@pytest.mark.opensource
 class TestListOperationsCypressArchiveRpcProxy(TestListOperationsCypressArchive):
     USE_DYNAMIC_TABLES = True
     DRIVER_BACKEND = "rpc"
@@ -1176,7 +1170,6 @@ class TestListOperationsCypressArchiveRpcProxy(TestListOperationsCypressArchive)
     ENABLE_HTTP_PROXY = True
 
 
-@pytest.mark.opensource
 class TestListOperationsArchiveOnlyRpcProxy(TestListOperationsArchiveOnly):
     USE_DYNAMIC_TABLES = True
     DRIVER_BACKEND = "rpc"
@@ -1184,7 +1177,6 @@ class TestListOperationsArchiveOnlyRpcProxy(TestListOperationsArchiveOnly):
     ENABLE_HTTP_PROXY = True
 
 
-@pytest.mark.opensource
 class TestListOperationsCypressArchiveHeavyRuntimeParameters(TestListOperationsCypressArchive):
     DELTA_SCHEDULER_CONFIG = {
         "scheduler": {
@@ -1196,7 +1188,6 @@ class TestListOperationsCypressArchiveHeavyRuntimeParameters(TestListOperationsC
 
 
 @authors("renadeen")
-@pytest.mark.opensource
 class TestArchiveVersion(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1

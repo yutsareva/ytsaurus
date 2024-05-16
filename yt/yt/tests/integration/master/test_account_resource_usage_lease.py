@@ -19,7 +19,6 @@ def update_account_resource_usage_lease(lease_id, resources, **kwargs):
     set("#{}/@resource_usage".format(lease_id), resources, **kwargs)
 
 
-@pytest.mark.opensource
 class TestAccountResourceUsageLease(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 0

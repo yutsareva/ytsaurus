@@ -23,7 +23,6 @@ INCREASED_TIMEOUT = 90.0
 
 
 @authors("ignat")
-@pytest.mark.opensource
 class TestGpuJobSetup(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 1
@@ -179,7 +178,6 @@ class TestGpuJobSetup(YTEnvSetup):
 
 
 @authors("ignat")
-@pytest.mark.opensource
 class TestSkipGpuJobSetup(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 1
@@ -260,7 +258,6 @@ class TestSkipGpuJobSetup(YTEnvSetup):
 
 
 @authors("ignat")
-@pytest.mark.opensource
 class TestGpuLayer(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 1
@@ -385,7 +382,6 @@ class TestGpuLayer(YTEnvSetup):
 
 
 @authors("ignat")
-@pytest.mark.opensource
 class TestGpuLayerUpdate(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 1
@@ -512,7 +508,6 @@ class TestGpuLayerUpdate(YTEnvSetup):
 
 
 @authors("ignat")
-@pytest.mark.opensource
 class TestCudaLayer(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 1
@@ -665,7 +660,6 @@ class TestCudaLayer(YTEnvSetup):
 
 
 @authors("ignat")
-@pytest.mark.opensource
 class TestForceCudaLayer(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 1
@@ -793,7 +787,6 @@ class TestForceCudaLayer(YTEnvSetup):
 
 
 @authors("ignat")
-@pytest.mark.opensource
 class TestSetupUser(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 1
@@ -877,7 +870,6 @@ class TestSetupUser(YTEnvSetup):
         assert res == b"2019\n"
 
 
-@pytest.mark.opensource
 class TestRootFS(YTEnvSetup):
     NUM_SCHEDULERS = 1
     NUM_NODES = 3
@@ -969,7 +961,6 @@ class GpuCheckBase(object):
 
 
 @authors("ignat")
-@pytest.mark.opensource
 class TestGpuCheck(YTEnvSetup, GpuCheckBase):
     NUM_SCHEDULERS = 1
     NUM_NODES = 1
@@ -1330,7 +1321,6 @@ class TestGpuCheck(YTEnvSetup, GpuCheckBase):
 
 
 @authors("ignat")
-@pytest.mark.opensource
 class TestExtraGpuCheckFailure(YTEnvSetup, GpuCheckBase):
     NUM_SCHEDULERS = 1
     NUM_NODES = 1

@@ -4,7 +4,6 @@ from original_tests.yt.yt.tests.integration.controller.test_remote_copy_operatio
 from yt_commands import authors
 import pytest
 
-@pytest.mark.opensource
 class TestRemoteCopyCommandsCompatUpNewCA(BaseTestRemoteCopyCommands):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "node", "job-proxy", "exec", "tools"],
@@ -16,7 +15,6 @@ class TestRemoteCopyCommandsCompatUpNewCA(BaseTestRemoteCopyCommands):
         pass
 
 
-@pytest.mark.opensource
 class TestRemoteCopyCommandsCompatNewNodes(BaseTestRemoteCopyCommands):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "scheduler", "controller-agent"],

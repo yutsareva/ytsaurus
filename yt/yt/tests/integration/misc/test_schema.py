@@ -207,7 +207,6 @@ def type_v3_to_type_v1(type_v3):
 
 @authors("ermolovd")
 @pytest.mark.parametrize("optimize_for", ["lookup", "scan"])
-@pytest.mark.opensource
 class TestComplexTypes(YTEnvSetup):
 
     @authors("ermolovd")
@@ -559,7 +558,6 @@ class TestComplexTypes(YTEnvSetup):
 
 
 @authors("ermolovd")
-@pytest.mark.opensource
 class TestComplexTypesMisc(YTEnvSetup):
     NUM_SCHEDULERS = 1
 
@@ -981,7 +979,6 @@ class TestComplexTypesMisc(YTEnvSetup):
         )
 
 
-@pytest.mark.opensource
 class TestLogicalType(YTEnvSetup):
     USE_DYNAMIC_TABLES = True
 
@@ -1203,7 +1200,6 @@ class TestLogicalType(YTEnvSetup):
             )
 
 
-@pytest.mark.opensource
 class TestRequiredOption(YTEnvSetup):
     USE_DYNAMIC_TABLES = True
     NUM_SCHEDULERS = 1
@@ -1477,7 +1473,6 @@ class TestRequiredOption(YTEnvSetup):
         alter_table("//tmp/t", schema=good_schema)
 
 
-@pytest.mark.opensource
 class TestSchemaDeduplication(YTEnvSetup):
     def _get_schema(self, strict):
         return make_schema([make_column("value", "string")], unique_keys=False, strict=strict)
@@ -1516,12 +1511,10 @@ class TestSchemaDeduplication(YTEnvSetup):
         assert get("//tmp/table/@schema") == get("//tmp/schema_holder/@schema")
 
 
-@pytest.mark.opensource
 class TestSchemaDeduplicationRpcProxy(TestSchemaDeduplication):
     NUM_RPC_PROXIES = 1
 
 
-@pytest.mark.opensource
 class TestSchemaObjects(TestSchemaDeduplication):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -1726,7 +1719,6 @@ class TestSchemaObjects(TestSchemaDeduplication):
         wait(lambda: get("#{}/@export_ref_counter".format(schema_id)) == {})
 
 
-@pytest.mark.opensource
 class TestSchemaValidation(YTEnvSetup):
     @authors("ermolovd")
     def test_schema_complexity(self):
@@ -1834,7 +1826,6 @@ class TestSchemaValidation(YTEnvSetup):
 
 
 @authors("ermolovd")
-@pytest.mark.opensource
 class TestErrorCodes(YTEnvSetup):
     USE_DYNAMIC_TABLES = True
 
@@ -1867,7 +1858,6 @@ class TestErrorCodes(YTEnvSetup):
 
 
 @authors("ermolovd")
-@pytest.mark.opensource
 class TestAlterTable(YTEnvSetup):
     USE_DYNAMIC_TABLES = True
 
@@ -2251,7 +2241,6 @@ class TestAlterTable(YTEnvSetup):
             dynamic=dynamic)
 
 
-@pytest.mark.opensource
 class TestSchemaDepthLimit(YTEnvSetup):
     YSON_DEPTH_LIMIT = 256
 
@@ -2290,7 +2279,6 @@ class TestSchemaDepthLimit(YTEnvSetup):
             })
 
 
-@pytest.mark.opensource
 class TestRenameColumnsStatic(YTEnvSetup):
     USE_DYNAMIC_TABLES = True
     ENABLE_DYNAMIC_TABLE_COLUMN_RENAMES = False
@@ -2518,7 +2506,6 @@ class TestRenameColumnsStatic(YTEnvSetup):
             alter_table(self._TABLE_PATH, dynamic=True)
 
 
-@pytest.mark.opensource
 class TestRenameColumnsDynamic(YTEnvSetup):
     _TABLE_PATH = "//tmp/test-alter-table"
     USE_DYNAMIC_TABLES = True
@@ -2763,7 +2750,6 @@ class TestRenameColumnsDynamic(YTEnvSetup):
         assert read_table(self._TABLE_PATH) == rows4
 
 
-@pytest.mark.opensource
 class TestDeleteColumnsDisabledStatic(YTEnvSetup):
     USE_DYNAMIC_TABLES = True
     NUM_SCHEDULERS = 1
@@ -2797,7 +2783,6 @@ class TestDeleteColumnsDisabledStatic(YTEnvSetup):
             alter_table(self._TABLE_PATH, schema=schema2, verbose=True)
 
 
-@pytest.mark.opensource
 class TestDeleteColumnsDisabledDynamic(YTEnvSetup):
     USE_DYNAMIC_TABLES = True
     NUM_SCHEDULERS = 1
@@ -2862,7 +2847,6 @@ class TestDeleteColumnsDisabledDynamic(YTEnvSetup):
             alter_table(self._TABLE_PATH, schema=schema2, verbose=True)
 
 
-@pytest.mark.opensource
 class TestDeleteColumns(YTEnvSetup):
     USE_DYNAMIC_TABLES = True
     NUM_SCHEDULERS = 1

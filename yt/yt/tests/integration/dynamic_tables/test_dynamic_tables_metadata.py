@@ -22,7 +22,6 @@ from copy import deepcopy
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSortedDynamicTablesMetadataCaching(TestSortedDynamicTablesBase):
     USE_MASTER_CACHE = True
 
@@ -115,7 +114,6 @@ class TestSortedDynamicTablesMetadataCaching(TestSortedDynamicTablesBase):
         assert actual == []
 
 
-@pytest.mark.opensource
 class TestSortedDynamicTablesMetadataCaching2(TestSortedDynamicTablesMetadataCaching):
     USE_MASTER_CACHE = False
 
@@ -171,12 +169,10 @@ class TestSortedDynamicTablesMetadataCaching2(TestSortedDynamicTablesMetadataCac
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSortedDynamicTablesMetadataCachingMulticell(TestSortedDynamicTablesMetadataCaching):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
-@pytest.mark.opensource
 class TestSortedDynamicTablesMetadataCachingMulticell2(TestSortedDynamicTablesMetadataCaching2):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -184,13 +180,11 @@ class TestSortedDynamicTablesMetadataCachingMulticell2(TestSortedDynamicTablesMe
 ###################################################################
 
 
-@pytest.mark.opensource
 class TestSortedDynamicTablesMetadataCachingRpcProxy(TestSortedDynamicTablesMetadataCaching):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
 
 
-@pytest.mark.opensource
 class TestSortedDynamicTablesMetadataCachingRpcProxy2(TestSortedDynamicTablesMetadataCaching2):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
@@ -199,7 +193,6 @@ class TestSortedDynamicTablesMetadataCachingRpcProxy2(TestSortedDynamicTablesMet
 ###################################################################
 
 
-@pytest.mark.opensource
 class TestSortedDynamicTablesMetadataCachingOnRpcProxy(TestSortedDynamicTablesBase):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True

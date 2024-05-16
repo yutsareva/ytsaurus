@@ -10,7 +10,6 @@ import time
 import pytest
 
 
-@pytest.mark.opensource
 class TestStructuredSecurityLogs(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1

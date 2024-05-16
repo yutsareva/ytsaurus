@@ -15,7 +15,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestMasterCellsSync(YTEnvSetup):
     ENABLE_SECONDARY_CELLS_CLEANUP = False
     NUM_SECONDARY_MASTER_CELLS = 2
@@ -287,7 +286,6 @@ class TestMasterCellsSync(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestMasterCellsSyncDelayed(TestMasterCellsSync):
     DEFER_SECONDARY_CELL_START = True
     NUM_TEST_PARTITIONS = 2
@@ -305,7 +303,6 @@ class TestMasterCellsSyncDelayed(TestMasterCellsSync):
 
 ##################################################################
 
-@pytest.mark.opensource
 class TestMasterHiveSync(YTEnvSetup):
     NUM_SECONDARY_MASTER_CELLS = 2
     NUM_MASTERS = 1

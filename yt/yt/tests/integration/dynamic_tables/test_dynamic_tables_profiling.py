@@ -20,7 +20,6 @@ import time
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestDynamicTablesProfiling(TestSortedDynamicTablesBase):
     DELTA_NODE_CONFIG = {"cluster_connection": {"timestamp_provider": {"update_period": 100}}}
 

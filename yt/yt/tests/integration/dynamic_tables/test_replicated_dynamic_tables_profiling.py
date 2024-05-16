@@ -18,7 +18,6 @@ from time import sleep, time
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestReplicatedDynamicTablesProfiling(TestReplicatedDynamicTablesBase):
     @authors("savrus")
     @flaky(max_runs=5)
@@ -195,7 +194,6 @@ class TestReplicatedDynamicTablesProfiling(TestReplicatedDynamicTablesBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestReplicatedDynamicTablesProfilingMulticell(TestReplicatedDynamicTablesProfiling):
     NUM_SECONDARY_MASTER_CELLS = 2
 

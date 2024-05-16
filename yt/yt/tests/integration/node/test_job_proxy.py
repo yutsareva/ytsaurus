@@ -53,7 +53,6 @@ class JobProxyTestBase(YTEnvSetup):
     }
 
 
-@pytest.mark.opensource
 class TestJobProxyBinary(JobProxyTestBase):
     DELTA_DYNAMIC_NODE_CONFIG = {
         "%true": {
@@ -157,7 +156,6 @@ class TestJobProxyBinary(JobProxyTestBase):
         assert re.match(r"^.*/pipes/.*-job-proxy-[0-9]+$", content)
 
 
-@pytest.mark.opensource
 class TestRpcProxyInJobProxy(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1
@@ -238,7 +236,6 @@ class TestRpcProxyInJobProxy(YTEnvSetup):
             self.run_job_proxy(enable_rpc_proxy=True, rpc_proxy_thread_pool_size=0)
 
 
-@pytest.mark.opensource
 class TestUnavailableJobProxy(JobProxyTestBase):
     DELTA_NODE_CONFIG = {
         "exec_node": {
@@ -279,7 +276,6 @@ class TestUnavailableJobProxy(JobProxyTestBase):
         op.track()
 
 
-@pytest.mark.opensource
 class TestJobProxyProfiling(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1

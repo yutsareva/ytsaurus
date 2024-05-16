@@ -2,7 +2,6 @@ from original_tests.yt.yt.tests.integration.controller.test_reduce_operation \
     import TestSchedulerReduceCommands as BaseTestReduceCommands
 import pytest
 
-@pytest.mark.opensource
 class TestReduceCommandsCompatNewCA(BaseTestReduceCommands):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "node", "job-proxy", "exec", "tools"],
@@ -10,7 +9,6 @@ class TestReduceCommandsCompatNewCA(BaseTestReduceCommands):
     }
 
 
-@pytest.mark.opensource
 class TestReduceCommandsCompatNewNodes(BaseTestReduceCommands):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "scheduler", "controller-agent"],

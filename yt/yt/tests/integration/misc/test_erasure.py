@@ -20,7 +20,6 @@ from datetime import datetime, timedelta
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestErasureBase(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 20
@@ -117,7 +116,6 @@ class TestErasureBase(YTEnvSetup):
         return has_failed
 
 
-@pytest.mark.opensource
 class TestErasure(TestErasureBase):
     NUM_TEST_PARTITIONS = 5
 
@@ -629,7 +627,6 @@ class TestErasure(TestErasureBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestErasureMulticell(TestErasure):
     NUM_TEST_PARTITIONS = 5
     NUM_SECONDARY_MASTER_CELLS = 2
@@ -637,7 +634,6 @@ class TestErasureMulticell(TestErasure):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestDynamicTablesErasure(TestErasureBase):
     USE_DYNAMIC_TABLES = True
     DELTA_NODE_CONFIG = {

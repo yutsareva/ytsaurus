@@ -12,7 +12,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestChunkLocations(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_NODES = 3
@@ -173,14 +172,12 @@ class TestChunkLocations(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestChunkLocationsMulticell(TestChunkLocations):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestPerLocationNodeDisposal(TestChunkLocationsMulticell):
     NUM_SECONDARY_MASTER_CELLS = 2
 
@@ -254,7 +251,6 @@ class TestPerLocationNodeDisposal(TestChunkLocationsMulticell):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestMediumOverrideSafety(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 1

@@ -11,7 +11,6 @@ import builtins
 #################################################################
 
 
-@pytest.mark.opensource
 class TestStoreCompactorOrchid(TestSortedDynamicTablesBase):
     NUM_NODES = 3
     USE_DYNAMIC_TABLES = True

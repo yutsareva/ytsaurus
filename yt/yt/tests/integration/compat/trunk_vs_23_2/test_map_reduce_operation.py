@@ -4,7 +4,6 @@ from yt.common import update
 from yt_commands import authors
 import pytest
 
-@pytest.mark.opensource
 class TestMapReduceCommandsCompatNewCA(BaseTestMapReduceCommands):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "node", "job-proxy", "exec", "tools"],
@@ -22,7 +21,6 @@ class TestMapReduceCommandsCompatNewCA(BaseTestMapReduceCommands):
     })
 
 
-@pytest.mark.opensource
 class TestMapReduceCommandsCompatNewNodes(BaseTestMapReduceCommands):
     ARTIFACT_COMPONENTS = {
         "23_2": ["master", "scheduler", "controller-agent"],

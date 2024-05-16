@@ -18,7 +18,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestDynamicTableStateTransitions(DynamicTablesBase):
     NUM_TEST_PARTITIONS = 5
 
@@ -264,11 +263,9 @@ class TestDynamicTableStateTransitions(DynamicTablesBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestDynamicTableStateTransitionsMulticell(TestDynamicTableStateTransitions):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
-@pytest.mark.opensource
 class TestDynamicTableStateTransitionsPortal(TestDynamicTableStateTransitionsMulticell):
     ENABLE_TMP_PORTAL = True

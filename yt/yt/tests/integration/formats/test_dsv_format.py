@@ -7,7 +7,6 @@ from yt_type_helpers import optional_type, list_type
 import yt.yson as yson
 import pytest
 
-@pytest.mark.opensource
 class TestDsvFormat(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -50,7 +49,6 @@ class TestDsvFormat(YTEnvSetup):
         assert b"int=53\topt_string=foobar\t\nint=82\t\n" == dsv_dump
 
 
-@pytest.mark.opensource
 class TestYamredDsvFormat(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

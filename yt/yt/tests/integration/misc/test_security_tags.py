@@ -13,7 +13,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSecurityTags(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -274,6 +273,5 @@ class TestSecurityTags(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSecurityTagsMulticell(TestSecurityTags):
     NUM_SECONDARY_MASTER_CELLS = 1

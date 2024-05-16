@@ -10,7 +10,6 @@ import pytest
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestTracing(YTEnvSetup):
     NUM_MASTERS = 3
     NUM_SECONDARY_MASTER_CELLS = 1

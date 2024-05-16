@@ -14,7 +14,6 @@ import pytest
 ################################################################################
 
 
-@pytest.mark.opensource
 class TestSortedDynamicTablesAcl(TestSortedDynamicTablesBase):
     USE_PERMISSION_CACHE = False
 
@@ -218,18 +217,15 @@ class TestSortedDynamicTablesAcl(TestSortedDynamicTablesBase):
             delete_rows("//tmp/t", [{"key": 1}], authenticated_user="u")
 
 
-@pytest.mark.opensource
 class TestSortedDynamicTablesAclMulticell(TestSortedDynamicTablesAcl):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
-@pytest.mark.opensource
 class TestSortedDynamicTablesAclRpcProxy(TestSortedDynamicTablesAcl):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
 
 
-@pytest.mark.opensource
 class TestSortedDynamicTablesAclPortal(TestSortedDynamicTablesAclMulticell):
     ENABLE_TMP_PORTAL = True
 
@@ -237,7 +233,6 @@ class TestSortedDynamicTablesAclPortal(TestSortedDynamicTablesAclMulticell):
 ################################################################################
 
 
-@pytest.mark.opensource
 class TestOrderedDynamicTablesAcl(TestOrderedDynamicTablesBase):
     USE_PERMISSION_CACHE = False
 
@@ -298,17 +293,14 @@ class TestOrderedDynamicTablesAcl(TestOrderedDynamicTablesBase):
             trim_rows("//tmp/t", 0, 1, authenticated_user="u")
 
 
-@pytest.mark.opensource
 class TestOrderedDynamicTablesAclMulticell(TestOrderedDynamicTablesAcl):
     NUM_SECONDARY_MASTER_CELLS = 2
 
 
-@pytest.mark.opensource
 class TestOrderedDynamicTablesAclRpcProxy(TestOrderedDynamicTablesAcl):
     DRIVER_BACKEND = "rpc"
     ENABLE_RPC_PROXY = True
 
 
-@pytest.mark.opensource
 class TestOrderedDynamicTablesAclPortal(TestOrderedDynamicTablesAclMulticell):
     ENABLE_TMP_PORTAL = True

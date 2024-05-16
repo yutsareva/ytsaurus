@@ -55,7 +55,6 @@ def _test_schemas_match(table_path, schema_equality, schema_id_equality=None, ex
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestChunkSchemas(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -376,7 +375,6 @@ class ChunkSchemasMulticellBase(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestChunkSchemasMulticell(ChunkSchemasMulticellBase):
     @authors("h0pless")
     def test_multicell_static_1(self):
@@ -423,6 +421,5 @@ class TestChunkSchemasMulticell(ChunkSchemasMulticellBase):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestChunkSchemasMulticellPortal(ChunkSchemasMulticellBase):
     ENABLE_TMP_PORTAL = True

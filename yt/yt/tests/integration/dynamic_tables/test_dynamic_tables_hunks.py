@@ -39,7 +39,6 @@ HUNK_COMPATIBLE_CHUNK_FORMATS = [
 ################################################################################
 
 
-@pytest.mark.opensource
 class TestSortedDynamicTablesHunks(TestSortedDynamicTablesBase):
     NUM_TEST_PARTITIONS = 7
 
@@ -1421,7 +1420,6 @@ class TestSortedDynamicTablesHunks(TestSortedDynamicTablesBase):
 ################################################################################
 
 
-@pytest.mark.opensource
 class TestOrderedDynamicTablesHunks(TestSortedDynamicTablesBase):
     NUM_TEST_PARTITIONS = 7
 

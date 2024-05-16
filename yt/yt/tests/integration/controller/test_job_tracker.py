@@ -23,7 +23,6 @@ import time
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestJobTracker(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

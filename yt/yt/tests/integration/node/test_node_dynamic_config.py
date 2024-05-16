@@ -30,7 +30,6 @@ import pytest
 #################################################################
 
 
-@pytest.mark.opensource
 class TestNodeDynamicConfig(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3

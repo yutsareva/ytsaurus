@@ -57,7 +57,6 @@ class MetricsTestBase(YTEnvSetup):
         )
 
 
-@pytest.mark.opensource
 class TestPortoMetrics(MetricsTestBase):
     SUSPENDING_TABLE = "//tmp/suspending_table"
     DELAY_BEFORE_COMMAND = 10 * 1000

@@ -30,7 +30,6 @@ import yt.environment.init_queue_agent_state as init_queue_agent_state
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestQueueAgent(TestQueueAgentBase):
     DELTA_QUEUE_AGENT_DYNAMIC_CONFIG = {
         "cypress_synchronizer": {
@@ -94,7 +93,6 @@ class TestQueueAgent(TestQueueAgentBase):
             assert "error" not in consumer_queues[registration["queue"]]
 
 
-@pytest.mark.opensource
 class TestQueueAgentNoSynchronizer(TestQueueAgentBase):
     DELTA_QUEUE_AGENT_DYNAMIC_CONFIG = {
         "cypress_synchronizer": {
@@ -257,7 +255,6 @@ class TestQueueAgentNoSynchronizer(TestQueueAgentBase):
         assert orchid.get_consumer_orchid("primary://tmp/c").get_pass_index() > pass_index
 
 
-@pytest.mark.opensource
 class TestQueueController(TestQueueAgentBase):
     DELTA_QUEUE_AGENT_DYNAMIC_CONFIG = {
         "cypress_synchronizer": {
@@ -464,7 +461,6 @@ class TestQueueController(TestQueueAgentBase):
         assert partitions[0]["next_row_index"] == 0
 
 
-@pytest.mark.opensource
 class TestRates(TestQueueAgentBase):
     DELTA_QUEUE_AGENT_DYNAMIC_CONFIG = {
         "cypress_synchronizer": {
@@ -565,7 +561,6 @@ class TestRates(TestQueueAgentBase):
                    3 * partitions[1]["read_data_weight_rate"]["1m_raw"]) < eps
 
 
-@pytest.mark.opensource
 class TestAutomaticTrimming(TestQueueAgentBase):
     DELTA_QUEUE_AGENT_DYNAMIC_CONFIG = {
         "queue_agent": {
@@ -1183,7 +1178,6 @@ class TestAutomaticTrimming(TestQueueAgentBase):
         self._wait_for_row_count("//tmp/q", 1, 6 - vital_consumer_offsets[1])
 
 
-@pytest.mark.opensource
 class TestMultipleAgents(TestQueueAgentBase):
     NUM_TEST_PARTITIONS = 3
 
@@ -1427,7 +1421,6 @@ class TestMultipleAgents(TestQueueAgentBase):
                 wait(lambda: "queue_agent_sharding_manager_pass_failed" not in alert_manager_orchid.get_alerts())
 
 
-@pytest.mark.opensource
 class TestMasterIntegration(TestQueueAgentBase):
     DELTA_QUEUE_AGENT_CONFIG = {
         "election_manager": {
@@ -1588,7 +1581,6 @@ class TestMasterIntegration(TestQueueAgentBase):
         self._set_and_assert_revision_change("//tmp/c", "target_queue", "haha:muahaha")
 
 
-@pytest.mark.opensource
 class TestCypressSynchronizerBase(TestQueueAgentBase):
     def _get_queue_name(self, name):
         return "//tmp/q-{}".format(name)
@@ -1707,7 +1699,6 @@ class TestCypressSynchronizerBase(TestQueueAgentBase):
         self.LAST_REVISIONS[row["path"]] = row["row_revision"]
 
 
-@pytest.mark.opensource
 class TestCypressSynchronizerCommon(TestCypressSynchronizerBase):
     @authors("achulkov2")
     @pytest.mark.parametrize("policy", ["polling", "watching"])
@@ -1797,7 +1788,6 @@ class TestCypressSynchronizerCommon(TestCypressSynchronizerBase):
 # TODO(achulkov2): eliminate copy & paste between watching and polling versions below.
 
 
-@pytest.mark.opensource
 class TestCypressSynchronizerPolling(TestCypressSynchronizerBase):
     DELTA_QUEUE_AGENT_DYNAMIC_CONFIG = {
         "cypress_synchronizer": {
@@ -1953,7 +1943,6 @@ class TestCypressSynchronizerPolling(TestCypressSynchronizerBase):
             self._assert_increased_revision(consumer)
 
 
-@pytest.mark.opensource
 class TestCypressSynchronizerWatching(TestCypressSynchronizerBase):
     DELTA_QUEUE_AGENT_DYNAMIC_CONFIG = {
         "cypress_synchronizer": {
@@ -2092,7 +2081,6 @@ class TestCypressSynchronizerWatching(TestCypressSynchronizerBase):
         # TODO(max42): come up with some checks here.
 
 
-@pytest.mark.opensource
 class TestMultiClusterReplicatedTableObjects(TestQueueAgentBase, ReplicatedObjectBase):
     DELTA_QUEUE_AGENT_DYNAMIC_CONFIG = {
         "cypress_synchronizer": {
@@ -2412,7 +2400,6 @@ class TestMultiClusterReplicatedTableObjects(TestQueueAgentBase, ReplicatedObjec
             assert full_attributes[attribute] == YsonEntity()
 
 
-@pytest.mark.opensource
 class TestReplicatedTableObjects(TestQueueAgentBase, ReplicatedObjectBase):
     DELTA_QUEUE_AGENT_DYNAMIC_CONFIG = {
         "cypress_synchronizer": {
@@ -2556,7 +2543,6 @@ class TestReplicatedTableObjects(TestQueueAgentBase, ReplicatedObjectBase):
         self._assert_internal_consumers_are({replicated_consumer})
 
 
-@pytest.mark.opensource
 class TestDynamicConfig(TestQueueAgentBase):
     @authors("achulkov2")
     def test_basic(self):
@@ -2582,7 +2568,6 @@ class TestDynamicConfig(TestQueueAgentBase):
         orchid.wait_fresh_pass()
 
 
-@pytest.mark.opensource
 class TestQueueStaticExportBase(TestQueueAgentBase):
     NUM_SECONDARY_MASTER_CELLS = 2
     NUM_TEST_PARTITIONS = 3
@@ -2687,7 +2672,6 @@ class TestQueueStaticExportBase(TestQueueAgentBase):
         return next_instant
 
 
-@pytest.mark.opensource
 class TestQueueStaticExport(TestQueueStaticExportBase):
     @authors("cherepashka", "achulkov2")
     @pytest.mark.parametrize("queue_external_cell_tag", [10, 11, 12])
@@ -3021,7 +3005,6 @@ class TestQueueStaticExport(TestQueueStaticExportBase):
         self.remove_export_destination(export_dir)
 
 
-@pytest.mark.opensource
 class TestQueueStaticExportPortals(TestQueueStaticExport):
     ENABLE_TMP_PORTAL = True
 

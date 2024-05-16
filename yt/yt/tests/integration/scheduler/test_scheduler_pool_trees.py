@@ -47,7 +47,6 @@ def get_from_tree_orchid(tree, path, **kwargs):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestPoolTreesReconfiguration(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -742,7 +741,6 @@ class TestPoolTreesReconfiguration(YTEnvSetup):
 
 
 @authors("renadeen")
-@pytest.mark.opensource
 class TestConfigurablePoolTreeRoot(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -768,7 +766,6 @@ class TestConfigurablePoolTreeRoot(YTEnvSetup):
 
 
 @authors("renadeen")
-@pytest.mark.opensource
 class TestPoolTreesUpdateUnderLock(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -806,7 +803,6 @@ class TestPoolTreesUpdateUnderLock(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestTentativePoolTrees(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 6
@@ -1141,7 +1137,6 @@ class TestTentativePoolTrees(YTEnvSetup):
         wait(lambda: op.get_runtime_progress("scheduling_info_per_pool_tree/other/tentative"))
 
 
-@pytest.mark.opensource
 class TestSchedulingTagFilterOnPerPoolTreeConfiguration(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1196,7 +1191,6 @@ class TestSchedulingTagFilterOnPerPoolTreeConfiguration(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestSchedulerScheduleInSingleTree(YTEnvSetup):
     NUM_TEST_PARTITIONS = 2
     NUM_MASTERS = 1
@@ -1676,7 +1670,6 @@ class TestSchedulerScheduleInSingleTree(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestPoolTreeOperationLimits(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -1823,7 +1816,6 @@ class TestPoolTreeOperationLimits(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestTreeSetChangedDuringFairShareUpdate(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_SCHEDULERS = 1
@@ -1853,7 +1845,6 @@ class TestTreeSetChangedDuringFairShareUpdate(YTEnvSetup):
 
 
 @authors("renadeen")
-@pytest.mark.opensource
 class TestRaceBetweenSchedulingJobAndDisablingOperation(YTEnvSetup):
     # Scenario:
     # 1. Operation is running in two trees.
@@ -1899,7 +1890,6 @@ class TestRaceBetweenSchedulingJobAndDisablingOperation(YTEnvSetup):
 
 
 @authors("renadeen")
-@pytest.mark.opensource
 class TestMultiTreeOperations(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
@@ -2096,7 +2086,6 @@ class TestMultiTreeOperations(YTEnvSetup):
 ##################################################################
 
 
-@pytest.mark.opensource
 class TestNodeCountProfiling(YTEnvSetup):
     NUM_MASTERS = 1
     NUM_NODES = 3
