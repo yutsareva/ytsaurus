@@ -60,7 +60,8 @@ public:
         auto guard = Guard(ConfigureLock_);
 
         if (IsConfigured()) {
-            THROW_ERROR_EXCEPTION("GRPC dispatcher is already configured");
+            return;
+            // THROW_ERROR_EXCEPTION("GRPC dispatcher is already configured");
         }
 
         DoConfigure(config);
