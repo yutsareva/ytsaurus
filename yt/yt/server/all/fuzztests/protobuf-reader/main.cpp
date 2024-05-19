@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    NYT::NChunkClient::NProto::TFuzzerInput bin_message;
+    NYT::NChunkClient::NProto::TDatanodeFuzzerInput bin_message;
     if (!bin_message.ParseFromIstream(&str_input)) {
         std::cerr << "Failed to parse protobuf message." << std::endl;
         return -1;
