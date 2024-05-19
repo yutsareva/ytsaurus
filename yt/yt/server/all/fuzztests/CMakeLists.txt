@@ -1,3 +1,5 @@
 add_subdirectory(datanode)
+add_subdirectory(distributed)
 add_subdirectory(protobuf-reader)
 add_subdirectory(reproducer)
+add_subdirectory(dist-reproducer)
