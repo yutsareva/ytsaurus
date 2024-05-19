@@ -148,7 +148,10 @@ TChunkMeta FilterChunkMetaByPartitionTag(
     const TCachedBlockMetaPtr& cachedBlockMeta,
     int partitionTag)
 {
-    YT_VERIFY(chunkMeta.type() == static_cast<int>(EChunkType::Table));
+    if (chunkMeta.type() != static_cast<int>(EChunkType::Table)) {
+        THROW_ERROR_EXCEPTION("chunkMeta.type() == static_cast<int>(EChunkType::Table)");
+    }
+    // YT_VERIFY(chunkMeta.type() == static_cast<int>(EChunkType::Table));
     auto filteredChunkMeta = chunkMeta;
 
     std::vector<TDataBlockMeta> filteredBlocks;
