@@ -65,7 +65,7 @@ message TRspStartChunk
 message TReqFinishChunk
 {
     required TSessionId session_id = 4;
-    optional TChunkMeta chunk_meta = 2;
+    required TChunkMeta chunk_meta = 2;
     optional int32 block_count = 3;
     optional bool ignore_missing_session = 5 [default = false];
 }
@@ -615,7 +615,7 @@ message TRspAnnounceChunkReplicas
 
 ////////////////////////////////////////////////////////////////////////////////
 
-message TFuzzerSingleRequest {
+message TFuzzerDatanodeSingleRequest {
     oneof request {
         TReqStartChunk start_chunk = 1;
         TReqFinishChunk finish_chunk = 2;
@@ -644,11 +644,11 @@ message TFuzzerSingleRequest {
     }
 }
 
-message TFuzzerSingleRequestWithAttachments {
-    required TFuzzerSingleRequest request = 1;
+message TDatanodeFuzzerSingleRequestWithAttachments {
+    required TFuzzerDatanodeSingleRequest request = 1;
     repeated string attachments = 2;
 }
 
-message TFuzzerInput {
-    repeated TFuzzerSingleRequestWithAttachments requests = 1;
+message TDatanodeFuzzerInput {
+    repeated TDatanodeFuzzerSingleRequestWithAttachments requests = 1;
 }
