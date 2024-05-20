@@ -164,36 +164,19 @@ THashMap<TString, TString> MakeReadIOTags(
     return result;
 }
 
-
 #ifdef ENABLE_DUMP_PROTO_MESSAGE
-
-constexpr char kDumpDirectory[] = "/tmp/datanode_corpus_merged_reqs_with_attachments_1";
-
-std::string GenerateUniqueFilename(std::string_view dirPath, size_t threadId, size_t microseconds) {
-    std::ostringstream filename;
-
-    filename << dirPath << "/"
-             << threadId << "_"
-             << microseconds << ".bin";
-
-    return filename.str();
-}
-
 class TFuzzerManager {
 public:
+    TFuzzerManager() : thread_id_(std::this_thread::get_id()) {
+        auto now = std::chrono::system_clock::now().time_since_epoch();
+        start_time_ms_ = std::chrono::duration_cast<std::chrono::microseconds>(now).count();
+    }
+
     template<typename T>
-    void DumpProtoMessageToFile(const TTypedServiceRequest<T>& request, const std::vector<std::string>& attachments = {}) {
-        std::lock_guard<std::mutex> lock(mutex);
-        // size_t currentThreadId = std::this_thread::get_id();
-        size_t currentThreadId = 0;
+    void DumpProtoMessageToFile(const T& request, const std::vector<std::string>& attachments = {}) {
+        std::lock_guard<std::mutex> lock(mutex_);
 
-        if (threadInputs.find(currentThreadId) == threadInputs.end() || threadInputs[currentThreadId].first.requests_size() == 0) {
-            auto now = std::chrono::system_clock::now().time_since_epoch();
-            auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(now).count();
-            threadInputs[currentThreadId] = {TDatanodeFuzzerInput(), microseconds};
-        }
-
-        auto& newRequestWithAttach = *threadInputs[currentThreadId].first.add_requests();
+        auto& newRequestWithAttach = *input_.add_requests();
         *newRequestWithAttach.mutable_attachments() = {attachments.begin(), attachments.end()};
         auto& newRequest = *newRequestWithAttach.mutable_request();
 
@@ -205,8 +188,6 @@ public:
             *newRequest.mutable_cancel_chunk() = request;
         } else if constexpr (std::is_same_v<T, TReqPutBlocks>) {
             *newRequest.mutable_put_blocks() = request;
-        // } else if constexpr (std::is_same_v<T, TReqSendBlocks>) {
-        //     *newRequest.mutable_send_blocks() = request;
         } else if constexpr (std::is_same_v<T, TReqFlushBlocks>) {
             *newRequest.mutable_flush_blocks() = request;
         } else if constexpr (std::is_same_v<T, TReqUpdateP2PBlocks>) {
@@ -246,18 +227,14 @@ public:
         } else if constexpr (std::is_same_v<T, TReqAnnounceChunkReplicas>) {
             *newRequest.mutable_announce_chunk_replicas() = request;
         }
-        DumpFuzzerInputToFile(
-            threadInputs[currentThreadId].first, kDumpDirectory, currentThreadId, threadInputs[currentThreadId].second);
+
+        DumpFuzzerInputToFile();
     }
 
 private:
-    std::map<size_t, std::pair<TDatanodeFuzzerInput, size_t>> threadInputs;
-    std::mutex mutex;
-
-    template<typename TDatanodeFuzzerInput>
-    void DumpFuzzerInputToFile(const TDatanodeFuzzerInput& fuzzerInput, const std::string& directory, size_t threadId, size_t microseconds) {
+    void DumpFuzzerInputToFile() {
         std::filesystem::create_directories(kDumpDirectory);
-        std::string filename = GenerateUniqueFilename(directory, threadId, microseconds);
+        std::string filename = GetFilename();
 
         std::ofstream file(filename, std::ios::out | std::ios::binary);
         if (!file) {
@@ -265,11 +242,24 @@ private:
             return;
         }
 
-        if (!fuzzerInput.SerializeToOstream(&file)) {
+        if (!input_.SerializeToOstream(&file)) {
             std::cerr << "Failed to serialize TDatanodeFuzzerInput to file: " << filename << std::endl;
             return;
         }
     }
+
+    std::string GetFilename() {
+        std::ostringstream oss;
+        oss << kDumpDirectory << "/fuzzer_input_" << start_time_ms_ << "_tid_" << thread_id_ << ".bin";
+        return oss.str();
+    }
+
+    TDatanodeFuzzerInput input_;
+    size_t start_time_ms_;
+    std::thread::id thread_id_;
+    std::mutex mutex_;
+
+    static constexpr char kDumpDirectory[] = "/tmp/datanode_corpus_merged_reqs_with_attachments";
 };
 
 TFuzzerManager gFuzzerManager;
@@ -290,11 +280,6 @@ class TDataNodeService
     : public TServiceBase
 {
 public:
-    // #ifdef ENABLE_DUMP_PROTO_MESSAGE
-    // ~TDataNodeService() {
-    //     gFuzzerManager.FinalizeAllInputs();
-    // }
-    // #endif
     TDataNodeService(
         TDataNodeConfigPtr config,
         IBootstrap* bootstrap)
