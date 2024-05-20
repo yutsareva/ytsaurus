@@ -59,6 +59,9 @@
 #include <yt/yt/server/node/tablet_node/sorted_dynamic_comparer.h>
 #include <yt/yt/server/node/tablet_node/versioned_chunk_meta_manager.h>
 
+#include <yt/yt/server/all/fuzztests/lib/timer.h>
+#include <yt/yt/server/all/fuzztests/lib/defer.h>
+
 #include <yt/yt_proto/yt/client/chunk_client/proto/chunk_spec.pb.h>
 #include <yt/yt/client/chunk_client/read_limit.h>
 
@@ -117,22 +120,6 @@ using TRefCountedColumnarStatisticsSubresponsePtr = TIntrusivePtr<TRefCountedCol
 
 namespace {
 
-class Timer {
-public:
-    Timer() : start_(std::chrono::high_resolution_clock::now()) {}
-
-    int64_t Reset() {
-        auto now = std::chrono::high_resolution_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - start_).count();
-        start_ = now;
-        return elapsed;
-    }
-
-private:
-    std::chrono::time_point<std::chrono::high_resolution_clock> start_;
-};
-
-
 THashMap<TString, TString> MakeWriteIOTags(
     TString method,
     const ISessionPtr& session,
@@ -180,7 +167,7 @@ THashMap<TString, TString> MakeReadIOTags(
 
 #ifdef ENABLE_DUMP_PROTO_MESSAGE
 
-constexpr char kDumpDirectory[] = "/tmp/datanode_corpus_merged_reqs_with_attachments";
+constexpr char kDumpDirectory[] = "/tmp/datanode_corpus_merged_reqs_with_attachments_1";
 
 std::string GenerateUniqueFilename(std::string_view dirPath, size_t threadId, size_t microseconds) {
     std::ostringstream filename;
@@ -203,7 +190,7 @@ public:
         if (threadInputs.find(currentThreadId) == threadInputs.end() || threadInputs[currentThreadId].first.requests_size() == 0) {
             auto now = std::chrono::system_clock::now().time_since_epoch();
             auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(now).count();
-            threadInputs[currentThreadId] = {TFuzzerInput(), microseconds};
+            threadInputs[currentThreadId] = {TDatanodeFuzzerInput(), microseconds};
         }
 
         auto& newRequestWithAttach = *threadInputs[currentThreadId].first.add_requests();
@@ -211,25 +198,7 @@ public:
         auto& newRequest = *newRequestWithAttach.mutable_request();
 
         if constexpr (std::is_same_v<T, TReqStartChunk>) {
-            // TReqStartChunkWithAttachments req;
-            // *req.mutable_start_chunk() = request;
-            // *req.mutable_attachments() = {attachments.begin(), attachments.end()};
-            // *newRequest.mutable_start_chunk() = req;
             *newRequest.mutable_start_chunk() = request;
-            // for (const auto& attachment : attachments) {
-            //     blocks.emplace_back(
-            //         NYT::TSharedRef::FromString(TString(attachment)));
-            // }
-            // // NYT::NChunkClient::SetRpcAttachedBlocks(req, blocks);
-            // std::vector<NYT::NChunkClient::TBlock> blocks;
-            // newRequest->Attachments().reserve(blocks.size());
-            // for (const auto& block : blocks) {
-            //     newRequest->Attachments().push _back(block.Data);
-            //     newRequest->add_block_checksums(block.Checksum);
-            // }
-
-            // attachments
-            // TReqStartChunkWithAttachments
         } else if constexpr (std::is_same_v<T, TReqFinishChunk>) {
             *newRequest.mutable_finish_chunk() = request;
         } else if constexpr (std::is_same_v<T, TReqCancelChunk>) {
@@ -281,23 +250,12 @@ public:
             threadInputs[currentThreadId].first, kDumpDirectory, currentThreadId, threadInputs[currentThreadId].second);
     }
 
-    // void FinalizeAllInputs() {
-    //     std::lock_guard<std::mutex> lock(mutex);
-    //     std::filesystem::create_directories(kDumpDirectory);
-    //     for (auto& [threadId, fuzzerInput] : threadInputs) {
-    //         if (fuzzerInput.requests_size() > 0) {
-    //             DumpFuzzerInputToFile(fuzzerInput, kDumpDirectory, threadId);
-    //         }
-    //     }
-    //     threadInputs.clear();
-    // }
-
 private:
-    std::map<size_t, std::pair<TFuzzerInput, size_t>> threadInputs;
+    std::map<size_t, std::pair<TDatanodeFuzzerInput, size_t>> threadInputs;
     std::mutex mutex;
 
-    template<typename TFuzzerInput>
-    void DumpFuzzerInputToFile(const TFuzzerInput& fuzzerInput, const std::string& directory, size_t threadId, size_t microseconds) {
+    template<typename TDatanodeFuzzerInput>
+    void DumpFuzzerInputToFile(const TDatanodeFuzzerInput& fuzzerInput, const std::string& directory, size_t threadId, size_t microseconds) {
         std::filesystem::create_directories(kDumpDirectory);
         std::string filename = GenerateUniqueFilename(directory, threadId, microseconds);
 
@@ -308,7 +266,7 @@ private:
         }
 
         if (!fuzzerInput.SerializeToOstream(&file)) {
-            std::cerr << "Failed to serialize TFuzzerInput to file: " << filename << std::endl;
+            std::cerr << "Failed to serialize TDatanodeFuzzerInput to file: " << filename << std::endl;
             return;
         }
     }
@@ -1260,7 +1218,7 @@ private:
 
     DECLARE_RPC_SERVICE_METHOD(NChunkClient::NProto, GetChunkFragmentSet)
     {
-        Timer t;
+        fuzzing::Timer t;
         DUMP_PROTO_MESSAGE(*request);
         YT_LOG_INFO("LOOOG GetChunkFragmentSet: DUMP_PROTO_MESSAGE " + std::to_string(t.Reset()));
         auto readSessionId = FromProto<TReadSessionId>(request->read_session_id());
@@ -1344,7 +1302,7 @@ private:
                             .MemoryReferenceTracker = Bootstrap_->GetReadBlockMemoryReferenceTracker()
                         };
                         if (auto future = guard.GetChunk()->PrepareToReadChunkFragments(options, useDirectIO)) {
-                            YT_LOG_DEBUG("Will wait for chunk reader to become prepared (ChunkId: %v)",
+                            YT_LOG_INFO("GetChunkFragmentSet Will wait for chunk reader to become prepared (ChunkId: %v)",
                                 guard.GetChunk()->GetId());
                             prepareReaderFutures.push_back(std::move(future));
                         }
@@ -1373,6 +1331,11 @@ private:
                 requestedLocations = std::move(requestedLocations),
                 chunkRequestInfos = std::move(chunkRequestInfos)
             ] (const TError& error) mutable {
+                YT_LOG_INFO("LOOOG GetChunkFragmentSet: start afterReadersPrepared " + std::to_string(t.Reset()));
+                fuzzing::Defer logAtEnd([t, this]() mutable {
+                    YT_LOG_INFO("LOOOG GetChunkFragmentSet: end afterReadersPrepared " + std::to_string(t.Reset()));
+                });
+
                 if (!error.IsOK()) {
                     context->Reply(error);
                     return;
