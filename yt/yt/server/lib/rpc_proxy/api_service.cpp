@@ -598,19 +598,16 @@ std::string GenerateUniqueFilename(std::string_view dirPath, size_t threadId, si
 
 class TFuzzerManager {
 public:
+    TFuzzerManager() : thread_id_(std::this_thread::get_id()) {
+        auto now = std::chrono::system_clock::now().time_since_epoch();
+        start_time_ms_ = std::chrono::duration_cast<std::chrono::microseconds>(now).count();
+    }
+
     template<typename T>
     void DumpProtoMessageToFile(const TTypedServiceRequest<T>& request, const std::vector<std::string>& attachments = {}) {
-        std::lock_guard<std::mutex> lock(mutex);
-        // size_t currentThreadId = std::this_thread::get_id();
-        size_t currentThreadId = 0;
+        std::lock_guard<std::mutex> lock(mutex_);
 
-        if (threadInputs.find(currentThreadId) == threadInputs.end() || threadInputs[currentThreadId].first.requests_size() == 0) {
-            auto now = std::chrono::system_clock::now().time_since_epoch();
-            auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(now).count();
-            threadInputs[currentThreadId] = {NApi::NRpcProxy::NProto::TRpcProxyFuzzerInput(), microseconds};
-        }
-
-        auto& newRequestWithAttach = *threadInputs[currentThreadId].first.add_requests();
+        auto& newRequestWithAttach = *input_.add_requests();
         *newRequestWithAttach.mutable_attachments() = {attachments.begin(), attachments.end()};
         auto& newRequest = *newRequestWithAttach.mutable_request();
 
@@ -629,17 +626,14 @@ public:
         } else if constexpr (std::is_same_v<T, NApi::NRpcProxy::NProto::TReqReadTable>) {
             *newRequest.mutable_read_table() = request;
         }
-        DumpFuzzerInputToFile(
-            threadInputs[currentThreadId].first, kDumpDirectory, currentThreadId, threadInputs[currentThreadId].second);
+
+        DumpFuzzerInputToFile();
     }
 
 private:
-    std::map<size_t, std::pair<NApi::NRpcProxy::NProto::TRpcProxyFuzzerInput, size_t>> threadInputs;
-    std::mutex mutex;
-
-    void DumpFuzzerInputToFile(const NApi::NRpcProxy::NProto::TRpcProxyFuzzerInput& fuzzerInput, const std::string& directory, size_t threadId, size_t microseconds) {
+    void DumpFuzzerInputToFile() {
         std::filesystem::create_directories(kDumpDirectory);
-        std::string filename = GenerateUniqueFilename(directory, threadId, microseconds);
+        std::string filename = GetFilename();
 
         std::ofstream file(filename, std::ios::out | std::ios::binary);
         if (!file) {
@@ -647,11 +641,24 @@ private:
             return;
         }
 
-        if (!fuzzerInput.SerializeToOstream(&file)) {
+        if (!input_.SerializeToOstream(&file)) {
             std::cerr << "Failed to serialize TRpcProxyFuzzerInput to file: " << filename << std::endl;
             return;
         }
     }
+
+    std::string GetFilename() {
+        std::ostringstream oss;
+        oss << kDumpDirectory << "/fuzzer_input_" << start_time_ms_ << "_tid_" << thread_id_ << ".bin";
+        return oss.str();
+    }
+
+    NApi::NRpcProxy::NProto::TRpcProxyFuzzerInput input_;
+    size_t start_time_ms_;
+    std::thread::id thread_id_;
+    std::mutex mutex_;
+
+    static constexpr char kDumpDirectory[] = "/tmp/rpc_proxy_corpus_merged_reqs_with_attachments";
 };
 
 TFuzzerManager gFuzzerManager;
