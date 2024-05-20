@@ -12,6 +12,7 @@
 #include <yt/yt/ytlib/chunk_client/helpers.h>
 
 #include <library/cpp/resource/resource.h>
+#include <yt/yt/server/all/fuzztests/lib/timer.h>
 
 #include <google/protobuf/text_format.h>
 #include <sstream>
@@ -24,20 +25,6 @@ NYT::NRpc::IServerPtr server;
 std::unique_ptr<NYT::NClusterNode::TClusterNodeProgram> DataNode;
 static const auto& Logger = NYT::NClusterNode::ClusterNodeLogger;
 
-class Timer {
-public:
-    Timer() : start_(std::chrono::high_resolution_clock::now()) {}
-
-    int64_t Reset() {
-        auto now = std::chrono::high_resolution_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - start_).count();
-        start_ = now;
-        return elapsed;
-    }
-
-private:
-    std::chrono::time_point<std::chrono::high_resolution_clock> start_;
-};
 
 void Init() {
     DataNode = std::make_unique<NYT::NClusterNode::TClusterNodeProgram>();
