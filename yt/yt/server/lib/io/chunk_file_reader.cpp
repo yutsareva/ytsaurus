@@ -12,6 +12,7 @@
 #include <yt/yt/core/misc/checksum.h>
 #include <yt/yt/core/misc/fs.h>
 
+#include <yt/yt/server/all/fuzztests/lib/timer.h>
 #include <yt/yt/client/misc/workload.h>
 
 #include <yt/yt/core/misc/protobuf_helpers.h>
@@ -151,6 +152,8 @@ TFuture<void> TChunkFileReader::PrepareToReadChunkFragments(
     const TClientChunkReadOptions& options,
     bool useDirectIO)
 {
+    fuzzing::Timer t;
+    YT_LOG_INFO("LOOOG GetChunkFragmentSet:  TChunkFileReader::PrepareToReadChunkFragments");
     auto directIOFlag = GetDirectIOFlag(useDirectIO);
 
     // Fast path.
@@ -160,6 +163,7 @@ TFuture<void> TChunkFileReader::PrepareToReadChunkFragments(
 
     // Slow path.
     TFuture<void> chunkFragmentFuture;
+    YT_LOG_INFO("LOOOG GetChunkFragmentSet:  chunkFragmentFuture %v", std::to_string(t.Reset()));
 
     auto guard = Guard(ChunkFragmentReadsLock_);
     if (!ChunkFragmentReadsPreparedFuture_[directIOFlag]) {
@@ -168,8 +172,9 @@ TFuture<void> TChunkFileReader::PrepareToReadChunkFragments(
         guard.Release();
 
         chunkFragmentFuture = OpenDataFile(directIOFlag)
-            .Apply(BIND([=, this, this_ = MakeStrong(this)] (const TIOEngineHandlePtr& /*handle*/) {
+            .Apply(BIND([=, this, this_ = MakeStrong(this)] (const TIOEngineHandlePtr& /*handle*/) mutable {
                 {
+                    YT_LOG_INFO("LOOOG GetChunkFragmentSet: start chunkFragmentFuture %v", std::to_string(t.Reset()));
                     auto guard = Guard(ChunkFragmentReadsLock_);
 
                     if (BlocksExt_) {
@@ -185,16 +190,19 @@ TFuture<void> TChunkFileReader::PrepareToReadChunkFragments(
                         ChunkFragmentReadsPrepared_[directIOFlag].store(true);
                         return VoidFuture;
                     }
+                    YT_LOG_INFO("LOOOG GetChunkFragmentSet: end chunkFragmentFuture %v", std::to_string(t.Reset()));
                 }
 
                 return DoReadMeta(options, std::nullopt)
-                    .Apply(BIND([=, this, this_ = MakeStrong(this)] (const TRefCountedChunkMetaPtr& meta) {
+                    .Apply(BIND([=, this, this_ = MakeStrong(this)] (const TRefCountedChunkMetaPtr& meta) mutable {
+                        YT_LOG_INFO("LOOOG GetChunkFragmentSet: Guard(ChunkFragmentReadsLock_) " + std::to_string(t.Reset()));
                         auto guard = Guard(ChunkFragmentReadsLock_);
                         BlocksExt_ = New<NIO::TBlocksExt>(GetProtoExtension<NChunkClient::NProto::TBlocksExt>(meta->extensions()));
                         if (BlocksExtCache_) {
                             BlocksExtCache_->Put(meta, BlocksExt_);
                         }
                         ChunkFragmentReadsPrepared_[directIOFlag].store(true);
+                        YT_LOG_INFO("LOOOG GetChunkFragmentSet: ChunkFragmentReadsPrepared_[directIOFlag].store(true) " + std::to_string(t.Reset()));
                     }));
             }))
             .ToUncancelable();
