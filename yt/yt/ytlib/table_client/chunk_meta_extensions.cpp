@@ -156,7 +156,10 @@ TChunkMeta FilterChunkMetaByPartitionTag(
 
     std::vector<TDataBlockMeta> filteredBlocks;
     for (const auto& blockMeta : cachedBlockMeta->data_blocks()) {
-        YT_VERIFY(blockMeta.partition_index() != DefaultPartitionTag);
+        // YT_VERIFY(blockMeta.partition_index() != DefaultPartitionTag);
+        if (blockMeta.partition_index() == DefaultPartitionTag) {
+            THROW_ERROR_EXCEPTION("blockMeta.partition_index() != DefaultPartitionTag");
+        }
         if (blockMeta.partition_index() == partitionTag) {
             filteredBlocks.push_back(blockMeta);
         }
