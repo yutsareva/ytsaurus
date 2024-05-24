@@ -34,6 +34,7 @@ static const std::vector<i64> RequestLatencyBins = {
 
 void TFixedBinsHistogramBase::RecordValue(i64 value, i64 count)
 {
+    return;
     const int binsCount = std::ssize(BinValues_);
     for (int index = 0; index < binsCount; ++index) {
         if (BinValues_[index] >= value) {
@@ -408,9 +409,9 @@ public:
 
         auto future = Underlying_->Write(request, category, sessionId);
 
-        future.Subscribe(BIND([=, this, this_ = MakeStrong(this)] (const NYT::TErrorOr<void>&) {
-            ModelManager_->RegisterWrite(request, category, requestTimer.GetElapsedTime());
-        }));
+        // future.Subscribe(BIND([=, this, this_ = MakeStrong(this)] (const NYT::TErrorOr<void>&) {
+        //     ModelManager_->RegisterWrite(request, category, requestTimer.GetElapsedTime());
+        // }));
 
         return future;
     }
