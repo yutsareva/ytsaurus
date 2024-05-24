@@ -100,24 +100,25 @@ void Initialize(
             .EndMap());
 #endif
 
-    if (monitoringServer) {
-        auto exporter = New<NProfiling::TSolomonExporter>(config);
-        exporter->Register("/solomon", monitoringServer);
-        exporter->Start();
+// yutsareva fix here
+//     if (monitoringServer) {
+//         auto exporter = New<NProfiling::TSolomonExporter>(config);
+//         exporter->Register("/solomon", monitoringServer);
+//         exporter->Start();
 
-        SetNodeByYPath(
-            *orchidRoot,
-            "/sensors",
-            CreateVirtualNode(exporter->GetSensorService()));
+//         SetNodeByYPath(
+//             *orchidRoot,
+//             "/sensors",
+//             CreateVirtualNode(exporter->GetSensorService()));
 
-#ifdef _linux_
-        NYTProf::Register(monitoringServer, "/ytprof", buildInfo);
-        NBacktraceIntrospector::Register(monitoringServer, "/backtrace");
-#endif
-        monitoringServer->AddHandler(
-            "/orchid/",
-            GetOrchidYPathHttpHandler(*orchidRoot));
-    }
+// #ifdef _linux_
+//         NYTProf::Register(monitoringServer, "/ytprof", buildInfo);
+//         NBacktraceIntrospector::Register(monitoringServer, "/backtrace");
+// #endif
+//         monitoringServer->AddHandler(
+//             "/orchid/",
+//             GetOrchidYPathHttpHandler(*orchidRoot));
+//     }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
