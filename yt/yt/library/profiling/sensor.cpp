@@ -102,6 +102,7 @@ TTimeGauge::operator bool() const
 
 void TSummary::Record(double value) const
 {
+    return;
     if (!Summary_) {
         return;
     }
@@ -118,6 +119,7 @@ TSummary::operator bool() const
 
 void TEventTimer::Record(TDuration value) const
 {
+    return;
     if (!Timer_) {
         return;
     }
