@@ -239,7 +239,10 @@ std::optional<T> FindProtoExtension(const NProto::TExtensionSet& extensions)
         if (extension.tag() == tag) {
             const auto& data = extension.data();
             result.emplace();
-            DeserializeProto(&*result, TRef::FromString(data));
+            if (!TryDeserializeProto(&*result, TRef::FromString(data))) {
+                // fix YT_VERIFY(TryDeserializeProto(message, data))
+                continue;
+            }
             break;
         }
     }
