@@ -115,7 +115,7 @@ TFuture<TRefCountedChunkMetaPtr> TBlobChunkBase::ReadMeta(
 
     return
         asyncMeta.Apply(BIND([=, this, this_ = MakeStrong(this), session = std::move(session)] (const TCachedChunkMetaPtr& cachedMeta) {
-            ProfileReadMetaLatency(session);
+            // ProfileReadMetaLatency(session);
             return FilterMeta(cachedMeta->GetMeta(), extensionTags);
         })
        .AsyncVia(Context_->StorageHeavyInvoker));
@@ -341,7 +341,7 @@ void TBlobChunkBase::OnBlocksExtLoaded(
 
     for (int entryIndex = 0; entryIndex < session->EntryCount; ++entryIndex) {
         auto& entry = session->Entries[entryIndex];
-        const auto& blockInfo = blocksExt->Blocks[entry.BlockIndex];
+        const auto& blockInfo = blocksExt->Blocks.at(entry.BlockIndex);
         entry.BeginOffset = blockInfo.Offset;
         entry.EndOffset = blockInfo.Offset + blockInfo.Size;
 
