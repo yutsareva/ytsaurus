@@ -70,36 +70,26 @@ bool IsValidChunkType(const NYT::NChunkClient::NProto::TSessionId& protoSessionI
 
 static protobuf_mutator::libfuzzer::PostProcessorRegistration<NYT::NChunkClient::NProto::TSessionId> NonNullSessionId = {
     [](NYT::NChunkClient::NProto::TSessionId* message, unsigned int seed) {
-        fuzzing::Timer t;
         // Fixes 'No write location is available'
         message->set_medium_index(0);
 
         // Fixes 'Invalid session chunk type'
-        std::mt19937_64 rng(seed);
-        std::uniform_int_distribution<uint64_t> dist64(1, UINT64_MAX);
-
-        bool isValidChunkType = IsValidChunkType(*message);
-        while (!isValidChunkType) {
-            NYT::NProto::TGuid randomChunkId;
-            randomChunkId.set_first(dist64(rng));
-            randomChunkId.set_second(dist64(rng));
-            message->mutable_chunk_id()->CopyFrom(randomChunkId);
-
-            isValidChunkType = IsValidChunkType(*message);
-        };
-        YT_LOG_INFO("PostProcessor TSessionId took %v ms", t.Reset());
-    }};
-
-
-static protobuf_mutator::libfuzzer::PostProcessorRegistration<NYT::NChunkClient::NProto::TReqUpdateP2PBlocks> NonNegativeChunkBlockCount = {
-    [](NYT::NChunkClient::NProto::TReqUpdateP2PBlocks* message, unsigned int seed) {
-        for (int i = 0; i < message->chunk_block_count_size(); ++i) {
-            int32_t count = message->chunk_block_count(i);
-            if (count < 0) {
-                message->set_chunk_block_count(i, 0);
-            }
+        if (!IsValidChunkType(*message)) {
+            auto first = message->mutable_chunk_id()->first();
+            uint64_t h = 100;
+            h <<= 32;
+            first = (first & 0xFFFFFFFF) | h;
+            message->mutable_chunk_id()->set_first(first);
         }
+        YT_VERIFY(IsValidChunkType(*message));
     }};
+
+
+static protobuf_mutator::libfuzzer::PostProcessorRegistration<NYT::NChunkClient::NProto::TReqCancelChunk> DoNotWaitChunkCancelation = {
+    [](NYT::NChunkClient::NProto::TReqCancelChunk* message, unsigned int seed) {
+        message->set_wait_for_cancelation(false);
+    }};
+
 
 size_t getCurrentRSS() {
     std::ifstream statm("/proc/self/statm");
@@ -175,6 +165,18 @@ void SendRequest(const std::string& methodName, const TRequest& request, TProxyM
     // YT_LOG_INFO("LOOOG Sending %v, attachments size: %v", methodName, attachments.size());
     // if (methodName == "GetChunkFragmentSet") {
     std::cerr << "LOOOG Sending " << methodName << ", attachments size: " << attachments.size() << std::endl;
+    {
+        google::protobuf::TextFormat::Printer printer;
+        printer.SetUseUtf8StringEscaping(true);
+
+        TProtoStringType text_message;
+        // std::cout << "Fuzzer input:\n";
+        if (!printer.PrintToString(request, &text_message)) {
+            std::cerr << "Failed to convert protobuf message to text." << std::endl;
+            return;
+        }
+        std::cerr << methodName << ":\n" << text_message << std::endl;
+    }
     // }
     std::string rspMsg = "";
     size_t retry = 0;
